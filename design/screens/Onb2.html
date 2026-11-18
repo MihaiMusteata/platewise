@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Înregistrare — obiectiv</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#0E5A3A}a:hover{color:#0A4129}
+button,input,select{font-family:inherit}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: #F7F9F8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #13201A; font-variant-numeric: tabular-nums; box-sizing: border-box">
+<div style="height: 100%; box-sizing: border-box; padding: 64px 24px 32px 24px; display: flex; flex-direction: column; gap: 16px">
+<div role="img" aria-label="Pasul 2 din 3" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px"><div style="height: 6px; border-radius: 4px; background: #0E5A3A"></div><div style="height: 6px; border-radius: 4px; background: #0E5A3A"></div><div style="height: 6px; border-radius: 4px; background: #DDE6E1"></div></div>
+<span style="font-size: 14px; font-weight: 600; color: #5B6862; line-height: 20px">Pasul 2 din 3</span>
+<h1 style="margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.02em; line-height: 40px">Care e obiectivul tău?</h1>
+<p style="margin: 0; font-size: 16px; color: #5B6862; line-height: 24px">Pe baza lui stabilim ținta zilnică de calorii. O poți schimba oricând.</p>
+<div style="display: flex; flex-direction: column; gap: 12px"><button aria-pressed="{{lose.pressed}}" onClick="{{lose.pick}}" style="height: 72px; box-sizing: border-box; border-radius: 16px; border: 1.5px solid {{lose.border}}; background: {{lose.bg}}; display: flex; align-items: center; gap: 16px; padding: 0 16px; text-align: left; color: #13201A"><span style="width: 48px; height: 48px; flex: none; border-radius: 24px; background: {{lose.iconBg}}; color: #0E5A3A; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l6 6 4-4 8 8M21 11v6h-6"></path></svg></span><span style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 16px; font-weight: 700; line-height: 24px">Slăbire</span><span style="font-size: 14px; color: #5B6862; line-height: 20px">Un deficit caloric blând</span></span><span style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 12px; border: 2px solid {{lose.ring}}; display: flex; align-items: center; justify-content: center"><span style="width: 10px; height: 10px; border-radius: 4px; background: {{lose.dot}}"></span></span></button>
+<button aria-pressed="{{keep.pressed}}" onClick="{{keep.pick}}" style="height: 72px; box-sizing: border-box; border-radius: 16px; border: 1.5px solid {{keep.border}}; background: {{keep.bg}}; display: flex; align-items: center; gap: 16px; padding: 0 16px; text-align: left; color: #13201A"><span style="width: 48px; height: 48px; flex: none; border-radius: 24px; background: {{keep.iconBg}}; color: #0E5A3A; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9h14M5 15h14"></path></svg></span><span style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 16px; font-weight: 700; line-height: 24px">Menținere</span><span style="font-size: 14px; color: #5B6862; line-height: 20px">Mănânci cât consumi</span></span><span style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 12px; border: 2px solid {{keep.ring}}; display: flex; align-items: center; justify-content: center"><span style="width: 10px; height: 10px; border-radius: 4px; background: {{keep.dot}}"></span></span></button>
+<button aria-pressed="{{gain.pressed}}" onClick="{{gain.pick}}" style="height: 72px; box-sizing: border-box; border-radius: 16px; border: 1.5px solid {{gain.border}}; background: {{gain.bg}}; display: flex; align-items: center; gap: 16px; padding: 0 16px; text-align: left; color: #13201A"><span style="width: 48px; height: 48px; flex: none; border-radius: 24px; background: {{gain.iconBg}}; color: #0E5A3A; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8M21 13V7h-6"></path></svg></span><span style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 16px; font-weight: 700; line-height: 24px">Creștere în greutate</span><span style="font-size: 14px; color: #5B6862; line-height: 20px">Un mic surplus caloric</span></span><span style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 12px; border: 2px solid {{gain.ring}}; display: flex; align-items: center; justify-content: center"><span style="width: 10px; height: 10px; border-radius: 4px; background: {{gain.dot}}"></span></span></button>
+</div>
+<section aria-label="Ținta ta zilnică" style="background: linear-gradient(135deg, #0B4F33 0%, #1B7A4B 100%); color: #FFFFFF; border-radius: 24px; box-shadow: 0 12px 26px rgba(14,90,58,0.28); padding: 16px 24px; display: flex; flex-direction: column; gap: 8px"><span style="font-size: 14px; font-weight: 600; color: #D7EBDD; line-height: 20px">Ținta ta zilnică</span><span style="display: flex; align-items: baseline; gap: 8px"><span style="font-size: 40px; font-weight: 800; letter-spacing: -0.03em; line-height: 40px">{{target}}</span><span style="font-size: 16px; font-weight: 600; color: #D7EBDD; line-height: 24px">kcal / zi</span></span><span style="font-size: 14px; color: #D7EBDD; line-height: 20px">Estimare pe baza vârstei, înălțimii, greutății și activității. Nu este un sfat medical.</span></section>
+<div style="flex: 1 1 auto"></div>
+<a href="Onb3.dc.html" style="border-radius: 28px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; box-sizing: border-box; height: 56px; background: #0E5A3A; color: #FFFFFF; font-size: 16px; font-weight: 700; box-shadow: 0 8px 18px rgba(14,90,58,0.25); line-height: 24px">Continuă</a>
+<a href="Onb1.dc.html" style="border-radius: 28px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; box-sizing: border-box; height: 48px; color: #5B6862; font-size: 16px; font-weight: 600; line-height: 24px">Înapoi</a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 390, "height": 844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { goal: 'keep' }; }
+  renderVals() {
+    const t = { lose: 1700, keep: 2100, gain: 2400 };
+    const mk = k => {
+      const on = this.state.goal === k;
+      return { pressed: on ? 'true' : 'false', bg: on ? '#E6F4EA' : '#FFFFFF', border: on ? '#0E5A3A' : '#DCE3DF',
+        iconBg: on ? '#FFFFFF' : '#EEF3F0', ring: on ? '#0E5A3A' : '#B7C2BC', dot: on ? '#0E5A3A' : 'transparent',
+        pick: () => this.setState({ goal: k }) };
+    };
+    const fmt = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const dec = n => (Math.round(n * 10) / 10).toFixed(1).replace('.', ',');
+    return { lose: mk('lose'), keep: mk('keep'), gain: mk('gain'), target: fmt(t[this.state.goal]) };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Scanare — cameră oprită</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#0E5A3A}a:hover{color:#0A4129}
+button,input,select{font-family:inherit}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: #F7F9F8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #13201A; font-variant-numeric: tabular-nums; box-sizing: border-box">
+<div style="height: 100%; box-sizing: border-box; padding: 64px 24px 32px 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: center; justify-content: space-between; height: 48px"><a href="AddFood.dc.html" aria-label="Închide" style="width: 48px; height: 48px; border-radius: 24px; background: #FFFFFF; color: #13201A; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 2px rgba(16,40,30,0.05), 0 6px 18px rgba(16,40,30,0.06)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg></a><span style="font-size: 16px; font-weight: 700; line-height: 24px">Scanează codul de bare</span><span style="width: 48px"></span></div>
+<div style="flex: 0 0 64px"></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center"><div aria-hidden="true" style="width: 96px; height: 96px; border-radius: 48px; background: #EEF3F0; color: #13201A; display: flex; align-items: center; justify-content: center"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M9.5 5h5l2 2H19a2 2 0 0 1 2 2v8M17 19H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.5M9.9 10.2a3 3 0 0 0 4 4"></path></svg></div><h1 style="margin: 8px 0 0 0; font-size: 24px; font-weight: 800; letter-spacing: -0.02em; line-height: 32px">Accesul la cameră e oprit</h1><p style="margin: 0; font-size: 16px; color: #5B6862; max-width: 320px; line-height: 24px">Avem nevoie de cameră ca să citim codurile. Pozele nu se salvează. O poți porni din Setări sau poți introduce numărul.</p>
+</div>
+<div style="flex: 1 1 auto"></div>
+<a href="#" style="border-radius: 28px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; box-sizing: border-box; height: 56px; background: #0E5A3A; color: #FFFFFF; font-size: 16px; font-weight: 700; box-shadow: 0 8px 18px rgba(14,90,58,0.25); line-height: 24px">Deschide Setările</a>
+<a href="ScanNotFound.dc.html" style="border-radius: 28px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; box-sizing: border-box; height: 56px; background: #FFFFFF; color: #0E5A3A; font-size: 16px; font-weight: 700; border: 1.5px solid #0E5A3A; line-height: 24px">Introdu numărul codului</a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 390, "height": 844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

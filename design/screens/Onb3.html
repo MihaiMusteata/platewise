@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Înregistrare — ținta zilnică</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#0E5A3A}a:hover{color:#0A4129}
+button,input,select{font-family:inherit}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: #F7F9F8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #13201A; font-variant-numeric: tabular-nums; box-sizing: border-box">
+<div style="height: 100%; box-sizing: border-box; padding: 64px 24px 32px 24px; display: flex; flex-direction: column; gap: 16px">
+<div role="img" aria-label="Pasul 3 din 3" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px"><div style="height: 6px; border-radius: 4px; background: #0E5A3A"></div><div style="height: 6px; border-radius: 4px; background: #0E5A3A"></div><div style="height: 6px; border-radius: 4px; background: #0E5A3A"></div></div>
+<span style="font-size: 14px; font-weight: 600; color: #5B6862; line-height: 20px">Pasul 3 din 3</span>
+<h1 style="margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.02em; line-height: 40px">Ținta ta zilnică</h1>
+<p style="margin: 0; font-size: 16px; color: #5B6862; line-height: 24px">O estimare de la care pornim. O poți schimba oricând din Setări.</p>
+<section aria-label="Ținta zilnică" style="background: linear-gradient(135deg, #0B4F33 0%, #1B7A4B 100%); color: #FFFFFF; border-radius: 24px; box-shadow: 0 12px 26px rgba(14,90,58,0.28); padding: 24px 24px; display: flex; flex-direction: column; gap: 16px"><div style="display: flex; align-items: center; justify-content: space-between"><button aria-label="Scade cu 50 kcal" onClick="{{dec50}}" style="width: 56px; height: 56px; flex: none; border-radius: 16px; border: none; background: rgba(255,255,255,0.16); color: #FFFFFF; display: flex; align-items: center; justify-content: center; padding: 0"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path></svg></button><div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><span style="font-size: 48px; font-weight: 800; letter-spacing: -0.03em; line-height: 48px">{{target}}</span><span style="font-size: 14px; font-weight: 600; color: #D7EBDD; line-height: 20px">kcal pe zi</span></div><button aria-label="Crește cu 50 kcal" onClick="{{inc50}}" style="width: 56px; height: 56px; flex: none; border-radius: 16px; border: none; background: rgba(255,255,255,0.16); color: #FFFFFF; display: flex; align-items: center; justify-content: center; padding: 0"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></button></div><div style="height: 1px; background: rgba(255,255,255,0.18)"></div><span style="font-size: 14px; color: #D7EBDD; text-align: center; line-height: 20px">Calculată din vârstă, înălțime, greutate și activitate. Nu coborâm sub un minim sigur. Nu este un sfat medical.</span></section>
+<section aria-label="Înainte să începi" style="background: #E6F4EA; border-radius: 24px; padding: 16px; display: flex; gap: 16px"><span style="width: 48px; height: 48px; flex: none; border-radius: 24px; background: #FFFFFF; color: #0E5A3A; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"></path></svg></span><div style="display: flex; flex-direction: column; gap: 8px"><span style="font-size: 16px; font-weight: 700; line-height: 24px">Înainte să începi</span><p style="margin: 0; font-size: 14px; color: #2F3D36; line-height: 20px">Monitorizarea nu e potrivită pentru oricine. Dacă mâncarea sau greutatea sunt un subiect greu pentru tine, poți sări peste ea și să vorbești cu un medic sau un nutriționist.</p>
+<a href="#" style="font-size: 14px; font-weight: 700; text-decoration: none; margin-top: 4px; min-height: 28px; display: flex; align-items: center; line-height: 20px">Vezi opțiuni de sprijin</a></div></section>
+<div style="flex: 1 1 auto"></div>
+<a href="TodayEmpty.dc.html" style="border-radius: 28px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; box-sizing: border-box; height: 56px; background: #0E5A3A; color: #FFFFFF; font-size: 16px; font-weight: 700; box-shadow: 0 8px 18px rgba(14,90,58,0.25); line-height: 24px">Începe monitorizarea</a>
+<a href="Onb2.dc.html" style="border-radius: 28px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; box-sizing: border-box; height: 48px; color: #5B6862; font-size: 16px; font-weight: 600; line-height: 24px">Înapoi</a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 390, "height": 844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { t: 2100 }; }
+  renderVals() {
+    const fmt = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const dec = n => (Math.round(n * 10) / 10).toFixed(1).replace('.', ',');
+    return {
+      target: fmt(this.state.t),
+      dec50: () => this.setState({ t: Math.max(1200, this.state.t - 50) }),
+      inc50: () => this.setState({ t: Math.min(4000, this.state.t + 50) })
+    };
+  }
+}
+</script>
+</body>
+</html>

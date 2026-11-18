@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Adaugă un produs nou</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#0E5A3A}a:hover{color:#0A4129}
+button,input,select{font-family:inherit}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: #F7F9F8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #13201A; font-variant-numeric: tabular-nums; box-sizing: border-box">
+<div style="height: 100%; box-sizing: border-box; padding: 64px 24px 32px 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: center; justify-content: space-between; height: 48px"><a href="ScanNotFound.dc.html" aria-label="Înapoi" style="width: 48px; height: 48px; border-radius: 24px; background: #FFFFFF; color: #13201A; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 2px rgba(16,40,30,0.05), 0 6px 18px rgba(16,40,30,0.06)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></a><span style="font-size: 16px; font-weight: 700; line-height: 24px">Adaugă un produs</span><span style="width: 48px"></span></div>
+<h1 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.02em; line-height: 32px">Copiază de pe etichetă</h1>
+<span style="font-size: 14px; color: #5B6862; margin-top: -8px; line-height: 20px">Cod 4000000000000 · valori la 100 g</span>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px"><div style="display: flex; flex-direction: column; gap: 8px; grid-column: 1 / -1"><label for="pname" style="font-size: 14px; font-weight: 600; color: #3D4A43; line-height: 20px">Numele produsului</label><input id="pname" value="Granola cu ovăz și miere" inputmode="text" style="height: 56px; box-sizing: border-box; border-radius: 16px; border: 1.5px solid #DCE3DF; background: #FFFFFF; padding: 0 16px; font-size: 16px; font-weight: 500; color: #13201A; line-height: 24px"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="brand" style="font-size: 14px; font-weight: 600; color: #3D4A43; line-height: 20px">Marcă (opțional)</label><input id="brand" value="" inputmode="text" style="height: 56px; box-sizing: border-box; border-radius: 16px; border: 1.5px solid #DCE3DF; background: #FFFFFF; padding: 0 16px; font-size: 16px; font-weight: 500; color: #13201A; line-height: 24px"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="serv" style="font-size: 14px; font-weight: 600; color: #3D4A43; line-height: 20px">Porție (g)</label><input id="serv" value="40" inputmode="numeric" style="height: 56px; box-sizing: border-box; border-radius: 16px; border: 1.5px solid #DCE3DF; background: #FFFFFF; padding: 0 16px; font-size: 16px; font-weight: 500; color: #13201A; line-height: 24px"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="kcal" style="font-size: 14px; font-weight: 600; color: #3D4A43; line-height: 20px">Calorii (kcal)</label><input id="kcal" value="452" inputmode="numeric" style="height: 56px; box-sizing: border-box; border-radius: 16px; border: 1.5px solid #DCE3DF; background: #FFFFFF; padding: 0 16px; font-size: 16px; font-weight: 500; color: #13201A; line-height: 24px"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="prot" style="font-size: 14px; font-weight: 600; color: #3D4A43; line-height: 20px">Proteine (g)</label><input id="prot" value="8,5" inputmode="decimal" style="height: 56px; box-sizing: border-box; border-radius: 16px; border: 1.5px solid #DCE3DF; background: #FFFFFF; padding: 0 16px; font-size: 16px; font-weight: 500; color: #13201A; line-height: 24px"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="carb" style="font-size: 14px; font-weight: 600; color: #3D4A43; line-height: 20px">Carbohidrați (g)</label><input id="carb" value="63" inputmode="decimal" style="height: 56px; box-sizing: border-box; border-radius: 16px; border: 1.5px solid #DCE3DF; background: #FFFFFF; padding: 0 16px; font-size: 16px; font-weight: 500; color: #13201A; line-height: 24px"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="fat" style="font-size: 14px; font-weight: 600; color: #3D4A43; line-height: 20px">Grăsimi (g)</label><input id="fat" value="17" inputmode="decimal" style="height: 56px; box-sizing: border-box; border-radius: 16px; border: 1.5px solid #DCE3DF; background: #FFFFFF; padding: 0 16px; font-size: 16px; font-weight: 500; color: #13201A; line-height: 24px"></div>
+</div>
+<label style="background: #FFFFFF; border-radius: 24px; box-shadow: 0 1px 2px rgba(16,40,30,0.05), 0 6px 18px rgba(16,40,30,0.06); border-radius: 16px; padding: 16px 16px; display: flex; gap: 12px; align-items: flex-start"><input type="checkbox" style="width: 24px; height: 24px; margin: 0; flex: none; accent-color: #0E5A3A"><span style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 16px; font-weight: 700; line-height: 24px">Trimite la Open Food Facts</span><span style="font-size: 14px; color: #5B6862; line-height: 20px">Îi ajuți pe alții să găsească produsul. Oprit implicit. Jurnalul tău rămâne privat.</span></span></label>
+<div style="flex: 1 1 auto"></div>
+<a href="Main.dc.html" style="border-radius: 28px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; box-sizing: border-box; height: 56px; background: #0E5A3A; color: #FFFFFF; font-size: 16px; font-weight: 700; box-shadow: 0 8px 18px rgba(14,90,58,0.25); line-height: 24px">Salvează și adaugă</a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 390, "height": 844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
