@@ -36,3 +36,5 @@ export {
 } from './PlaceholderScreen';
 export { TabBar } from './TabBar';
 export { SwipeableEntryRow, type SwipeableEntryRowProps } from './SwipeableEntryRow';
+export { FoodResultRow, type FoodResultRowProps } from './FoodResultRow';
+export { SearchField, type SearchFieldProps } from './SearchField';

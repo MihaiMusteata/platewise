@@ -25,6 +25,8 @@ export interface PlaceholderScreenProps {
   links?: PlaceholderLink[];
   /** Off for tab screens (the tab bar covers the bottom inset). */
   bottomInset?: boolean;
+  /** Off for screens inside a page-sheet modal (see `Screen`). */
+  topInset?: boolean;
   children?: React.ReactNode;
 }
 
@@ -35,10 +37,11 @@ export function PlaceholderScreen({
   dismiss = 'none',
   links = [],
   bottomInset = true,
+  topInset = true,
   children,
 }: PlaceholderScreenProps) {
   return (
-    <Screen bottomInset={bottomInset}>
+    <Screen bottomInset={bottomInset} topInset={topInset}>
       {dismiss !== 'none' && (
         <IconButton
           testID="placeholder-dismiss"

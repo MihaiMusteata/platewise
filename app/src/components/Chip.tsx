@@ -15,6 +15,7 @@ export interface ChipProps {
   icon?: LucideIcon;
   accessibilityLabel?: string;
   style?: StyleProp<ViewStyle>;
+  testID?: string;
 }
 
 /** 48-high pill chip. */
@@ -26,11 +27,13 @@ export function Chip({
   icon: Icon,
   accessibilityLabel,
   style,
+  testID,
 }: ChipProps) {
   const isAction = variant === 'action';
   const fg = isAction ? 'brand' : selected ? 'onBrand' : 'text';
   return (
     <Pressable
+      testID={testID}
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? label}
@@ -44,7 +47,8 @@ export function Chip({
       ]}
     >
       {Icon ? <Icon size={size.iconS} color={colors[fg]} /> : null}
-      <AppText variant="bodyStrong" color={fg}>
+      {/* Unselected choice chips use the lighter 600 label weight (AddFood.html filters). */}
+      <AppText variant={isAction || selected ? 'bodyStrong' : 'label'} color={fg}>
         {label}
       </AppText>
     </Pressable>

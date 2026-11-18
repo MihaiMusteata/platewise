@@ -37,8 +37,8 @@ export default function RootLayout() {
       >
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="add" options={{ presentation: 'modal' }} />
-        <Stack.Screen name="scan/index" options={{ presentation: 'fullScreenModal' }} />
-        {/* scan/not-found, product/[barcode], product/new and food/[id] are pushed as cards. */}
+        {/* Each modal has its own stack, so its follow-up screens push inside the modal. */}
+        <Stack.Screen name="scan" options={{ presentation: 'fullScreenModal' }} />
       </Stack>
     </GestureHandlerRootView>
   );

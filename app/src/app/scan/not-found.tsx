@@ -7,7 +7,7 @@ export default function ScanNotFoundScreen() {
     <PlaceholderScreen
       title={ro.placeholder.notFound}
       dismiss="back"
-      links={[{ label: ro.placeholder.newProduct, href: '/product/new', testID: 'link-new-product' }]}
+      links={[{ label: ro.placeholder.newProduct, href: '/scan/new-product', testID: 'link-new-product' }]}
     />
   );
 }

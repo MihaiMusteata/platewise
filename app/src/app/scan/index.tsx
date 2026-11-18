@@ -8,7 +8,11 @@ export default function ScanScreen() {
       title={ro.placeholder.scan}
       dismiss="close"
       links={[
-        { label: ro.placeholder.productFound, href: '/product/5941234567890', testID: 'link-product' },
+        {
+          label: ro.placeholder.productFound,
+          href: '/scan/product/5941234567890',
+          testID: 'link-product',
+        },
         { label: ro.placeholder.notFound, href: '/scan/not-found', testID: 'link-not-found' },
       ]}
     />

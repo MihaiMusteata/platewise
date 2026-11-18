@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, type StyleProp, type ViewStyle } from 'react-nat
 
 import { borderWidth, colors, iconStroke, opacity, radius, shadow, size } from '@/theme';
 
-export type IconButtonVariant = 'surface' | 'outline' | 'soft' | 'mint' | 'dark';
+export type IconButtonVariant = 'surface' | 'outline' | 'soft' | 'mint' | 'dark' | 'brand';
 
 export interface IconButtonProps {
   icon: LucideIcon;
@@ -12,10 +12,15 @@ export interface IconButtonProps {
   /**
    * surface: white circle with card shadow (back buttons) ·
    * outline: white circle with hairline border · soft: neutral rounded square (stepper) ·
-   * mint: mint circle (quick add) · dark: translucent on the scan screen.
+   * mint: mint circle (quick add) · dark: translucent on the scan screen ·
+   * brand: brand-filled circle (scan button next to the search field).
    */
   variant?: IconButtonVariant;
   iconSize?: 'S' | 'M';
+  /** 'm' = 48 (default), 'l' = 56 (matches the 56 search field / primary button height). */
+  buttonSize?: 'm' | 'l';
+  /** Icon stroke; defaults to `iconStroke.regular`. */
+  strokeWidth?: number;
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
   testID?: string;
@@ -27,15 +32,18 @@ const iconColor: Record<IconButtonVariant, string> = {
   soft: colors.text,
   mint: colors.brand,
   dark: colors.onBrand,
+  brand: colors.onBrand,
 };
 
-/** 48×48 touch target with a 20 or 24 icon. */
+/** 48×48 (or 56×56) touch target with a 20 or 24 icon. */
 export function IconButton({
   icon: Icon,
   accessibilityLabel,
   onPress,
   variant = 'surface',
   iconSize = 'M',
+  buttonSize = 'm',
+  strokeWidth = iconStroke.regular,
   disabled = false,
   style,
   testID,
@@ -51,7 +59,8 @@ export function IconButton({
       style={({ pressed }) => [
         styles.base,
         styles[variant],
-        pressed && styles.pressed,
+        buttonSize === 'l' && styles.large,
+        pressed && (variant === 'brand' ? styles.brandPressed : styles.pressed),
         disabled && styles.disabled,
         style,
       ]}
@@ -59,7 +68,7 @@ export function IconButton({
       <Icon
         size={iconSize === 'M' ? size.iconM : size.iconS}
         color={iconColor[variant]}
-        strokeWidth={iconStroke.regular}
+        strokeWidth={strokeWidth}
       />
     </Pressable>
   );
@@ -82,6 +91,9 @@ const styles = StyleSheet.create({
   soft: { backgroundColor: colors.neutralSoft, borderRadius: radius.m },
   mint: { backgroundColor: colors.mint },
   dark: { backgroundColor: colors.scanButton },
+  brand: { backgroundColor: colors.brand },
+  large: { width: size.button, height: size.button },
+  brandPressed: { backgroundColor: colors.brandPressed },
   pressed: { opacity: opacity.pressed },
   disabled: { opacity: opacity.disabled },
 });

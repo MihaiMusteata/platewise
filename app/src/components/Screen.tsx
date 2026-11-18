@@ -12,20 +12,26 @@ export interface ScreenProps {
   gap?: number;
   /** Apply the bottom safe-area inset (off when a tab bar sits below). */
   bottomInset?: boolean;
+  /**
+   * Apply the top safe-area inset. Off for screens inside an iOS page sheet (`presentation:
+   * 'modal'`): the sheet already starts below the status bar, so content gets a fixed 24 instead.
+   */
+  topInset?: boolean;
   contentStyle?: StyleProp<ViewStyle>;
 }
 
-/** Screen container: background, top safe area + 8, side padding 24, optional scroll. */
+/** Screen container: background, top safe area + 8 (or 24 in a sheet), side padding 24, optional scroll. */
 export function Screen({
   children,
   scroll = false,
   gap = space.m,
   bottomInset = true,
+  topInset = true,
   contentStyle,
 }: ScreenProps) {
   const insets = useSafeAreaInsets();
   const padding = {
-    paddingTop: insets.top + layout.topExtra,
+    paddingTop: topInset ? insets.top + layout.topExtra : space.l,
     paddingBottom: (bottomInset ? insets.bottom : 0) + space.xl,
     gap,
   };

@@ -19,7 +19,7 @@ One task per agent session. Tick `[x]` when done and verified (`npm run typechec
 - [x] **T2.3 Empty state** per `TodayEmpty.html` and **swipe to delete + undo** per `TodayDelete.html`.
 
 ## Phase 3 — Adding food
-- [ ] **T3.1 Add food search** per `AddFood.html`: local search (common + my foods + recent), filter chips, Open Food Facts text search behind `FoodApi` when online.
+- [x] **T3.1 Add food search** per `AddFood.html`: local search (common + my foods + recent), filter chips, Open Food Facts text search behind `FoodApi` when online.
 - [ ] **T3.2 Log food** per `LogFood.html`: grams/servings toggle, stepper, meal chips, live totals, save entry.
 
 ## Phase 4 — Barcode scanning

@@ -101,3 +101,11 @@ All pre-approved native deps installed together (expo-sqlite, zustand, expo-secu
 - Tokens added (mirrored): colors.heroBadgeSoft, heroOutline; thumbs.neutral; size.iconXS, swipeAction.
 - Decisions: TodayDelete.html swipes a meal-style row but names a single food; spec says swipe on an entry → entries are listed under their meal and only entries swipe. Snackbar copy "Șters: <food>" (gender-neutral). MacroCard value line now single-line with shrink-to-fit (3-digit grams wrapped).
 - Visual differences: snack row label "Gustare" (design "Gustări"); lucide icons.
+
+### T3.1 — Add food search — done
+- Routes restructured so flows stay inside their modal: `add/` (modal: `index`, `food/[id]`) and `scan/` (fullScreenModal: `index`, `product/[barcode]`, `not-found`, `new-product`). `Screen`/`PlaceholderScreen` have `topInset` (off inside sheets).
+- `add/index.tsx` per AddFood.html with `useFoodSearch` hook + pure `lib/search.ts` (merge/dedupe), components `SearchField`, `FoodResultRow`. `services/foodApi.ts` (Open Food Facts client, User-Agent `Platewise/0.1 (musteatamihai2002@icloud.com)`) committed here.
+- Decisions: chip Toate = recent when the query is empty ("Sugestii" with 12 common foods when nothing is recent), all local sources + OFF (≥ 2 chars, 400 ms debounce) when typing; Recente/Alimentele mele are local only. OFF results go in a separate "Din Open Food Facts" section with ODbL attribution and are cached (`upsertFood`) when tapped. Quick add (+) stays on the screen: plus → check, 5 s "Adăugat: <aliment>" snackbar with undo. "Nu găsești? Creează un aliment" → `/scan/new-product`. No autofocus.
+- foodApi: a 200 with a non-JSON body (OFF throttling page) is `error`, not "nothing found".
+- Open issue: OFF legacy text search (`/cgi/search.pl`) is often throttled ("temporarily unavailable"); the app shows a calm note and keeps local results. Post-demo: consider search.openfoodfacts.org or the backend proxy.
+- Visual differences: letter thumbnails instead of food icons; outline-button icon 24 instead of 20.
