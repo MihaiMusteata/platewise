@@ -26,19 +26,27 @@ One task per agent session. Tick `[x]` when done and verified (`npm run typechec
 - [ ] **T4.1 Scan screen** per `Scan.html` with `expo-camera` (EAN-13, EAN-8, UPC-A/E), torch, manual barcode entry. Camera permission text in `app.json`. Permission denied state per `CameraOff.html`.
 - [ ] **T4.2 Lookup + results**: Product found (`ProductFound.html`), Not found (`ScanNotFound.html`), Offline (`Offline.html`). Cache found products locally.
 - [ ] **T4.3 Add product from label** per `AddProduct.html`, saved as `source: 'custom'`, then logged.
+- [ ] **T4.4 Scan counter.** Count successful barcode lookups in the iOS Keychain via `expo-secure-store`, keyed by calendar month (local time). 10 successful lookups per month; "not found" and offline do not count. Show remaining scans on the scan screen. At the limit show a calm message (no paywall yet); manual search and logging stay available. *Done when:* counter logic is unit-tested (month rollover, not-found not counted, limit reached).
 
 ## Phase 5 — Progress & Settings
 - [ ] **T5.1 Progress** per `Progress.html`: week/month/year segments, calorie bar chart with goal line and tooltip, weekly goal card, macro donut (`react-native-svg`), weight-off card.
 - [ ] **T5.2 Settings** per `Settings.html`: target/goal links to onboarding steps, toggles, export CSV (share sheet), delete all data with confirmation, links (privacy, support).
 
-## Phase 6 — Backend (api/, .NET)
-- [ ] **T6.1** Minimal API: `POST /api/scan` proxying Open Food Facts with cache; anonymous device identity; monthly counter; `402 SCAN_LIMIT`.
-- [ ] **T6.2** App switches `FoodApi` barcode lookup to the backend; shows remaining scans.
+## Phase 6 — Demo
+- [ ] **T6.1 Demo polish.** App icon, splash, app name "Platewise", camera permission text in `app.json`. Hidden dev section in Settings with a "demo seed data" toggle that fills/clears a sample week of log entries. *Done when:* a fresh install shows the Platewise name/icon and the toggle populates Home and Progress.
+- [ ] **T6.2 EAS build + TestFlight.** Human-only (Apple team access, signing, App Store Connect). Agents do not attempt this.
 
-## Phase 7 — Monetization (needs designs first)
-- [ ] **T7.1** Paywall + limit-reached screens (design pending).
-- [ ] **T7.2** RevenueCat subscription "Plus", entitlement check, restore purchases.
+## After demo
+Not in the demo scope. The demo is serverless: Open Food Facts is called directly from the app and all data stays on the device.
 
-## Phase 8 — Release
-- [ ] **T8.1** App icon, splash, app name, `PrivacyInfo.xcprivacy`, privacy policy URL.
-- [ ] **T8.2** EAS build on the account holder's team, TestFlight, App Store listing.
+### Backend (api/, .NET)
+- [ ] **B1** Minimal API: `POST /api/scan` proxying Open Food Facts with cache; anonymous device identity; monthly counter; `402 SCAN_LIMIT`.
+- [ ] **B2** App switches `FoodApi` barcode lookup to the backend; shows remaining scans.
+
+### Monetization (needs designs first)
+- [ ] **M1** Paywall + limit-reached screens (design pending).
+- [ ] **M2** RevenueCat subscription "Plus", entitlement check, restore purchases.
+
+### Release (store)
+- [ ] **R1** `PrivacyInfo.xcprivacy`, privacy policy URL (icon/splash/name moved to T6.1).
+- [ ] **R2** EAS build on the account holder's team, TestFlight, App Store listing.

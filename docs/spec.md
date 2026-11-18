@@ -42,9 +42,14 @@ Not designed yet: Paywall, Scan-limit reached, Planuri tab. Do not build them un
 - **Over goal** is shown neutrally (amber or plain text), never red, never shaming copy.
 - **Weight tracking** is OFF by default (Settings toggle). Progress shows a gentle card when off.
 - **Pause tracking** hides targets and totals but keeps logging.
-- **Scan limit (later, server-side):** free plan 10 successful barcode lookups per calendar month; "not found" does not count. Manual search is unlimited. Logging is never blocked. Paid plan "Plus": unlimited scans, backup & sync, export.
-- **Food data:** Open Food Facts. Show attribution "Date din Open Food Facts…" where product data appears. Values per 100 g; servings stored in grams.
+- **Scan limit:** free plan 10 successful barcode lookups per calendar month; "not found" does not count. Manual search is unlimited. Logging is never blocked. Demo: counted on the device in the iOS Keychain (`expo-secure-store`); at the limit show a calm message, no paywall. Later: enforced server-side; paid plan "Plus": unlimited scans, backup & sync, export.
+- **Food data:** Open Food Facts, called directly from the app (demo has no backend) behind the `FoodApi` interface, with header `User-Agent: Platewise/0.1 (musteatamihai2002@icloud.com)`. Found products are cached locally (SQLite `foods`, `source: 'off'`) so repeat lookups work offline. Show attribution "Date din Open Food Facts…" where product data appears. Values per 100 g; servings stored in grams.
 - **Delete all my data:** wipes local DB and profile after confirmation.
+
+## Demo scope
+- No backend. Barcode lookup and online search go straight to Open Food Facts.
+- All data stays on the device. "Backup și sincronizare" (Settings) is post-demo: show the row as unavailable/coming later, do not build sync.
+- Paywall, Plus subscription and the Planuri tab are post-demo.
 
 ## Data model (local, SQLite)
 ```ts
