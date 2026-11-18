@@ -1,9 +1,25 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Link } from 'expo-router';
+import { StyleSheet, View } from 'react-native';
+
+import { AppText } from '@/components';
+import ro from '@/i18n/ro';
+import { size, space } from '@/theme';
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <Text>Platewise</Text>
+      <AppText variant="h2">Platewise</AppText>
+      {/* Temporary dev links (T0.4); removed when the tab shell lands. */}
+      <Link href="/dev/components" style={styles.link}>
+        <AppText variant="labelL" color="brand">
+          {ro.dev.components}
+        </AppText>
+      </Link>
+      <Link href="/dev/typography" style={styles.link}>
+        <AppText variant="labelL" color="brand">
+          {ro.dev.typography}
+        </AppText>
+      </Link>
     </View>
   );
 }
@@ -13,5 +29,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    gap: space.xs,
   },
+  link: { minHeight: size.minTouch, paddingVertical: space.s },
 });

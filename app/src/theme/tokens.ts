@@ -11,7 +11,8 @@ export const colors = {
   heroFrom: '#0B4F33',       // hero card gradient start
   heroTo: '#1B7A4B',         // hero card gradient end
   heroTextSecondary: '#D7EBDD',
-  lime: '#8BD84F',           // progress bar on green, scan line
+  lime: '#8BD84F',           // progress bar on green, scan line, snackbar action
+  onBrand: '#FFFFFF',        // text and icons on brand / dark surfaces
   flameCircle: '#4FA83B',
   flame: '#FFD23F',
 
@@ -22,6 +23,8 @@ export const colors = {
   mintSoft: '#EAF5EE',       // weekly goal card
   neutralSoft: '#EEF3F0',    // stepper buttons, empty thumbs
   segmentTrack: '#EAEFEC',
+  macroTrack: 'rgba(255,255,255,0.9)', // progress track inside tinted macro cards
+  snackbar: '#13201A',       // dark snackbar surface
 
   // Text
   text: '#13201A',
@@ -37,6 +40,7 @@ export const colors = {
 
   // Feedback
   danger: '#B42318',         // destructive actions only (delete), never for "over goal"
+  attention: '#B4530B',      // calm amber for validation hints / over goal (4.9:1 on white)
   trophyBg: '#FFF1C9',
   trophy: '#D08A00',
 
@@ -87,6 +91,7 @@ export const layout = {
 } as const;
 
 export const radius = {
+  xs: 4,            // progress bars, spacing swatches
   s: 8,
   m: 16,
   l: 24,
@@ -106,6 +111,26 @@ export const size = {
   iconS: 20,
   iconM: 24,
   minTouch: 48,
+  snackbar: 56,
+  progressBar: 6,   // macro cards
+  progressBarHero: 10,
+} as const;
+
+export const borderWidth = {
+  hairline: 1,
+  strong: 1.5,      // outline button, input, choice chip
+} as const;
+
+export const opacity = {
+  disabled: 0.4,
+  pressed: 0.7,
+} as const;
+
+/** Icon stroke widths used in the design (lucide default is 2). */
+export const iconStroke = {
+  thin: 1.8,        // food thumbs, info icons
+  regular: 2.2,     // nav, chevrons, macro icons
+  bold: 2.4,        // stepper / add buttons
 } as const;
 
 export const fontFamily = {
@@ -124,6 +149,8 @@ export const type = {
   h3: { fontSize: 20, lineHeight: 28, fontFamily: fontFamily.bold },
   bodyL: { fontSize: 16, lineHeight: 24, fontFamily: fontFamily.regular },
   bodyLStrong: { fontSize: 16, lineHeight: 24, fontFamily: fontFamily.bold },
+  labelL: { fontSize: 16, lineHeight: 24, fontFamily: fontFamily.semibold },
+  numberS: { fontSize: 16, lineHeight: 24, fontFamily: fontFamily.extrabold },
   button: { fontSize: 16, lineHeight: 24, fontFamily: fontFamily.bold },
   body: { fontSize: 14, lineHeight: 20, fontFamily: fontFamily.regular },
   bodyStrong: { fontSize: 14, lineHeight: 20, fontFamily: fontFamily.bold },
@@ -154,7 +181,28 @@ export const shadow = {
     shadowOffset: { width: 0, height: 8 },
     elevation: 4,
   },
+  snackbar: {
+    shadowColor: '#000000',
+    shadowOpacity: 0.2,
+    shadowRadius: 24,
+    shadowOffset: { width: 0, height: 10 },
+    elevation: 8,
+  },
 } as const;
 
-export const tokens = { colors, macros, thumbs, space, layout, radius, size, fontFamily, type, shadow };
+export const tokens = {
+  colors,
+  macros,
+  thumbs,
+  space,
+  layout,
+  radius,
+  size,
+  borderWidth,
+  opacity,
+  iconStroke,
+  fontFamily,
+  type,
+  shadow,
+};
 export default tokens;
