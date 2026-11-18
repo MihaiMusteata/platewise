@@ -15,7 +15,7 @@ One task per agent session. Tick `[x]` when done and verified (`npm run typechec
 
 ## Phase 2 — Home
 - [x] **T2.1 Local database.** expo-sqlite schema for `foods` and `log_entries`, repository functions, seed of ~50 common Romanian foods (`source: 'common'`).
-- [ ] **T2.2 Home with data** per `Main.html`: greeting, hero card, macro cards, meals list, floating "Adaugă aliment".
+- [x] **T2.2 Home with data** per `Main.html`: greeting, hero card, macro cards, meals list, floating "Adaugă aliment".
 - [ ] **T2.3 Empty state** per `TodayEmpty.html` and **swipe to delete + undo** per `TodayDelete.html`.
 
 ## Phase 3 — Adding food

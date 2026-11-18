@@ -16,6 +16,23 @@ jest.mock('expo-sqlite/kv-store', () => ({
   default: { getItemSync: () => null, setItemSync: () => {}, removeItemSync: () => true },
 }));
 
+// Home loads today's log on focus; serve it from an in-memory database instead of native SQLite.
+jest.mock('@/db/index', () => {
+  const actual = jest.requireActual('@/db/logRepo');
+  const { createTestDb } = jest.requireActual('@/db/testing/testDb');
+  const { migrate } = jest.requireActual('@/db/schema');
+  let db: Promise<unknown> | undefined;
+  const getDb = () => {
+    db ??= (async () => {
+      const created = createTestDb();
+      await migrate(created);
+      return created;
+    })();
+    return db;
+  };
+  return { ...actual, getDb };
+});
+
 const routes = {
   '(tabs)/_layout': TabsLayout,
   '(tabs)/index': HomeScreen,

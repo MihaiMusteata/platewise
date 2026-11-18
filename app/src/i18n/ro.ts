@@ -88,6 +88,28 @@ const ro = {
       start: 'Începe monitorizarea',
     },
   },
+  home: {
+    greeting: {
+      morning: 'Bună dimineața!',
+      day: 'Bună ziua!',
+      evening: 'Bună seara!',
+    },
+    profile: 'Profil',
+    caloriesToday: 'Calorii astăzi',
+    howCalculated: 'Cum se calculează',
+    howTitle: 'Cum se calculează',
+    howBody:
+      'Rămase = ținta zilnică − caloriile din ce ai mâncat azi. Bara arată cât din țintă ai acoperit. Ținta o poți schimba oricând din Setări.',
+    ofTarget: (target: string) => `/ ${target} kcal`,
+    remaining: (kcal: string) => `${kcal} kcal rămase`,
+    over: (kcal: string) => `${kcal} kcal peste țintă`,
+    progressLabel: (percent: string) => `${percent} din ținta zilnică`,
+    pausedTitle: 'Monitorizare pe pauză',
+    pausedBody: 'Poți nota în continuare ce mănânci. Ținta și totalurile sunt ascunse până reiei din Setări.',
+    mealsTitle: 'Mesele zilei',
+    mealEmpty: 'Nimic adăugat încă',
+    addFood: 'Adaugă aliment',
+  },
   meals: {
     breakfast: 'Mic dejun',
     lunch: 'Prânz',

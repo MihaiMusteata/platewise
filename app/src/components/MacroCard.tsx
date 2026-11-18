@@ -14,8 +14,8 @@ export interface MacroCardProps {
   macro: MacroKey;
   /** Grams eaten so far. */
   value: number;
-  /** Daily goal in grams. */
-  goal: number;
+  /** Daily goal in grams. Omit to show only the grams eaten (tracking paused). */
+  goal?: number;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -29,16 +29,20 @@ const icons: Record<MacroKey, LucideIcon> = {
 export function MacroCard({ macro, value, goal, style }: MacroCardProps) {
   const tone = macros[macro];
   const Icon = icons[macro];
-  const ratio = goal > 0 ? value / goal : 0;
+  const hasGoal = goal != null;
+  const ratio = goal != null && goal > 0 ? value / goal : 0;
   const percent = `${formatNumber(ratio * 100)}%`;
   const label = ro.macros[macro];
   const unit = ro.common.grams;
+  const amount = `${formatNumber(value)} ${unit}`;
 
   return (
     <View
       style={[styles.card, { backgroundColor: tone.tint }, style]}
       accessible
-      accessibilityLabel={`${label}: ${formatNumber(value)} ${unit} / ${formatNumber(goal)} ${unit}, ${percent}`}
+      accessibilityLabel={
+        hasGoal ? `${label}: ${amount} / ${formatNumber(goal)} ${unit}, ${percent}` : `${label}: ${amount}`
+      }
     >
       <Icon
         size={size.iconM}
@@ -51,19 +55,23 @@ export function MacroCard({ macro, value, goal, style }: MacroCardProps) {
       </AppText>
       <AppText variant="body" color="textSecondary" tabular>
         <AppText variant="numberS" tabular>
-          {formatNumber(value)} {unit}
+          {amount}
         </AppText>
-        {` / ${formatNumber(goal)} ${unit}`}
+        {hasGoal ? ` / ${formatNumber(goal)} ${unit}` : null}
       </AppText>
-      <AppText variant="bodyStrong" tabular style={{ color: tone.text }}>
-        {percent}
-      </AppText>
-      <ProgressBar
-        value={ratio}
-        color={tone.bar}
-        trackColor={colors.macroTrack}
-        style={styles.bar}
-      />
+      {hasGoal ? (
+        <>
+          <AppText variant="bodyStrong" tabular style={{ color: tone.text }}>
+            {percent}
+          </AppText>
+          <ProgressBar
+            value={ratio}
+            color={tone.bar}
+            trackColor={colors.macroTrack}
+            style={styles.bar}
+          />
+        </>
+      ) : null}
     </View>
   );
 }

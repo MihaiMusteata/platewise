@@ -16,6 +16,8 @@ export const colors = {
   lime: '#8BD84F',           // progress bar on green, scan line, snackbar action
   onBrand: '#FFFFFF',        // text and icons on brand / dark surfaces
   flameCircle: '#4FA83B',
+  heroTrack: 'rgba(255,255,255,0.18)',  // progress track on the hero card
+  avatar: '#CFE9D8',         // Home profile avatar
   flame: '#FFD23F',
 
   // Surfaces
@@ -126,12 +128,16 @@ export const size = {
   heroStepper: 56,  // ± buttons on the hero target card
   checkMark: 16,    // check glyph inside a 24 checkbox
   radioDot: 10,     // inner dot of a selected radio
+  heroBadge: 64,    // flame circle on the Home hero card
+  iconL: 32,        // flame inside the hero badge
+  infoIcon: 28,     // small info button next to a label (hitSlop brings it to 48)
 } as const;
 
 export const borderWidth = {
   hairline: 1,
   strong: 1.5,      // outline button, input, choice chip
   radio: 2,         // radio ring
+  avatar: 3,        // white ring around the Home avatar
 } as const;
 
 export const opacity = {
@@ -161,6 +167,8 @@ export const type = {
   h1: { fontSize: 32, lineHeight: 40, fontFamily: fontFamily.extrabold, letterSpacing: -0.6 },
   h2: { fontSize: 24, lineHeight: 32, fontFamily: fontFamily.extrabold, letterSpacing: -0.4 },
   h3: { fontSize: 20, lineHeight: 28, fontFamily: fontFamily.bold },
+  sectionTitle: { fontSize: 20, lineHeight: 28, fontFamily: fontFamily.extrabold, letterSpacing: -0.2 },
+  heroUnit: { fontSize: 20, lineHeight: 28, fontFamily: fontFamily.semibold }, // "/ 2.000 kcal"
   bodyL: { fontSize: 16, lineHeight: 24, fontFamily: fontFamily.regular },
   bodyLStrong: { fontSize: 16, lineHeight: 24, fontFamily: fontFamily.bold },
   labelL: { fontSize: 16, lineHeight: 24, fontFamily: fontFamily.semibold },
@@ -204,6 +212,13 @@ export const shadow = {
     shadowOffset: { width: 0, height: 8 },
     elevation: 6,
   },
+  fab: {            // floating "Adaugă aliment" button
+    shadowColor: '#0E5A3A',
+    shadowOpacity: 0.35,
+    shadowRadius: 22,
+    shadowOffset: { width: 0, height: 10 },
+    elevation: 6,
+  },
   snackbar: {
     shadowColor: '#000000',
     shadowOpacity: 0.2,
@@ -211,6 +226,11 @@ export const shadow = {
     shadowOffset: { width: 0, height: 10 },
     elevation: 8,
   },
+} as const;
+
+/** Decorative shapes. */
+export const decor = {
+  homeBlob: { width: 250, height: 220, top: -72, right: -64 }, // mint ellipse behind the Home header
 } as const;
 
 export const tokens = {
@@ -227,5 +247,6 @@ export const tokens = {
   fontFamily,
   type,
   shadow,
+  decor,
 };
 export default tokens;

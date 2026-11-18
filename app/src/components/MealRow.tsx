@@ -17,6 +17,7 @@ export interface MealRowProps {
   onPress?: () => void;
   /** Hide the chevron (e.g. rows that are not navigable). Defaults to shown when onPress is set. */
   showChevron?: boolean;
+  testID?: string;
 }
 
 /** White row card: thumb, title + one-line subtitle, kcal on the right, chevron. */
@@ -28,10 +29,12 @@ export function MealRow({
   icon,
   onPress,
   showChevron = onPress != null,
+  testID,
 }: MealRowProps) {
   const kcalText = `${formatNumber(kcal)} ${ro.common.kcal}`;
   return (
     <Pressable
+      testID={testID}
       onPress={onPress}
       disabled={!onPress}
       accessibilityRole={onPress ? 'button' : undefined}

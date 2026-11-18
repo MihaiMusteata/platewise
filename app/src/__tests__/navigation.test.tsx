@@ -21,6 +21,23 @@ jest.mock('expo-sqlite/kv-store', () => ({
   default: { getItemSync: () => null, setItemSync: () => {}, removeItemSync: () => true },
 }));
 
+// Home loads today's log on focus; serve it from an in-memory database instead of native SQLite.
+jest.mock('@/db/index', () => {
+  const actual = jest.requireActual('@/db/logRepo');
+  const { createTestDb } = jest.requireActual('@/db/testing/testDb');
+  const { migrate } = jest.requireActual('@/db/schema');
+  let db: Promise<unknown> | undefined;
+  const getDb = () => {
+    db ??= (async () => {
+      const created = createTestDb();
+      await migrate(created);
+      return created;
+    })();
+    return db;
+  };
+  return { ...actual, getDb };
+});
+
 jest.mock('@expo-google-fonts/plus-jakarta-sans', () => ({
   useFonts: () => [true, null],
 }));
@@ -66,7 +83,7 @@ describe('navigation shell', () => {
     for (const label of [ro.tabs.home, ro.tabs.progress, ro.tabs.plans, ro.tabs.settings]) {
       expect(screen.getByText(label)).toBeTruthy();
     }
-    expect(screen.getByLabelText(ro.tabs.log)).toBeTruthy();
+    expect(screen.getByTestId('tab-log').props.accessibilityLabel).toBe(ro.tabs.log);
     expect(screen.getByTestId('tab-index').props.accessibilityState).toEqual({ selected: true });
   });
 

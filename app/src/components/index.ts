@@ -2,6 +2,7 @@ export { AppText, type AppTextProps, type TextColor, type TextVariant } from './
 export { Button, type ButtonProps, type ButtonVariant } from './Button';
 export { Card, type CardProps } from './Card';
 export { Chip, type ChipProps } from './Chip';
+export { Fab, type FabProps } from './Fab';
 export { FoodThumb, type FoodThumbProps, type ThumbTint } from './FoodThumb';
 export { IconButton, type IconButtonProps, type IconButtonVariant } from './IconButton';
 export { MacroCard, type MacroCardProps, type MacroKey } from './MacroCard';

@@ -1,14 +1,29 @@
-import { renderRouter, screen } from 'expo-router/testing-library';
+import { fireEvent, renderRouter, screen } from 'expo-router/testing-library';
 
 import TabsLayout from '@/app/(tabs)/_layout';
 import HomeScreen from '@/app/(tabs)/index';
+import { migrate } from '@/db/schema';
+import { seedCommonFoods } from '@/db/seed';
+import { createTestDb, type TestDb } from '@/db/testing/testDb';
+import { toDateKey } from '@/lib/date';
+import { defaultMealFor } from '@/lib/meals';
+import { useLogStore } from '@/stores/log';
 import { useProfileStore } from '@/stores/profile';
-import type { UserProfile } from '@/types/models';
+import { colors } from '@/theme';
+import type { Meal, UserProfile } from '@/types/models';
+
+let mockDb: TestDb;
+let mockUuid = 0;
 
 jest.mock('expo-sqlite/kv-store', () => ({
   __esModule: true,
   default: { getItemSync: () => null, setItemSync: () => {}, removeItemSync: () => true },
 }));
+jest.mock('expo-crypto', () => ({ randomUUID: () => `uuid-${++mockUuid}` }));
+jest.mock('@/db/index', () => {
+  const actual = jest.requireActual('@/db/logRepo');
+  return { ...actual, getDb: async () => mockDb };
+});
 
 const profile: UserProfile = {
   isAdult: true,
@@ -28,12 +43,26 @@ const routes = {
   '(tabs)/_layout': TabsLayout,
   '(tabs)/index': HomeScreen,
   '(tabs)/progress': () => null,
+  '(tabs)/settings': () => null,
+  add: () => null,
   'onboarding/about': () => null,
 };
 
-describe('HomeScreen', () => {
-  beforeEach(() => useProfileStore.getState().reset());
+const log = (meal: Meal, foodId: string, grams: number) =>
+  useLogStore.getState().add({ meal, foodId, grams });
 
+beforeEach(async () => {
+  mockUuid = 0;
+  mockDb = createTestDb();
+  await migrate(mockDb);
+  await seedCommonFoods(mockDb);
+  useLogStore.setState({ date: toDateKey(new Date()), entries: [], loaded: false, revision: 0 });
+  useProfileStore.getState().reset();
+});
+
+afterEach(() => mockDb.close());
+
+describe('HomeScreen', () => {
   it('redirects to onboarding on first launch', async () => {
     await renderRouter(routes);
     expect(screen).toHavePathname('/onboarding/about');
@@ -44,10 +73,65 @@ describe('HomeScreen', () => {
     expect(screen).toHavePathname('/onboarding/about');
   });
 
-  it('shows home once onboarded', async () => {
+  it('shows totals, remaining, macros and meals from the log', async () => {
     useProfileStore.getState().completeOnboarding(profile);
+    await log('breakfast', 'common:ou-fiert', 100); // 155 kcal
+    await log('breakfast', 'common:iaurt-grecesc', 150); // 193,5 kcal
+    await log('lunch', 'common:piept-de-pui', 150); // 247,5 kcal
+    await log('lunch', 'common:orez-fiert', 150); // 195 kcal
+
     await renderRouter(routes);
     expect(screen).toHavePathname('/');
-    expect(screen.getByText('Platewise')).toBeTruthy();
+
+    expect(await screen.findByText('791')).toBeTruthy();
+    expect(screen.getByText('/ 1.900 kcal')).toBeTruthy();
+    expect(screen.getByTestId('home-remaining')).toHaveTextContent('1.109 kcal rămase');
+    expect(screen.getByText('42%')).toBeTruthy();
+    expect(screen.getByLabelText('Mic dejun, Ou fiert, Iaurt grecesc, 349 kcal')).toBeTruthy();
+    expect(screen.getByLabelText('Prânz, Piept de pui la grătar, Orez fiert, 443 kcal')).toBeTruthy();
+    expect(screen.getByLabelText('Cină, Nimic adăugat încă, 0 kcal')).toBeTruthy();
+    // Protein: 12,6 + 8,1 + 46,5 + 4,05 ≈ 71 g of 143 g (30 % of 1.900 / 4).
+    expect(screen.getByLabelText('Proteine: 71 g / 143 g, 50%')).toBeTruthy();
+  });
+
+  it('shows kcal over the target in neutral wording, without warning colors', async () => {
+    useProfileStore.getState().completeOnboarding({ ...profile, dailyTargetKcal: 1200 });
+    await log('dinner', 'common:piept-de-pui', 500); // 825 kcal
+    await log('dinner', 'common:orez-fiert', 400); // 520 kcal
+
+    await renderRouter(routes);
+    const remaining = await screen.findByText('145 kcal peste țintă');
+    expect(remaining).toHaveStyle({ color: colors.heroTextSecondary });
+    expect(screen.getByText('100%')).toBeTruthy();
+  });
+
+  it('hides target and remaining while tracking is paused', async () => {
+    useProfileStore.getState().completeOnboarding({ ...profile, paused: true });
+    await log('snack', 'common:ou-fiert', 100);
+
+    await renderRouter(routes);
+    expect(await screen.findByTestId('home-paused')).toBeTruthy();
+    expect(screen.queryByTestId('home-food-kcal')).toBeNull();
+    expect(screen.queryByTestId('home-remaining')).toBeNull();
+    expect(screen.queryByText('/ 1.900 kcal')).toBeNull();
+    expect(screen.getByLabelText('Proteine: 13 g')).toBeTruthy();
+    // Logging stays available.
+    expect(screen.getByTestId('home-add')).toBeTruthy();
+  });
+
+  it('opens Add food with the meal of the tapped row', async () => {
+    useProfileStore.getState().completeOnboarding(profile);
+    await renderRouter(routes);
+    await fireEvent.press(await screen.findByTestId('home-meal-lunch'));
+    expect(screen).toHavePathname('/add');
+    expect(screen).toHaveSearchParams({ meal: 'lunch' });
+  });
+
+  it('opens Add food for the meal of the time of day from the floating button', async () => {
+    useProfileStore.getState().completeOnboarding(profile);
+    await renderRouter(routes);
+    await fireEvent.press(await screen.findByTestId('home-add'));
+    expect(screen).toHavePathname('/add');
+    expect(screen).toHaveSearchParams({ meal: defaultMealFor(new Date()) });
   });
 });

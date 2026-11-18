@@ -86,3 +86,10 @@ All pre-approved native deps installed together (expo-sqlite, zustand, expo-secu
 - Search: `search_name` column normalized in TS (lowercase, Romanian diacritics stripped), prefix matches first, LIKE wildcards escaped.
 - `deleteAllData` wipes log + non-common foods and clears `last_used_at`.
 - `src/lib/meals.ts` (`MEALS`, `totalsByMeal`), `src/lib/text.ts` (`normalizeForSearch`).
+
+### T2.2 — Home with data — done
+- `(tabs)/index.tsx` rebuilt per Main.html: time-of-day greeting + Romanian date, hero (food / target, remaining, progress capped at 100 %), macro cards, four meal rows, floating "Adaugă aliment" (`Fab`). Data via `useLogStore.load()` on focus.
+- `src/lib/home.ts` (`greetingFor`, `daySummary`), `src/lib/meals.ts` (`defaultMealFor`, `mealFoodNames`).
+- Tokens added (mirrored): colors.heroTrack, avatar; size.heroBadge, iconL, infoIcon; borderWidth.avatar; type.sectionTitle, heroUnit; shadow.fab; decor.homeBlob.
+- Decisions: greeting by time (before 05:00 counts as evening); remaining shown as "x kcal rămase", over goal "x kcal peste țintă" in the same neutral text; exercise not tracked (0); paused → calm paused hero without numbers, macro cards without goals; meal row → `/add?meal=<meal>`; FAB → `/add?meal=defaultMealFor(now)`; "Vezi toate" omitted (no destination); info button shows an explanatory alert (placeholder copy); avatar opens Settings; dev links removed from Home.
+- Visual differences: lucide icons approximate custom meal/macro icons; background blob is a pill, not an ellipse.
