@@ -33,13 +33,14 @@ export const colors = {
   textSecondary: '#5B6862',  // ≥ 5.5:1 on white
   textTertiary: '#3D4A43',
   textOnMint: '#2F3D36',     // body text on mint info cards
-  textNav: '#6B7770',
+  textNav: '#6B7770',         // inactive tab label and icon
   chevron: '#8A958F',
 
   // Lines
   border: '#DCE3DF',
   divider: '#EEF2F0',
   hairline: '#E6ECE8',
+  tabBarBorder: '#EDF1EE',   // top border of the tab bar
   stepInactive: '#DDE6E1',   // onboarding step bars not reached yet
   radioRing: '#B7C2BC',      // unselected radio ring
 
@@ -113,6 +114,8 @@ export const size = {
   thumbSmall: 48,
   fab: 56,
   tabBar: 56,       // content height; add bottom safe-area inset
+  tabIndicatorWidth: 24, // active tab underline
+  tabIndicatorHeight: 3,
   iconS: 20,
   iconM: 24,
   minTouch: 48,
@@ -138,7 +141,8 @@ export const opacity = {
 
 /** Icon stroke widths used in the design (lucide default is 2). */
 export const iconStroke = {
-  thin: 1.8,        // food thumbs, info icons
+  thin: 1.8,        // food thumbs, info icons, inactive tab icons
+  navActive: 2.1,   // active tab icon
   regular: 2.2,     // nav, chevrons, macro icons
   bold: 2.4,        // stepper / add buttons
 } as const;
@@ -165,6 +169,8 @@ export const type = {
   body: { fontSize: 14, lineHeight: 20, fontFamily: fontFamily.regular },
   bodyStrong: { fontSize: 14, lineHeight: 20, fontFamily: fontFamily.bold },
   label: { fontSize: 14, lineHeight: 20, fontFamily: fontFamily.semibold },
+  tabLabel: { fontSize: 12, lineHeight: 16, fontFamily: fontFamily.regular },
+  tabLabelActive: { fontSize: 12, lineHeight: 16, fontFamily: fontFamily.bold },
   caption: { fontSize: 12, lineHeight: 16, fontFamily: fontFamily.semibold },
   overline: { fontSize: 12, lineHeight: 16, fontFamily: fontFamily.bold, letterSpacing: 0.7, textTransform: 'uppercase' as const },
 } as const;
@@ -190,6 +196,13 @@ export const shadow = {
     shadowRadius: 18,
     shadowOffset: { width: 0, height: 8 },
     elevation: 4,
+  },
+  logButton: {      // center Log button in the tab bar
+    shadowColor: '#0E5A3A',
+    shadowOpacity: 0.35,
+    shadowRadius: 18,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 6,
   },
   snackbar: {
     shadowColor: '#000000',

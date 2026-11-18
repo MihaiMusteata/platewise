@@ -31,6 +31,11 @@ export default function RootLayout() {
   return (
     <Stack
       screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}
-    />
+    >
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="add" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="scan/index" options={{ presentation: 'fullScreenModal' }} />
+      {/* scan/not-found, product/[barcode], product/new and food/[id] are pushed as cards. */}
+    </Stack>
   );
 }

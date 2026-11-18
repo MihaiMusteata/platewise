@@ -18,6 +18,7 @@ export interface IconButtonProps {
   iconSize?: 'S' | 'M';
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
+  testID?: string;
 }
 
 const iconColor: Record<IconButtonVariant, string> = {
@@ -37,9 +38,11 @@ export function IconButton({
   iconSize = 'M',
   disabled = false,
   style,
+  testID,
 }: IconButtonProps) {
   return (
     <Pressable
+      testID={testID}
       onPress={onPress}
       disabled={disabled}
       accessibilityRole="button"

@@ -72,6 +72,14 @@ All pre-approved native deps installed together (expo-sqlite, zustand, expo-secu
 - Open issue: on the skip path, missing age/height/weight are saved as 0 and a missing sex as 'female'; Settings must treat 0 as unknown before recalculating a target.
 - Open issue: "Vezi opțiuni de sprijin" has no destination in the spec; placeholder alert copy needs product review.
 
+### T0.5 — Navigation shell — done
+- `(tabs)/_layout.tsx` with custom `TabBar` (Acasă, Progres, center Log button → `/add`, Planuri, Setări); onboarding guard lives in the tabs layout so every tab redirects.
+- Root stack: `add` modal, `scan/index` fullScreenModal, card routes `scan/not-found`, `product/[barcode]`, `product/new`, `food/[id]`; `PlaceholderScreen` component.
+- Tokens added (mirrored): colors.tabBarBorder, size.tabIndicatorWidth/Height, iconStroke.navActive, type.tabLabel/tabLabelActive, shadow.logButton.
+- Decision: Planuri is a calm "În curând" placeholder (post-demo; copy needs product review).
+- Open issue → T3/T4: screens pushed from the add/scan modals open as stacked sheets because they are root-stack cards; fix with a nested Stack inside the modal flow.
+- Open issue: `Screen` adds the status-bar inset inside sheets; modal screens need a no-top-inset option.
+
 ### T2.1 — Local database — done (built in parallel, ahead of order)
 - `src/db/`: `schema.ts` (PRAGMA user_version migrations, WAL, foreign keys), `index.ts` (`getDb()` memoized, migrates + seeds), `foodsRepo.ts`, `logRepo.ts`, `seed.ts` (59 common Romanian foods, ids `common:<slug>`), `types.ts` (`Db` interface, `LogEntryWithFood`, `DailyTotals`).
 - Repos take `db` as first argument; tests use `src/db/testing/testDb.ts`, an adapter over Node's built-in `node:sqlite` (real SQL, no new dependency).

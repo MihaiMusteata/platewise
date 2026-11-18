@@ -1,6 +1,7 @@
 import { renderRouter, screen } from 'expo-router/testing-library';
 
-import HomeScreen from '@/app/index';
+import TabsLayout from '@/app/(tabs)/_layout';
+import HomeScreen from '@/app/(tabs)/index';
 import { useProfileStore } from '@/stores/profile';
 import type { UserProfile } from '@/types/models';
 
@@ -24,7 +25,9 @@ const profile: UserProfile = {
 };
 
 const routes = {
-  index: HomeScreen,
+  '(tabs)/_layout': TabsLayout,
+  '(tabs)/index': HomeScreen,
+  '(tabs)/progress': () => null,
   'onboarding/about': () => null,
 };
 
@@ -33,6 +36,11 @@ describe('HomeScreen', () => {
 
   it('redirects to onboarding on first launch', async () => {
     await renderRouter(routes);
+    expect(screen).toHavePathname('/onboarding/about');
+  });
+
+  it('guards every tab, not only Home', async () => {
+    await renderRouter(routes, { initialUrl: '/progress' });
     expect(screen).toHavePathname('/onboarding/about');
   });
 

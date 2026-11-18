@@ -7,7 +7,7 @@ One task per agent session. Tick `[x]` when done and verified (`npm run typechec
 - [x] **T0.2 Theme.** Copy `design/tokens.ts` to `app/src/theme/tokens.ts`, export from `@/theme`. Load Plus Jakarta Sans (500/600/700/800) via `@expo-google-fonts/plus-jakarta-sans` with splash until loaded. *Done when:* a test screen renders every `type` style correctly.
 - [x] **T0.3 Helpers.** `formatNumber`, `formatDecimal`, Romanian date formatter, calorie/macro math (`calcTarget`, `macroGoals`, `remaining`). Unit tests for each. *Done when:* tests cover the rules in spec.md.
 - [x] **T0.4 Core components.** Screen (safe area + padding 24), Button (primary/outline/text), Card, Chip, TextField (label + 56 input), SegmentedControl, Stepper, ProgressBar, MacroCard, FoodThumb, MealRow, Snackbar, IconButton. Icons: `lucide-react-native` (ask first) or inline SVG via `react-native-svg`. *Done when:* a hidden `/dev/components` screen shows all of them, matching `System.html`.
-- [ ] **T0.5 Navigation shell.** Expo Router tabs Acasă / Progres / center Log / Planuri / Setări with custom TabBar (center 56 green button, active underline) per `Main.html`. Modal stack for add/scan/product. *Done when:* every route opens a placeholder.
+- [x] **T0.5 Navigation shell.** Expo Router tabs Acasă / Progres / center Log / Planuri / Setări with custom TabBar (center 56 green button, active underline) per `Main.html`. Modal stack for add/scan/product. *Done when:* every route opens a placeholder.
 
 ## Phase 1 — Onboarding
 - [x] **T1.1 Profile store + persistence.** Zustand + persisted storage; `hasOnboarded` flag redirects first launch to onboarding.

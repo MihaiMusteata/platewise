@@ -1,6 +1,7 @@
 import { fireEvent, renderRouter, screen } from 'expo-router/testing-library';
 
-import HomeScreen from '@/app/index';
+import TabsLayout from '@/app/(tabs)/_layout';
+import HomeScreen from '@/app/(tabs)/index';
 import OnboardingLayout from '@/app/onboarding/_layout';
 import AboutScreen from '@/app/onboarding/about';
 import GoalScreen from '@/app/onboarding/goal';
@@ -16,7 +17,8 @@ jest.mock('expo-sqlite/kv-store', () => ({
 }));
 
 const routes = {
-  index: HomeScreen,
+  '(tabs)/_layout': TabsLayout,
+  '(tabs)/index': HomeScreen,
   'onboarding/_layout': OnboardingLayout,
   'onboarding/about': AboutScreen,
   'onboarding/goal': GoalScreen,
