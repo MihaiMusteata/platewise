@@ -6,7 +6,13 @@ export { Fab, type FabProps } from './Fab';
 export { FoodThumb, type FoodThumbProps, type ThumbTint } from './FoodThumb';
 export { IconButton, type IconButtonProps, type IconButtonVariant } from './IconButton';
 export { MacroCard, type MacroCardProps, type MacroKey } from './MacroCard';
-export { MealRow, type MealRowProps } from './MealRow';
+export {
+  EmptyMealRow,
+  MealRow,
+  type EmptyMealRowProps,
+  type MealRowAction,
+  type MealRowProps,
+} from './MealRow';
 export { ProgressBar, clampProgress, type ProgressBarProps } from './ProgressBar';
 export { Screen, type ScreenProps } from './Screen';
 export {
@@ -29,3 +35,4 @@ export {
   type PlaceholderScreenProps,
 } from './PlaceholderScreen';
 export { TabBar } from './TabBar';
+export { SwipeableEntryRow, type SwipeableEntryRowProps } from './SwipeableEntryRow';

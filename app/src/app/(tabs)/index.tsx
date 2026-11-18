@@ -1,3 +1,4 @@
+import * as Haptics from 'expo-haptics';
 import { router, useFocusEffect } from 'expo-router';
 import {
   Flame,
@@ -5,6 +6,8 @@ import {
   Nut,
   Plus,
   Salad,
+  ScanBarcode,
+  Search,
   Soup,
   UserRound,
   UtensilsCrossed,
@@ -15,18 +18,23 @@ import { Alert, Pressable, StyleSheet, View } from 'react-native';
 
 import {
   AppText,
+  EmptyMealRow,
   Fab,
   HeroCard,
   MacroCard,
   MealRow,
   ProgressBar,
   Screen,
+  Snackbar,
+  SwipeableEntryRow,
   type ThumbTint,
 } from '@/components';
+import { useUndoSnackbar } from '@/hooks/useUndoSnackbar';
 import ro from '@/i18n/ro';
 import { formatDateLong, toDateKey } from '@/lib/date';
 import { formatNumber } from '@/lib/format';
 import { daySummary, greetingFor } from '@/lib/home';
+import type { LogEntryWithFood } from '@/db';
 import { defaultMealFor, MEALS, mealFoodNames, totalsByMeal } from '@/lib/meals';
 import { macroGoals, sumNutrients } from '@/lib/nutrition';
 import { useLogStore } from '@/stores/log';
@@ -37,6 +45,7 @@ import {
   decor,
   iconStroke,
   layout,
+  opacity,
   radius,
   shadow,
   size,
@@ -56,11 +65,25 @@ const INFO_HIT_SLOP = (size.minTouch - size.infoIcon) / 2;
 
 const openAdd = (meal: Meal) => router.push({ pathname: '/add', params: { meal } });
 
-/** Home (Main.html): greeting, hero card, macro cards, meals of the day, floating add button. */
+/**
+ * Home (Main.html): greeting, hero card, macro cards, meals of the day with their entries,
+ * floating add button. Empty day (TodayEmpty.html): "O zi nouă" hero with Scan / Search and
+ * empty meal rows. Entries swipe left to delete with a 5 s undo snackbar (TodayDelete.html).
+ */
 export default function HomeScreen() {
   const entries = useLogStore((s) => s.entries);
+  const loaded = useLogStore((s) => s.loaded);
   const load = useLogStore((s) => s.load);
+  const remove = useLogStore((s) => s.remove);
+  const restore = useLogStore((s) => s.restore);
   const profile = useProfileStore((s) => s.profile);
+  const snackbar = useUndoSnackbar();
+
+  const deleteEntry = async (entry: LogEntryWithFood) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+    const removed = await remove(entry.id);
+    if (removed) snackbar.show(ro.home.deleted(removed.food.name), () => void restore(removed));
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -76,6 +99,7 @@ export default function HomeScreen() {
   const goals = macroGoals(target);
   const summary = daySummary(target, totals.kcal);
   const percent = `${formatNumber(summary.percent)}%`;
+  const empty = loaded && entries.length === 0;
 
   return (
     <View style={styles.root}>
@@ -102,105 +126,219 @@ export default function HomeScreen() {
           </Pressable>
         </View>
 
-        <HeroCard contentStyle={styles.hero} accessibilityLabel={ro.home.caloriesToday}>
-          <View style={styles.heroTop}>
-            {paused ? (
-              <View style={styles.heroText} testID="home-paused">
-                <AppText variant="h3" color="onBrand">
-                  {ro.home.pausedTitle}
-                </AppText>
-                <AppText variant="body" color="heroTextSecondary">
-                  {ro.home.pausedBody}
-                </AppText>
-              </View>
-            ) : (
-              <View style={styles.heroText}>
-                <View style={styles.heroLabel}>
-                  <AppText variant="labelL" color="onBrand">
-                    {ro.home.caloriesToday}
-                  </AppText>
-                  <Pressable
-                    testID="home-info"
-                    onPress={() => Alert.alert(ro.home.howTitle, ro.home.howBody)}
-                    hitSlop={INFO_HIT_SLOP}
-                    accessibilityRole="button"
-                    accessibilityLabel={ro.home.howCalculated}
-                    style={styles.info}
-                  >
-                    <Info size={size.iconS} color={colors.onBrand} strokeWidth={iconStroke.thin} />
-                  </Pressable>
+        {empty ? (
+          <EmptyDay target={target} paused={paused} />
+        ) : (
+          <>
+            <HeroCard contentStyle={styles.hero} accessibilityLabel={ro.home.caloriesToday}>
+              <View style={styles.heroTop}>
+                {paused ? (
+                  <View style={styles.heroText} testID="home-paused">
+                    <AppText variant="h3" color="onBrand">
+                      {ro.home.pausedTitle}
+                    </AppText>
+                    <AppText variant="body" color="heroTextSecondary">
+                      {ro.home.pausedBody}
+                    </AppText>
+                  </View>
+                ) : (
+                  <View style={styles.heroText}>
+                    <View style={styles.heroLabel}>
+                      <AppText variant="labelL" color="onBrand">
+                        {ro.home.caloriesToday}
+                      </AppText>
+                      <Pressable
+                        testID="home-info"
+                        onPress={() => Alert.alert(ro.home.howTitle, ro.home.howBody)}
+                        hitSlop={INFO_HIT_SLOP}
+                        accessibilityRole="button"
+                        accessibilityLabel={ro.home.howCalculated}
+                        style={styles.info}
+                      >
+                        <Info size={size.iconS} color={colors.onBrand} strokeWidth={iconStroke.thin} />
+                      </Pressable>
+                    </View>
+                    <View style={styles.heroNumbers}>
+                      <AppText variant="display" color="onBrand" tabular testID="home-food-kcal">
+                        {formatNumber(summary.food)}
+                      </AppText>
+                      <AppText variant="heroUnit" color="heroTextSecondary" tabular>
+                        {ro.home.ofTarget(formatNumber(target))}
+                      </AppText>
+                    </View>
+                    <AppText variant="body" color="heroTextSecondary" tabular testID="home-remaining">
+                      {summary.over
+                        ? ro.home.over(formatNumber(summary.remaining))
+                        : ro.home.remaining(formatNumber(summary.remaining))}
+                    </AppText>
+                  </View>
+                )}
+                <View style={styles.badge} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+                  <Flame size={size.iconL} color={colors.flame} fill={colors.flame} strokeWidth={0} />
                 </View>
-                <View style={styles.heroNumbers}>
-                  <AppText variant="display" color="onBrand" tabular testID="home-food-kcal">
-                    {formatNumber(summary.food)}
-                  </AppText>
-                  <AppText variant="heroUnit" color="heroTextSecondary" tabular>
-                    {ro.home.ofTarget(formatNumber(target))}
+              </View>
+              {paused ? null : (
+                <View style={styles.progressRow}>
+                  <ProgressBar
+                    value={summary.progress}
+                    color={colors.lime}
+                    trackColor={colors.heroTrack}
+                    height={size.progressBarHero}
+                    accessibilityLabel={ro.home.progressLabel(percent)}
+                    style={styles.progressBar}
+                  />
+                  <AppText variant="bodyLStrong" color="onBrand" tabular>
+                    {percent}
                   </AppText>
                 </View>
-                <AppText variant="body" color="heroTextSecondary" tabular testID="home-remaining">
-                  {summary.over
-                    ? ro.home.over(formatNumber(summary.remaining))
-                    : ro.home.remaining(formatNumber(summary.remaining))}
-                </AppText>
-              </View>
-            )}
-            <View style={styles.badge} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-              <Flame size={size.iconL} color={colors.flame} fill={colors.flame} strokeWidth={0} />
-            </View>
-          </View>
-          {paused ? null : (
-            <View style={styles.progressRow}>
-              <ProgressBar
-                value={summary.progress}
-                color={colors.lime}
-                trackColor={colors.heroTrack}
-                height={size.progressBarHero}
-                accessibilityLabel={ro.home.progressLabel(percent)}
-                style={styles.progressBar}
-              />
-              <AppText variant="bodyLStrong" color="onBrand" tabular>
-                {percent}
-              </AppText>
-            </View>
-          )}
-        </HeroCard>
+              )}
+            </HeroCard>
 
-        <View style={styles.macros}>
-          <MacroCard macro="protein" value={totals.protein} goal={paused ? undefined : goals.protein} />
-          <MacroCard macro="carbs" value={totals.carbs} goal={paused ? undefined : goals.carbs} />
-          <MacroCard macro="fat" value={totals.fat} goal={paused ? undefined : goals.fat} />
-        </View>
+            <View style={styles.macros}>
+              <MacroCard macro="protein" value={totals.protein} goal={paused ? undefined : goals.protein} />
+              <MacroCard macro="carbs" value={totals.carbs} goal={paused ? undefined : goals.carbs} />
+              <MacroCard macro="fat" value={totals.fat} goal={paused ? undefined : goals.fat} />
+            </View>
+          </>
+        )}
 
-        <View style={styles.mealsHeader}>
+        <View style={empty ? styles.mealsHeaderEmpty : styles.mealsHeader}>
           <AppText variant="sectionTitle" accessibilityRole="header">
             {ro.home.mealsTitle}
           </AppText>
         </View>
-        <View style={styles.meals}>
-          {MEALS.map((meal) => (
-            <MealRow
-              key={meal}
-              testID={`home-meal-${meal}`}
-              title={ro.meals[meal]}
-              subtitle={mealFoodNames(entries, meal) || ro.home.mealEmpty}
-              kcal={byMeal[meal].kcal}
-              tint={MEAL_THUMBS[meal].tint}
-              icon={MEAL_THUMBS[meal].icon}
-              onPress={() => openAdd(meal)}
-            />
-          ))}
+        <View style={empty ? styles.mealsEmpty : styles.meals}>
+          {MEALS.map((meal) =>
+            empty ? (
+              <EmptyMealRow
+                key={meal}
+                title={ro.meals[meal]}
+                subtitle={ro.home.mealEmpty}
+                icon={MEAL_THUMBS[meal].icon}
+                action={{
+                  label: ro.home.add,
+                  accessibilityLabel: ro.home.addTo(ro.meals[meal]),
+                  onPress: () => openAdd(meal),
+                  testID: `home-add-${meal}`,
+                }}
+              />
+            ) : (
+              <View key={meal} style={styles.meal}>
+                <MealRow
+                  testID={`home-meal-${meal}`}
+                  title={ro.meals[meal]}
+                  subtitle={mealFoodNames(entries, meal) || ro.home.mealEmpty}
+                  kcal={byMeal[meal].kcal}
+                  tint={MEAL_THUMBS[meal].tint}
+                  icon={MEAL_THUMBS[meal].icon}
+                  onPress={() => openAdd(meal)}
+                />
+                {entries
+                  .filter((entry) => entry.meal === meal)
+                  .map((entry) => (
+                    <SwipeableEntryRow
+                      key={entry.id}
+                      testID={`home-entry-${entry.id}`}
+                      title={entry.food.name}
+                      subtitle={ro.home.grams(formatNumber(entry.grams))}
+                      kcal={entry.nutrients.kcal}
+                      tint={MEAL_THUMBS[meal].tint}
+                      onDelete={() => void deleteEntry(entry)}
+                    />
+                  ))}
+              </View>
+            ),
+          )}
         </View>
       </Screen>
 
-      <Fab
-        testID="home-add"
-        label={ro.home.addFood}
-        icon={Plus}
-        onPress={() => openAdd(defaultMealFor(new Date()))}
-        style={styles.fab}
-      />
+      {snackbar.current ? (
+        <Snackbar
+          testID="home-snackbar"
+          message={snackbar.current.message}
+          onAction={snackbar.undo}
+          style={styles.snackbar}
+        />
+      ) : empty ? null : (
+        <Fab
+          testID="home-add"
+          label={ro.home.addFood}
+          icon={Plus}
+          onPress={() => openAdd(defaultMealFor(new Date()))}
+          style={styles.fab}
+        />
+      )}
     </View>
+  );
+}
+
+/** Hero of an empty day (TodayEmpty.html): full target left and the two ways to log the first food. */
+function EmptyDay({ target, paused }: { target: number; paused: boolean }) {
+  return (
+    <HeroCard contentStyle={styles.hero} accessibilityLabel={ro.home.newDay}>
+      <View style={styles.heroTop}>
+        {paused ? (
+          <View style={styles.heroText} testID="home-paused">
+            <AppText variant="h3" color="onBrand">
+              {ro.home.pausedTitle}
+            </AppText>
+            <AppText variant="body" color="heroTextSecondary">
+              {ro.home.pausedBody}
+            </AppText>
+          </View>
+        ) : (
+          <View style={styles.heroText} testID="home-empty">
+            <AppText variant="labelL" color="onBrand">
+              {ro.home.newDay}
+            </AppText>
+            <View style={styles.heroNumbers}>
+              <AppText variant="display" color="onBrand" tabular>
+                {formatNumber(target)}
+              </AppText>
+              <AppText variant="heroUnit" color="heroTextSecondary">
+                {ro.home.remainingUnit}
+              </AppText>
+            </View>
+            <AppText variant="body" color="heroTextSecondary">
+              {ro.home.newDayHint}
+            </AppText>
+          </View>
+        )}
+        <View
+          style={[styles.badge, styles.badgeSoft]}
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+        >
+          <Flame size={size.iconL} color={colors.lime} fill={colors.lime} strokeWidth={0} />
+        </View>
+      </View>
+      <View style={styles.heroActions}>
+        <Pressable
+          testID="home-scan"
+          onPress={() => router.push('/scan')}
+          accessibilityRole="button"
+          accessibilityLabel={ro.home.scan}
+          style={({ pressed }) => [styles.heroAction, styles.heroActionFilled, pressed && styles.heroActionPressed]}
+        >
+          <ScanBarcode size={size.iconS} color={colors.brand} strokeWidth={iconStroke.navActive} />
+          <AppText variant="button" color="brand">
+            {ro.home.scan}
+          </AppText>
+        </Pressable>
+        <Pressable
+          testID="home-search"
+          onPress={() => openAdd(defaultMealFor(new Date()))}
+          accessibilityRole="button"
+          accessibilityLabel={ro.home.search}
+          style={({ pressed }) => [styles.heroAction, styles.heroActionOutline, pressed && styles.heroActionPressed]}
+        >
+          <Search size={size.iconS} color={colors.onBrand} strokeWidth={iconStroke.navActive} />
+          <AppText variant="button" color="onBrand">
+            {ro.home.search}
+          </AppText>
+        </Pressable>
+      </View>
+    </HeroCard>
   );
 }
 
@@ -254,6 +392,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  mealsHeaderEmpty: { marginTop: space.xxs },
   meals: { gap: layout.listGap, marginTop: -space.xs },
+  mealsEmpty: { gap: layout.listGap },
+  meal: { gap: layout.listGap },
   fab: { position: 'absolute', right: layout.screenPaddingX, bottom: space.m },
+  snackbar: {
+    position: 'absolute',
+    left: layout.screenPaddingX,
+    right: layout.screenPaddingX,
+    bottom: space.m,
+  },
+  badgeSoft: { backgroundColor: colors.heroBadgeSoft },
+  heroActions: { flexDirection: 'row', gap: space.s },
+  heroAction: {
+    flex: 1,
+    height: size.chip,
+    borderRadius: radius.pill,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: space.xs,
+  },
+  heroActionFilled: { backgroundColor: colors.surface },
+  heroActionOutline: { borderWidth: borderWidth.strong, borderColor: colors.heroOutline },
+  heroActionPressed: { opacity: opacity.pressed },
 });

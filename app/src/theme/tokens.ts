@@ -19,6 +19,8 @@ export const colors = {
   heroTrack: 'rgba(255,255,255,0.18)',  // progress track on the hero card
   avatar: '#CFE9D8',         // Home profile avatar
   flame: '#FFD23F',
+  heroBadgeSoft: 'rgba(255,255,255,0.14)', // flame circle on the empty-day hero
+  heroOutline: 'rgba(255,255,255,0.6)',   // outline button on the hero card
 
   // Surfaces
   background: '#F7F9F8',
@@ -76,6 +78,7 @@ export const thumbs = {
   green: { bg: '#E7F5EA', fg: '#15803D' },
   amber: { bg: '#FBF0E1', fg: '#A15C07' },
   blue: { bg: '#EEF4FE', fg: '#1D5FD6' },
+  neutral: { bg: '#EEF3F0', fg: '#5B6862' }, // empty meal rows
 } as const;
 
 /** 8-pt grid with a 4-pt half step. */
@@ -118,6 +121,7 @@ export const size = {
   tabBar: 56,       // content height; add bottom safe-area inset
   tabIndicatorWidth: 24, // active tab underline
   tabIndicatorHeight: 3,
+  iconXS: 16,       // icon inside small pill buttons ("Adaugă")
   iconS: 20,
   iconM: 24,
   minTouch: 48,
@@ -130,6 +134,7 @@ export const size = {
   radioDot: 10,     // inner dot of a selected radio
   heroBadge: 64,    // flame circle on the Home hero card
   iconL: 32,        // flame inside the hero badge
+  swipeAction: 96,  // width of the swipe-to-delete action
   infoIcon: 28,     // small info button next to a label (hitSlop brings it to 48)
 } as const;
 

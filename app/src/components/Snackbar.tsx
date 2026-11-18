@@ -11,12 +11,19 @@ export interface SnackbarProps {
   actionLabel?: string;
   onAction?: () => void;
   style?: StyleProp<ViewStyle>;
+  testID?: string;
 }
 
 /** Dark 56-high status bar with a lime text action. Positioning and timing are up to the screen. */
-export function Snackbar({ message, actionLabel = ro.common.undo, onAction, style }: SnackbarProps) {
+export function Snackbar({
+  message,
+  actionLabel = ro.common.undo,
+  onAction,
+  style,
+  testID,
+}: SnackbarProps) {
   return (
-    <View style={[styles.bar, style]} accessibilityRole="alert" accessibilityLiveRegion="polite">
+    <View testID={testID} style={[styles.bar, style]} accessibilityRole="alert" accessibilityLiveRegion="polite">
       <AppText variant="bodyL" color="onBrand" numberOfLines={1} style={styles.message}>
         {message}
       </AppText>

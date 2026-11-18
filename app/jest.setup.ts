@@ -21,3 +21,24 @@ jest.mock('lucide-react-native', () => {
     },
   });
 });
+
+// Reanimated 4 can't run its worklet runtime under Jest, so render ReanimatedSwipeable as a plain
+// View that always shows its right actions (tests reach delete through the accessibility action
+// or the revealed button). Gesture handler's own Jest setup covers the rest of the library.
+require('react-native-gesture-handler/jestSetup');
+jest.mock('react-native-gesture-handler/ReanimatedSwipeable', () => {
+  const { createElement } = jest.requireActual('react');
+  const { View } = jest.requireActual('react-native');
+  const methods = { close: () => {}, openLeft: () => {}, openRight: () => {}, reset: () => {} };
+  const Swipeable = ({
+    children,
+    renderRightActions,
+    testID,
+  }: {
+    children?: unknown;
+    renderRightActions?: (...args: unknown[]) => unknown;
+    testID?: string;
+  }) =>
+    createElement(View, { testID }, children, renderRightActions?.(undefined, undefined, methods));
+  return { __esModule: true, default: Swipeable, SwipeDirection: { LEFT: 'left', RIGHT: 'right' } };
+});

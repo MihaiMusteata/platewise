@@ -93,3 +93,11 @@ All pre-approved native deps installed together (expo-sqlite, zustand, expo-secu
 - Tokens added (mirrored): colors.heroTrack, avatar; size.heroBadge, iconL, infoIcon; borderWidth.avatar; type.sectionTitle, heroUnit; shadow.fab; decor.homeBlob.
 - Decisions: greeting by time (before 05:00 counts as evening); remaining shown as "x kcal rămase", over goal "x kcal peste țintă" in the same neutral text; exercise not tracked (0); paused → calm paused hero without numbers, macro cards without goals; meal row → `/add?meal=<meal>`; FAB → `/add?meal=defaultMealFor(now)`; "Vezi toate" omitted (no destination); info button shows an explanatory alert (placeholder copy); avatar opens Settings; dev links removed from Home.
 - Visual differences: lucide icons approximate custom meal/macro icons; background blob is a pill, not an ellipse.
+
+### T2.3 — Empty state + swipe to delete — done
+- Empty day per TodayEmpty.html ("O zi nouă" hero, Scanează → `/scan`, Caută aliment → `/add?meal=…`, empty meal rows with "Adaugă" pills). No FAB on an empty day.
+- Each meal summary row is followed by its entries as `SwipeableEntryRow` (ReanimatedSwipeable, 96-wide danger "Șterge" action, VoiceOver `delete` action, light haptic). `useUndoSnackbar` hook: one snackbar, 5 s, a new delete replaces the previous one; "Anulează" restores the entry. FAB hidden while the snackbar shows.
+- Root layout wrapped in `GestureHandlerRootView`; jest.setup adds RNGH jestSetup and a View mock for ReanimatedSwipeable (Reanimated 4's mock fails under Jest).
+- Tokens added (mirrored): colors.heroBadgeSoft, heroOutline; thumbs.neutral; size.iconXS, swipeAction.
+- Decisions: TodayDelete.html swipes a meal-style row but names a single food; spec says swipe on an entry → entries are listed under their meal and only entries swipe. Snackbar copy "Șters: <food>" (gender-neutral). MacroCard value line now single-line with shrink-to-fit (3-digit grams wrapped).
+- Visual differences: snack row label "Gustare" (design "Gustări"); lucide icons.

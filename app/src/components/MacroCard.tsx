@@ -53,7 +53,7 @@ export function MacroCard({ macro, value, goal, style }: MacroCardProps) {
       <AppText variant="body" color="textTertiary" style={styles.label}>
         {label}
       </AppText>
-      <AppText variant="body" color="textSecondary" tabular>
+      <AppText variant="body" color="textSecondary" tabular numberOfLines={1} adjustsFontSizeToFit>
         <AppText variant="numberS" tabular>
           {amount}
         </AppText>
