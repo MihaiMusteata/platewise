@@ -11,7 +11,7 @@ One task per agent session. Tick `[x]` when done and verified (`npm run typechec
 
 ## Phase 1 — Onboarding
 - [x] **T1.1 Profile store + persistence.** Zustand + persisted storage; `hasOnboarded` flag redirects first launch to onboarding.
-- [ ] **T1.2 Onboarding 1–3** per `Onb1/2/3.html`, with validation (18+ required, numeric ranges) and live target calculation.
+- [x] **T1.2 Onboarding 1–3** per `Onb1/2/3.html`, with validation (18+ required, numeric ranges) and live target calculation.
 
 ## Phase 2 — Home
 - [x] **T2.1 Local database.** expo-sqlite schema for `foods` and `log_entries`, repository functions, seed of ~50 common Romanian foods (`source: 'common'`).

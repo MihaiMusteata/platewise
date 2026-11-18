@@ -5,7 +5,7 @@ import { borderWidth, colors, opacity, radius, shadow, size, space } from '@/the
 
 import { AppText, type TextColor } from './AppText';
 
-export type ButtonVariant = 'primary' | 'outline' | 'text';
+export type ButtonVariant = 'primary' | 'outline' | 'text' | 'link';
 
 export interface ButtonProps {
   label: string;
@@ -22,9 +22,13 @@ const labelColor: Record<ButtonVariant, TextColor> = {
   primary: 'onBrand',
   outline: 'brand',
   text: 'textSecondary',
+  link: 'brand',
 };
 
-/** Pill button. Primary 56 high with brand background and shadow; outline 1.5 brand border; text 48 high. */
+/**
+ * Pill button. Primary 56 high with brand background and shadow; outline 1.5 brand border;
+ * text 48 high in secondary text color; link 48 high in brand color.
+ */
 export function Button({
   label,
   onPress,
@@ -54,7 +58,7 @@ export function Button({
     >
       <View style={styles.row}>
         {Icon ? <Icon size={size.iconM} color={colors[color]} /> : null}
-        <AppText variant={variant === 'text' ? 'labelL' : 'button'} color={color}>
+        <AppText variant={variant === 'text' || variant === 'link' ? 'labelL' : 'button'} color={color}>
           {label}
         </AppText>
       </View>
@@ -74,6 +78,7 @@ const styles = StyleSheet.create({
   primary: { backgroundColor: colors.brand, ...shadow.primaryButton },
   outline: { borderWidth: borderWidth.strong, borderColor: colors.brand },
   text: { height: size.minTouch },
+  link: { height: size.minTouch },
   disabled: { opacity: opacity.disabled, shadowOpacity: 0, elevation: 0 },
 });
 
@@ -81,4 +86,5 @@ const pressedStyles = StyleSheet.create({
   primary: { backgroundColor: colors.brandPressed },
   outline: { backgroundColor: colors.mint },
   text: { backgroundColor: colors.neutralSoft },
+  link: { backgroundColor: colors.mint },
 });

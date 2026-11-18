@@ -60,6 +60,18 @@ All pre-approved native deps installed together (expo-sqlite, zustand, expo-secu
 - `src/app/index.tsx` redirects to `/onboarding/about` when not onboarded (placeholder route until T1.2).
 - Tests: store persistence across "restarts" (isolated module reloads), home redirect via `expo-router/testing-library` `renderRouter`.
 
+### T1.2 — Onboarding 1–3 — done
+- Routes `onboarding/about|goal|target`; shared layout component `OnboardingStep` (step bars, H1, intro, bottom primary + secondary). New components: StepHeader, CheckboxRow, ChoiceCard (compact radio / tall goal option), SelectField (native ActionSheetIOS), HeroCard (expo-linear-gradient 135°). Button got a `link` variant (brand text, 48 high). `Screen` scroll now adjusts for the keyboard and dismisses it interactively.
+- Logic in `src/lib/onboarding.ts` (checkAge 18–100 whole years, checkHeight 120–230, checkWeight 35–300, comma decimals; validateAbout, estimateTarget, draftTarget, buildProfile) and non-persisted `src/stores/onboarding.ts`.
+- Tokens added (mirrored): colors.heroButton, heroDivider, textOnMint, stepInactive, radioRing; size.choiceCard, heroStepper, checkMark, radioDot; borderWidth.radio.
+- Decision: "Continuă" is disabled until 18+ checked, all fields valid and a sex chosen; amber hints only for invalid/underage input, none for empty fields. Sex starts unselected, activity defaults to Ușoară, goal to Menținere.
+- Decision: "Îmi setez singur ținta" requires the 18+ checkbox and no invalid field (empty fields allowed). Step 3 then starts at 2.000 kcal and shows a "starting value" note instead of "calculated from…". Saved profile keeps entered values; missing age/height/weight are stored as 0 (= not provided) and a missing sex as 'female'. Settings must treat 0 as unknown before recalculating a target.
+- Decision: changing any estimate input (body data, activity, goal) drops a manual ± target.
+- Decision (placeholder, needs product copy): "Vezi opțiuni de sprijin" opens a native alert with calm guidance text (ro.onboarding.target.careSheet).
+- Step 3 shows no macro goals (the design doesn't).
+- Open issue: on the skip path, missing age/height/weight are saved as 0 and a missing sex as 'female'; Settings must treat 0 as unknown before recalculating a target.
+- Open issue: "Vezi opțiuni de sprijin" has no destination in the spec; placeholder alert copy needs product review.
+
 ### T2.1 — Local database — done (built in parallel, ahead of order)
 - `src/db/`: `schema.ts` (PRAGMA user_version migrations, WAL, foreign keys), `index.ts` (`getDb()` memoized, migrates + seeds), `foodsRepo.ts`, `logRepo.ts`, `seed.ts` (59 common Romanian foods, ids `common:<slug>`), `types.ts` (`Db` interface, `LogEntryWithFood`, `DailyTotals`).
 - Repos take `db` as first argument; tests use `src/db/testing/testDb.ts`, an adapter over Node's built-in `node:sqlite` (real SQL, no new dependency).

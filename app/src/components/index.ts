@@ -16,3 +16,9 @@ export {
 export { Snackbar, type SnackbarProps } from './Snackbar';
 export { Stepper, type StepperProps } from './Stepper';
 export { TextField, type TextFieldProps } from './TextField';
+export { CheckboxRow, type CheckboxRowProps } from './CheckboxRow';
+export { ChoiceCard, type ChoiceCardProps } from './ChoiceCard';
+export { HeroCard, type HeroCardProps } from './HeroCard';
+export { OnboardingStep, type OnboardingStepProps } from './OnboardingStep';
+export { SelectField, type SelectFieldProps } from './SelectField';
+export { StepHeader, type StepHeaderProps } from './StepHeader';

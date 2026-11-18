@@ -11,6 +11,8 @@ export const colors = {
   heroFrom: '#0B4F33',       // hero card gradient start
   heroTo: '#1B7A4B',         // hero card gradient end
   heroTextSecondary: '#D7EBDD',
+  heroButton: 'rgba(255,255,255,0.16)',  // ± buttons on the hero card
+  heroDivider: 'rgba(255,255,255,0.18)', // hairline inside the hero card
   lime: '#8BD84F',           // progress bar on green, scan line, snackbar action
   onBrand: '#FFFFFF',        // text and icons on brand / dark surfaces
   flameCircle: '#4FA83B',
@@ -30,6 +32,7 @@ export const colors = {
   text: '#13201A',
   textSecondary: '#5B6862',  // ≥ 5.5:1 on white
   textTertiary: '#3D4A43',
+  textOnMint: '#2F3D36',     // body text on mint info cards
   textNav: '#6B7770',
   chevron: '#8A958F',
 
@@ -37,6 +40,8 @@ export const colors = {
   border: '#DCE3DF',
   divider: '#EEF2F0',
   hairline: '#E6ECE8',
+  stepInactive: '#DDE6E1',   // onboarding step bars not reached yet
+  radioRing: '#B7C2BC',      // unselected radio ring
 
   // Feedback
   danger: '#B42318',         // destructive actions only (delete), never for "over goal"
@@ -114,11 +119,16 @@ export const size = {
   snackbar: 56,
   progressBar: 6,   // macro cards
   progressBarHero: 10,
+  choiceCard: 72,   // onboarding goal option
+  heroStepper: 56,  // ± buttons on the hero target card
+  checkMark: 16,    // check glyph inside a 24 checkbox
+  radioDot: 10,     // inner dot of a selected radio
 } as const;
 
 export const borderWidth = {
   hairline: 1,
   strong: 1.5,      // outline button, input, choice chip
+  radio: 2,         // radio ring
 } as const;
 
 export const opacity = {
