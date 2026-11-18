@@ -1,5 +1,6 @@
 const WEEKDAYS = ['Duminică', 'Luni', 'Marți', 'Miercuri', 'Joi', 'Vineri', 'Sâmbătă'];
 const WEEKDAYS_SHORT = ['D', 'L', 'Ma', 'Mi', 'J', 'V', 'S'];
+const WEEKDAYS_ABBR = ['Du', 'Lu', 'Ma', 'Mi', 'Jo', 'Vi', 'Sâ'];
 const MONTHS = [
   'ianuarie',
   'februarie',
@@ -28,6 +29,19 @@ export function formatDayMonth(date: Date): string {
 /** One- or two-letter weekday label for charts ("L", "Ma", "Mi", …). */
 export function weekdayShort(date: Date): string {
   return WEEKDAYS_SHORT[date.getDay()];
+}
+
+/** Two-letter weekday label as in the Progress chart ("Lu", "Ma", …, "Du"). */
+export function weekdayAbbr(date: Date): string {
+  return WEEKDAYS_ABBR[date.getDay()];
+}
+
+/** Monday of the week containing `date` (local, midnight). */
+export function startOfWeek(date: Date): Date {
+  const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const offset = (d.getDay() + 6) % 7;
+  d.setDate(d.getDate() - offset);
+  return d;
 }
 
 export function monthName(monthIndex: number): string {

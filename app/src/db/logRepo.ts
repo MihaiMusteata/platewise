@@ -55,29 +55,40 @@ const FOOD_COLUMNS_PREFIXED = FOOD_COLUMNS.split(', ')
   .map((c) => `f.${c}`)
   .join(', ');
 
+function toEntryWithFood(row: EntryJoinRow): LogEntryWithFood {
+  const food = rowToFood(row);
+  return {
+    id: row.entry_id,
+    date: row.entry_date,
+    meal: row.entry_meal,
+    foodId: food.id,
+    grams: row.entry_grams,
+    createdAt: row.entry_created_at,
+    food,
+    nutrients: nutrientsFor(food.per100g, row.entry_grams),
+  };
+}
+
+const ENTRY_SELECT = `SELECT e.id AS entry_id, e.date AS entry_date, e.meal AS entry_meal,
+       e.grams AS entry_grams, e.created_at AS entry_created_at, ${FOOD_COLUMNS_PREFIXED}
+     FROM log_entries e JOIN foods f ON f.id = e.food_id`;
+
 /** Entries of one day in insertion order, with food and computed nutrients. */
 export async function entriesForDate(db: Db, date: string): Promise<LogEntryWithFood[]> {
   const rows = await db.getAllAsync<EntryJoinRow>(
-    `SELECT e.id AS entry_id, e.date AS entry_date, e.meal AS entry_meal, e.grams AS entry_grams,
-       e.created_at AS entry_created_at, ${FOOD_COLUMNS_PREFIXED}
-     FROM log_entries e JOIN foods f ON f.id = e.food_id
-     WHERE e.date = ?
-     ORDER BY e.created_at, e.rowid`,
+    `${ENTRY_SELECT} WHERE e.date = ? ORDER BY e.created_at, e.rowid`,
     [date],
   );
-  return rows.map((row) => {
-    const food = rowToFood(row);
-    return {
-      id: row.entry_id,
-      date: row.entry_date,
-      meal: row.entry_meal,
-      foodId: food.id,
-      grams: row.entry_grams,
-      createdAt: row.entry_created_at,
-      food,
-      nutrients: nutrientsFor(food.per100g, row.entry_grams),
-    };
-  });
+  return rows.map(toEntryWithFood);
+}
+
+/** All entries, oldest first (for CSV export). */
+export async function allEntries(db: Db): Promise<LogEntryWithFood[]> {
+  const rows = await db.getAllAsync<EntryJoinRow>(
+    `${ENTRY_SELECT} ORDER BY e.date, e.created_at, e.rowid`,
+    [],
+  );
+  return rows.map(toEntryWithFood);
 }
 
 /** Per-day totals for days with entries in [fromDate, toDate] (inclusive), ascending. */
