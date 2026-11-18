@@ -22,3 +22,18 @@ In progress.
 ### Docs: serverless demo scope — done
 - tasks.md: added T4.4 (Keychain scan counter) and Phase 6 Demo (T6.1, T6.2 human-only); backend/monetization/release moved to "After demo".
 - spec.md: direct Open Food Facts calls with User-Agent, local caching, on-device scan limit, "Demo scope" section (Backup și sincronizare is post-demo).
+
+### T0.2 — Theme — done
+- `app/src/theme/tokens.ts` copied from `design/tokens.ts`; `@/theme` re-exports it.
+- Root layout loads Plus Jakarta Sans 500/600/700/800 via `@expo-google-fonts/plus-jakarta-sans`, keeps the splash until loaded (or font error), Stack background `colors.background`.
+- Dev screen `/dev/typography` renders every `type` style; test checks all are rendered.
+- `jest.setup.ts` mocks `react-native-safe-area-context` with the library's official mock.
+- Decision: no screenshot gate for this task beyond the dev screen; checked on the simulator once the sim dev build exists (see below).
+
+### T0.3 — Helpers — done
+- `src/lib/format.ts`: `formatNumber` (rounded, dot thousands), `formatDecimal(value, digits = 1, trimZeros = false)`, `parseDecimal` (accepts "72,4" and "72.4").
+- `src/lib/date.ts`: `formatDateLong` („Miercuri, 18 noiembrie”), `formatDayMonth`, `weekdayShort`, `toDateKey`/`fromDateKey`/`toMonthKey`, `addDays`. Implemented manually (no Intl dependency in Hermes).
+- `src/lib/nutrition.ts`: `bmr`, `calcTarget`, `stepTarget`, `macroGoals`, `remaining`, `progress`, `nutrientsFor`, `sumNutrients`.
+- `src/types/models.ts`: data model from spec.
+- Decision: `calcTarget` clamps to 1.200–4.000 (spec says never below 1.200; the stepper range caps at 4.000, so the computed value uses the same range).
+- Decision: macro grams use `Math.round` per macro (sum of kcal may differ from target by a few kcal).
