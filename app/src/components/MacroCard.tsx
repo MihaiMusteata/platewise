@@ -2,7 +2,7 @@ import { Droplet, Dumbbell, Wheat, type LucideIcon } from 'lucide-react-native';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import ro from '@/i18n/ro';
-import { formatNumber } from '@/lib/format';
+import { formatDecimal, formatNumber } from '@/lib/format';
 import { colors, iconStroke, macros, radius, size, space } from '@/theme';
 
 import { AppText } from './AppText';
@@ -16,7 +16,13 @@ export interface MacroCardProps {
   value: number;
   /** Daily goal in grams. Omit to show only the grams eaten (tracking paused). */
   goal?: number;
+  /**
+   * default: Home tile with icon, "x g / y g", percent and bar ·
+   * compact: Log food tile with label, "x,y g" and a thin bar toward the goal (no goal text).
+   */
+  variant?: 'default' | 'compact';
   style?: StyleProp<ViewStyle>;
+  testID?: string;
 }
 
 const icons: Record<MacroKey, LucideIcon> = {
@@ -26,7 +32,14 @@ const icons: Record<MacroKey, LucideIcon> = {
 };
 
 /** Tinted macro tile: icon, label, "x g / y g", percent and progress bar in the macro color. */
-export function MacroCard({ macro, value, goal, style }: MacroCardProps) {
+export function MacroCard({
+  macro,
+  value,
+  goal,
+  variant = 'default',
+  style,
+  testID,
+}: MacroCardProps) {
   const tone = macros[macro];
   const Icon = icons[macro];
   const hasGoal = goal != null;
@@ -36,8 +49,36 @@ export function MacroCard({ macro, value, goal, style }: MacroCardProps) {
   const unit = ro.common.grams;
   const amount = `${formatNumber(value)} ${unit}`;
 
+  if (variant === 'compact') {
+    const compactAmount = `${formatDecimal(value)} ${unit}`;
+    return (
+      <View
+        testID={testID}
+        style={[styles.compact, { backgroundColor: tone.tint }, style]}
+        accessible
+        accessibilityLabel={`${label}: ${compactAmount}`}
+      >
+        <AppText variant="caption" style={{ color: tone.text }} numberOfLines={1}>
+          {label}
+        </AppText>
+        <AppText variant="numberS" tabular numberOfLines={1} adjustsFontSizeToFit>
+          {compactAmount}
+        </AppText>
+        {hasGoal ? (
+          <ProgressBar
+            value={ratio}
+            color={tone.bar}
+            trackColor={colors.macroTrack}
+            height={size.progressBarSmall}
+          />
+        ) : null}
+      </View>
+    );
+  }
+
   return (
     <View
+      testID={testID}
       style={[styles.card, { backgroundColor: tone.tint }, style]}
       accessible
       accessibilityLabel={
@@ -83,6 +124,12 @@ const styles = StyleSheet.create({
     paddingTop: space.m,
     paddingHorizontal: space.s,
     paddingBottom: space.s,
+    gap: space.xxs,
+  },
+  compact: {
+    flex: 1,
+    borderRadius: radius.m,
+    padding: space.s,
     gap: space.xxs,
   },
   label: { marginTop: space.xxs },

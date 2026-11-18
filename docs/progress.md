@@ -109,3 +109,10 @@ All pre-approved native deps installed together (expo-sqlite, zustand, expo-secu
 - foodApi: a 200 with a non-JSON body (OFF throttling page) is `error`, not "nothing found".
 - Open issue: OFF legacy text search (`/cgi/search.pl`) is often throttled ("temporarily unavailable"); the app shows a calm note and keeps local results. Post-demo: consider search.openfoodfacts.org or the backend proxy.
 - Visual differences: letter thumbnails instead of food icons; outline-button icon 24 instead of 20.
+
+### T3.2 — Log food — done
+- `add/food/[id].tsx` per LogFood.html: grams/servings segmented control, stepper, live kcal + compact macro cards, meal chips, save → `useLogStore.add` then `router.dismissTo('/')` with a light haptic. OFF attribution for `source: 'off'`.
+- `src/lib/portion.ts` (ranges, clamping, servings ↔ grams, default amount, Romanian serving plurals).
+- Components: `MacroCard variant="compact"`, `FoodThumb size="l"`. Tokens added (mirrored): size.thumbLarge, progressBarSmall; type.footnote.
+- Decisions: default 1 serving when the food has one, else 100 g; no serving size → grams only (toggle hidden); grams 5–2000 step 10, servings 0,5–20 step 0,5; stepper only (no typed amount — design has no input); "Editează" omitted (no destination); macro bars fill toward profile macro goals, hidden when paused; missing food → calm "Nu am găsit alimentul".
+- Visual differences: unselected meal chips weight 600 vs 700; letter thumbnail instead of food icon.

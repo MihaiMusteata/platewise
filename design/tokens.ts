@@ -117,6 +117,7 @@ export const size = {
   avatar: 56,
   thumb: 56,
   thumbSmall: 48,
+  thumbLarge: 64,   // food header on Log food
   fab: 56,
   tabBar: 56,       // content height; add bottom safe-area inset
   tabIndicatorWidth: 24, // active tab underline
@@ -127,6 +128,7 @@ export const size = {
   minTouch: 48,
   snackbar: 56,
   progressBar: 6,   // macro cards
+  progressBarSmall: 5, // compact macro cards on Log food
   progressBarHero: 10,
   choiceCard: 72,   // onboarding goal option
   heroStepper: 56,  // ± buttons on the hero target card
@@ -184,6 +186,7 @@ export const type = {
   label: { fontSize: 14, lineHeight: 20, fontFamily: fontFamily.semibold },
   tabLabel: { fontSize: 12, lineHeight: 16, fontFamily: fontFamily.regular },
   tabLabelActive: { fontSize: 12, lineHeight: 16, fontFamily: fontFamily.bold },
+  footnote: { fontSize: 12, lineHeight: 16, fontFamily: fontFamily.regular }, // small secondary text (per-100 g line)
   caption: { fontSize: 12, lineHeight: 16, fontFamily: fontFamily.semibold },
   overline: { fontSize: 12, lineHeight: 16, fontFamily: fontFamily.bold, letterSpacing: 0.7, textTransform: 'uppercase' as const },
 } as const;

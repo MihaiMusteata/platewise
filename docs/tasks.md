@@ -20,7 +20,7 @@ One task per agent session. Tick `[x]` when done and verified (`npm run typechec
 
 ## Phase 3 — Adding food
 - [x] **T3.1 Add food search** per `AddFood.html`: local search (common + my foods + recent), filter chips, Open Food Facts text search behind `FoodApi` when online.
-- [ ] **T3.2 Log food** per `LogFood.html`: grams/servings toggle, stepper, meal chips, live totals, save entry.
+- [x] **T3.2 Log food** per `LogFood.html`: grams/servings toggle, stepper, meal chips, live totals, save entry.
 
 ## Phase 4 — Barcode scanning
 - [ ] **T4.1 Scan screen** per `Scan.html` with `expo-camera` (EAN-13, EAN-8, UPC-A/E), torch, manual barcode entry. Camera permission text in `app.json`. Permission denied state per `CameraOff.html`.
