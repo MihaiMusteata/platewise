@@ -64,6 +64,7 @@ export const colors = {
   scanBackground: '#0D1311',
   scanTextSecondary: '#C3CCC7',
   scanButton: 'rgba(255,255,255,0.12)',
+  scrim: 'rgba(13,19,17,0.5)', // backdrop behind bottom sheets (manual barcode entry)
 } as const;
 
 export const macros = {
@@ -99,6 +100,7 @@ export const layout = {
   sectionGap: 24,
   listGap: 8,
   topExtra: 8,      // added below the safe-area top inset
+  textMaxWidth: 320, // centered paragraphs on full-screen states
 } as const;
 
 export const radius = {
@@ -138,6 +140,23 @@ export const size = {
   iconL: 32,        // flame inside the hero badge
   swipeAction: 96,  // width of the swipe-to-delete action
   infoIcon: 28,     // small info button next to a label (hitSlop brings it to 48)
+  stateBadge: 96,   // icon circle on full-screen states (camera off)
+  stateIcon: 40,    // icon inside the state badge
+} as const;
+
+/** Scan screen geometry (Scan.html). */
+export const scan = {
+  headerGap: 144,   // header → scan frame
+  frameWidth: 300,
+  frameHeight: 200,
+  corner: 48,       // each corner bracket
+  cornerWidth: 4,
+  cornerRadius: 16,
+  lineTop: 96,      // scan line offset inside the frame
+  lineInset: 16,    // scan line left/right inset
+  lineHeight: 3,
+  textGap: 40,      // frame → instructions
+  bottomPadding: 40,
 } as const;
 
 export const borderWidth = {
@@ -227,6 +246,13 @@ export const shadow = {
     shadowOffset: { width: 0, height: 10 },
     elevation: 6,
   },
+  scanLine: {       // lime glow around the scan line
+    shadowColor: '#8BD84F',
+    shadowOpacity: 0.8,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 0,
+  },
   snackbar: {
     shadowColor: '#000000',
     shadowOpacity: 0.2,
@@ -249,6 +275,7 @@ export const tokens = {
   layout,
   radius,
   size,
+  scan,
   borderWidth,
   opacity,
   iconStroke,

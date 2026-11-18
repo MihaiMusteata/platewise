@@ -116,3 +116,11 @@ All pre-approved native deps installed together (expo-sqlite, zustand, expo-secu
 - Components: `MacroCard variant="compact"`, `FoodThumb size="l"`. Tokens added (mirrored): size.thumbLarge, progressBarSmall; type.footnote.
 - Decisions: default 1 serving when the food has one, else 100 g; no serving size → grams only (toggle hidden); grams 5–2000 step 10, servings 0,5–20 step 0,5; stepper only (no typed amount — design has no input); "Editează" omitted (no destination); macro bars fill toward profile macro goals, hidden when paused; missing food → calm "Nu am găsit alimentul".
 - Visual differences: unselected meal chips weight 600 vs 700; letter thumbnail instead of food icon.
+
+### T4.1 — Scan screen — done
+- `scan/index.tsx` per Scan.html: `CameraView` (EAN-13/8, UPC-A/E) with `useCameraPermissions`, torch, scan frame + static line, manual entry sheet (`ManualBarcodeSheet`), CameraOff.html state (`CameraOffState`, "Deschide Setările" → `Linking.openSettings()`, manual entry still available). First scan only (lock resets on refocus), success haptic → `/scan/product/<code>`; camera runs only while focused.
+- `src/lib/barcode.ts`: normalize (UPC-A → 13 digits with leading 0, UPC-E expanded only when reported as UPC-E), GTIN check-digit validation, manual entry checks.
+- Tokens added (mirrored): colors.scrim, size.stateBadge/stateIcon, layout.textMaxWidth, `scan` geometry group (includes design values 144/40 that are off the 8-pt grid — taken from Scan.html frame geometry), shadow.scanLine.
+- Decision: "Fă o poză" shutter omitted — expo-camera can only read QR from photos on iOS, so it could not read EAN codes; hint copy changed to "Se scanează singur. Sau introdu numărul." (needs product review).
+- Decision: scan line is static (no animation).
+- Visual differences: CameraOff has extra bottom padding (safe area); outline button background transparent instead of white; manual sheet leaves some space above the keyboard.

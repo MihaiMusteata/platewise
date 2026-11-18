@@ -38,3 +38,6 @@ export { TabBar } from './TabBar';
 export { SwipeableEntryRow, type SwipeableEntryRowProps } from './SwipeableEntryRow';
 export { FoodResultRow, type FoodResultRowProps } from './FoodResultRow';
 export { SearchField, type SearchFieldProps } from './SearchField';
+export { CameraOffState, type CameraOffStateProps } from './CameraOffState';
+export { ManualBarcodeSheet, type ManualBarcodeSheetProps } from './ManualBarcodeSheet';
+export { ScanFrame } from './ScanFrame';

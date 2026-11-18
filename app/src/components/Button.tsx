@@ -5,7 +5,7 @@ import { borderWidth, colors, opacity, radius, shadow, size, space } from '@/the
 
 import { AppText, type TextColor } from './AppText';
 
-export type ButtonVariant = 'primary' | 'outline' | 'text' | 'link';
+export type ButtonVariant = 'primary' | 'outline' | 'text' | 'link' | 'dark';
 
 export interface ButtonProps {
   label: string;
@@ -23,11 +23,13 @@ const labelColor: Record<ButtonVariant, TextColor> = {
   outline: 'brand',
   text: 'textSecondary',
   link: 'brand',
+  dark: 'onBrand',
 };
 
 /**
  * Pill button. Primary 56 high with brand background and shadow; outline 1.5 brand border;
- * text 48 high in secondary text color; link 48 high in brand color.
+ * text 48 high in secondary text color; link 48 high in brand color; dark 48 high, translucent
+ * white on the dark scan screen.
  */
 export function Button({
   label,
@@ -79,6 +81,7 @@ const styles = StyleSheet.create({
   outline: { borderWidth: borderWidth.strong, borderColor: colors.brand },
   text: { height: size.minTouch },
   link: { height: size.minTouch },
+  dark: { height: size.minTouch, backgroundColor: colors.scanButton },
   disabled: { opacity: opacity.disabled, shadowOpacity: 0, elevation: 0 },
 });
 
@@ -87,4 +90,5 @@ const pressedStyles = StyleSheet.create({
   outline: { backgroundColor: colors.mint },
   text: { backgroundColor: colors.neutralSoft },
   link: { backgroundColor: colors.mint },
+  dark: { opacity: opacity.pressed },
 });

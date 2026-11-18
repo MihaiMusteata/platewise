@@ -3,7 +3,14 @@ import { Pressable, StyleSheet, type StyleProp, type ViewStyle } from 'react-nat
 
 import { borderWidth, colors, iconStroke, opacity, radius, shadow, size } from '@/theme';
 
-export type IconButtonVariant = 'surface' | 'outline' | 'soft' | 'mint' | 'dark' | 'brand';
+export type IconButtonVariant =
+  | 'surface'
+  | 'outline'
+  | 'soft'
+  | 'mint'
+  | 'dark'
+  | 'darkSelected'
+  | 'brand';
 
 export interface IconButtonProps {
   icon: LucideIcon;
@@ -13,6 +20,7 @@ export interface IconButtonProps {
    * surface: white circle with card shadow (back buttons) ·
    * outline: white circle with hairline border · soft: neutral rounded square (stepper) ·
    * mint: mint circle (quick add) · dark: translucent on the scan screen ·
+   * darkSelected: white circle on the scan screen (toggle that is on, e.g. the torch) ·
    * brand: brand-filled circle (scan button next to the search field).
    */
   variant?: IconButtonVariant;
@@ -22,6 +30,8 @@ export interface IconButtonProps {
   /** Icon stroke; defaults to `iconStroke.regular`. */
   strokeWidth?: number;
   disabled?: boolean;
+  /** For toggles: exposes the on/off state to VoiceOver. */
+  selected?: boolean;
   style?: StyleProp<ViewStyle>;
   testID?: string;
 }
@@ -32,6 +42,7 @@ const iconColor: Record<IconButtonVariant, string> = {
   soft: colors.text,
   mint: colors.brand,
   dark: colors.onBrand,
+  darkSelected: colors.scanBackground,
   brand: colors.onBrand,
 };
 
@@ -45,6 +56,7 @@ export function IconButton({
   buttonSize = 'm',
   strokeWidth = iconStroke.regular,
   disabled = false,
+  selected,
   style,
   testID,
 }: IconButtonProps) {
@@ -55,7 +67,7 @@ export function IconButton({
       disabled={disabled}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
-      accessibilityState={{ disabled }}
+      accessibilityState={selected == null ? { disabled } : { disabled, selected }}
       style={({ pressed }) => [
         styles.base,
         styles[variant],
@@ -91,6 +103,7 @@ const styles = StyleSheet.create({
   soft: { backgroundColor: colors.neutralSoft, borderRadius: radius.m },
   mint: { backgroundColor: colors.mint },
   dark: { backgroundColor: colors.scanButton },
+  darkSelected: { backgroundColor: colors.onBrand },
   brand: { backgroundColor: colors.brand },
   large: { width: size.button, height: size.button },
   brandPressed: { backgroundColor: colors.brandPressed },

@@ -186,6 +186,29 @@ const ro = {
     notFoundBody: 'Poate a fost șters între timp. Caută-l din nou sau alege altul.',
     backToSearch: 'Înapoi la căutare',
   },
+  scan: {
+    title: 'Scanează codul de bare',
+    torch: 'Lanternă',
+    camera: 'Camera pentru scanare',
+    instruction: 'Îndreaptă camera spre cod',
+    hint: 'Se scanează singur. Sau introdu numărul.',
+    manualEntry: 'Introdu numărul codului',
+    manual: {
+      title: 'Introdu numărul codului',
+      body: 'Cifrele de sub codul de bare: 8, 12 sau 13.',
+      label: 'Cod de bare',
+      submit: 'Caută produsul',
+      errors: {
+        format: 'Codul are 8, 12 sau 13 cifre.',
+        checkDigit: 'O cifră nu se potrivește. Verifică numărul de sub bare.',
+      },
+    },
+    cameraOff: {
+      title: 'Accesul la cameră e oprit',
+      body: 'Avem nevoie de cameră ca să citim codurile. Pozele nu se salvează. O poți porni din Setări sau poți introduce numărul.',
+      openSettings: 'Deschide Setările',
+    },
+  },
   meals: {
     breakfast: 'Mic dejun',
     lunch: 'Prânz',

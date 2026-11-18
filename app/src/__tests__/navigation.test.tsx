@@ -52,6 +52,20 @@ jest.mock('@/services/foodApi', () => ({
   },
 }));
 
+// The scanner renders a native camera; a plain View with access granted is enough here.
+jest.mock('expo-camera', () => {
+  const { createElement } = jest.requireActual('react');
+  const { View } = jest.requireActual('react-native');
+  return {
+    CameraView: () => createElement(View),
+    useCameraPermissions: () => [
+      { granted: true, status: 'granted', canAskAgain: true },
+      async () => {},
+      async () => {},
+    ],
+  };
+});
+
 jest.mock('@expo-google-fonts/plus-jakarta-sans', () => ({
   useFonts: () => [true, null],
 }));
@@ -129,14 +143,19 @@ describe('navigation shell', () => {
     expect(screen).toHavePathname('/');
   });
 
-  it('reaches every scan-flow placeholder inside the scan modal', async () => {
+  it('reaches every scan-flow screen inside the scan modal', async () => {
     await renderRouter(routes, { initialUrl: '/add' });
     await fireEvent.press(screen.getByTestId('add-scan'));
     expect(screen).toHavePathname('/scan');
-    await fireEvent.press(screen.getByTestId('link-product'));
-    expect(screen).toHavePathname('/scan/product/5941234567890');
+    await fireEvent.press(screen.getByTestId('scan-manual'));
+    await fireEvent.changeText(screen.getByTestId('manual-input'), '5449000000996');
+    await fireEvent.press(screen.getByTestId('manual-submit'));
+    expect(screen).toHavePathname('/scan/product/5449000000996');
     await fireEvent.press(screen.getByTestId('placeholder-dismiss'));
     expect(screen).toHavePathname('/scan');
+    await fireEvent.press(screen.getByTestId('scan-manual'));
+    await fireEvent.changeText(screen.getByTestId('manual-input'), '5449000000996');
+    await fireEvent.press(screen.getByTestId('manual-submit'));
     await fireEvent.press(screen.getByTestId('link-not-found'));
     expect(screen).toHavePathname('/scan/not-found');
     await fireEvent.press(screen.getByTestId('link-new-product'));
