@@ -10,11 +10,11 @@ One task per agent session. Tick `[x]` when done and verified (`npm run typechec
 - [ ] **T0.5 Navigation shell.** Expo Router tabs Acasă / Progres / center Log / Planuri / Setări with custom TabBar (center 56 green button, active underline) per `Main.html`. Modal stack for add/scan/product. *Done when:* every route opens a placeholder.
 
 ## Phase 1 — Onboarding
-- [ ] **T1.1 Profile store + persistence.** Zustand + persisted storage; `hasOnboarded` flag redirects first launch to onboarding.
+- [x] **T1.1 Profile store + persistence.** Zustand + persisted storage; `hasOnboarded` flag redirects first launch to onboarding.
 - [ ] **T1.2 Onboarding 1–3** per `Onb1/2/3.html`, with validation (18+ required, numeric ranges) and live target calculation.
 
 ## Phase 2 — Home
-- [ ] **T2.1 Local database.** expo-sqlite schema for `foods` and `log_entries`, repository functions, seed of ~50 common Romanian foods (`source: 'common'`).
+- [x] **T2.1 Local database.** expo-sqlite schema for `foods` and `log_entries`, repository functions, seed of ~50 common Romanian foods (`source: 'common'`).
 - [ ] **T2.2 Home with data** per `Main.html`: greeting, hero card, macro cards, meals list, floating "Adaugă aliment".
 - [ ] **T2.3 Empty state** per `TodayEmpty.html` and **swipe to delete + undo** per `TodayDelete.html`.
 

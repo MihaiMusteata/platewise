@@ -54,3 +54,15 @@ All pre-approved native deps installed together (expo-sqlite, zustand, expo-secu
 - Decision: Chip default `choice` variant follows LogFood meal chips (brand fill when selected); System.html mint chip is `variant="action"`.
 - Differences: macro icons are lucide (Dumbbell, Wheat, Droplet) instead of custom SVGs; small LogFood MacroCard variant deferred to T3.2.
 - Simulator check: /dev/components renders with Plus Jakarta Sans and token colors.
+
+### T1.1 — Profile store + persistence — done
+- `src/stores/profile.ts`: Zustand + `persist` (`platewise.profile`, v1) over `src/services/kvStorage.ts`, a synchronous adapter on `expo-sqlite/kv-store` (no AsyncStorage dependency needed). State: `hasOnboarded`, `profile`; actions `completeOnboarding`, `updateProfile`, `reset`.
+- `src/app/index.tsx` redirects to `/onboarding/about` when not onboarded (placeholder route until T1.2).
+- Tests: store persistence across "restarts" (isolated module reloads), home redirect via `expo-router/testing-library` `renderRouter`.
+
+### T2.1 — Local database — done (built in parallel, ahead of order)
+- `src/db/`: `schema.ts` (PRAGMA user_version migrations, WAL, foreign keys), `index.ts` (`getDb()` memoized, migrates + seeds), `foodsRepo.ts`, `logRepo.ts`, `seed.ts` (59 common Romanian foods, ids `common:<slug>`), `types.ts` (`Db` interface, `LogEntryWithFood`, `DailyTotals`).
+- Repos take `db` as first argument; tests use `src/db/testing/testDb.ts`, an adapter over Node's built-in `node:sqlite` (real SQL, no new dependency).
+- Search: `search_name` column normalized in TS (lowercase, Romanian diacritics stripped), prefix matches first, LIKE wildcards escaped.
+- `deleteAllData` wipes log + non-common foods and clears `last_used_at`.
+- `src/lib/meals.ts` (`MEALS`, `totalsByMeal`), `src/lib/text.ts` (`normalizeForSearch`).
