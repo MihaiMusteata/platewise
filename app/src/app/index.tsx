@@ -1,11 +1,15 @@
-import { Link } from 'expo-router';
+import { Link, Redirect } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components';
 import ro from '@/i18n/ro';
+import { useProfileStore } from '@/stores/profile';
 import { size, space } from '@/theme';
 
 export default function HomeScreen() {
+  const hasOnboarded = useProfileStore((state) => state.hasOnboarded);
+  if (!hasOnboarded) return <Redirect href="/onboarding/about" />;
+
   return (
     <View style={styles.container}>
       <AppText variant="h2">Platewise</AppText>
