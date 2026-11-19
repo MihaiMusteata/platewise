@@ -141,3 +141,10 @@ All pre-approved native deps installed together (expo-sqlite, zustand, expo-secu
 - Save: `upsertFood` → log one serving (or 100 g) to the meal param or current meal → `dismissTo('/')`. Custom foods with a barcode resolve on later scans without network or using a scan (test added).
 - Decisions: no serving-name field (design has none; serving is "porție"); barcode read-only in the subtitle; macros optional (empty = 0); "Trimite la Open Food Facts" checkbox omitted (no submit path/credentials); empty required fields show no message, button stays disabled.
 - Simulator: screen verified visually (via Alimentele mele → create). Metro's watchman subscription had dropped; restarted with `watchman watch-del-all` + `expo start --clear`.
+
+### T5.1 — Progress — done
+- `(tabs)/progress.tsx` per Progress.html: Săptămână/Lună/An (`SegmentedControl size="l"`), `CalorieChart` (react-native-svg bars, axis "1k/2k/3k", dashed goal line, highlighted current bar, tap tooltip "1.842 kcal"), "Medie: X kcal" over logged days, weekly goal card (always the current week, capped at 100 %), `MacroDonut` with legend, weight card. Refreshes on focus and on log `revision`; stale loads ignored.
+- Geometry in `src/lib/chartGeometry.ts` (tested). Tokens added (mirrored): colors.weeklyTrack; size.segmentL, progressBarWeekly, legendDot, rowBadge; `chart` group (month bar gap 2 is deliberately off-grid for thin bars); shadow.segment.
+- Decisions: month labels on day 1, every 5th day and today; year bars = monthly average, labels "ian/feb/…"; paused → goal line and weekly card replaced by a calm note; weight tracking on → "Greutatea ta: X kg" from profile + "history later" note (needs product review); "Filtre" button omitted (no destination); empty data → grey ring + calm note.
+- Visual differences: donut centre text 20/28 vs 18; tooltip/current label weight 700 vs 800; tooltip can overlap a neighbouring tall bar.
+- Open issue: two `addEntry` calls running concurrently can collide on `withTransactionAsync` (seen when a temporary seed ran twice). The demo seed in T6.1 must insert sequentially or in one transaction.

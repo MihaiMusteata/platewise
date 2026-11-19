@@ -273,6 +273,40 @@ const ro = {
     kcalMismatch: (estimate: string) =>
       `Caloriile par diferite de cele calculate din macronutrienți (aprox. ${estimate} kcal). Verifică eticheta; poți salva oricum.`,
   },
+  progress: {
+    title: 'Progres',
+    periodGroup: 'Perioadă',
+    periods: {
+      week: 'Săptămână',
+      month: 'Lună',
+      year: 'An',
+    },
+    caloriesTitle: 'Calorii consumate',
+    average: 'Medie: ',
+    kcal: (value: string) => `${value} kcal`,
+    chartLabel: {
+      week: 'Calorii pe zi',
+      month: 'Calorii pe zi',
+      year: 'Medie pe lună',
+    },
+    chartGoal: (value: string) => `Ținta ${value}.`,
+    barLabel: (label: string, value: string) => `${label}: ${value} kcal`,
+    weeklyTitle: 'Ținta ta săptămânală',
+    weeklyOf: (goal: string) => ` / ${goal} kcal`,
+    weeklyLabel: (consumed: string, goal: string, percent: string) =>
+      `${consumed} din ${goal} kcal în săptămâna aceasta, ${percent}`,
+    pausedTitle: 'Monitorizare pe pauză',
+    pausedBody: 'Ținta și totalurile săptămânii sunt ascunse până reiei din Setări.',
+    macrosTitle: 'Distribuția macronutrienților',
+    perDay: 'kcal / zi',
+    donutLabel: (protein: string, carbs: string, fat: string) =>
+      `Proteine ${protein}, carbohidrați ${carbs}, grăsimi ${fat}`,
+    macrosEmpty: 'Nimic notat în perioada aceasta. Distribuția apare după primele alimente.',
+    weightOffTitle: 'Greutatea nu e urmărită',
+    weightOffBody: 'Pentru mulți, caloriile ajung. O poți porni din Setări.',
+    weightOnTitle: (kg: string) => `Greutatea ta: ${kg} kg`,
+    weightOnBody: 'Din profil. O actualizezi din Setări; istoricul vine curând.',
+  },
   meals: {
     breakfast: 'Mic dejun',
     lunch: 'Prânz',

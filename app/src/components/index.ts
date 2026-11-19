@@ -43,3 +43,5 @@ export { ManualBarcodeSheet, type ManualBarcodeSheetProps } from './ManualBarcod
 export { ScanFrame } from './ScanFrame';
 export { FlowHeader, LogFoodForm, type LogFoodFormProps } from './LogFoodForm';
 export { StateView, type StateViewProps } from './StateView';
+export { CalorieChart, type CalorieChartProps } from './CalorieChart';
+export { MacroDonut, type MacroDonutProps } from './MacroDonut';

@@ -59,6 +59,7 @@ export const colors = {
   chartBarActive: '#0E5A3A',
   chartGoalLine: '#6CC197',
   chartGrid: '#F0F3F1',
+  weeklyTrack: '#D2E9DA',    // progress track on the mint weekly goal card
 
   // Scan screen (dark)
   scanBackground: '#0D1311',
@@ -144,6 +145,10 @@ export const size = {
   stateBadge: 96,   // icon circle on full-screen states (camera off)
   stateIcon: 40,    // icon inside the state badge
   codePill: 40,     // barcode pill on Scan not found, remaining-scans pill on Scan
+  segmentL: 56,     // large segmented control (Progress period)
+  progressBarWeekly: 7, // weekly goal card on Progress
+  legendDot: 12,    // macro legend dot on Progress
+  rowBadge: 40,     // icon circle on the compact weight card
 } as const;
 
 /** Scan screen geometry (Scan.html). */
@@ -159,6 +164,30 @@ export const scan = {
   lineHeight: 3,
   textGap: 40,      // frame → instructions
   bottomPadding: 40,
+} as const;
+
+/** Progress chart and macro donut geometry (Progress.html). */
+export const chart = {
+  height: 120,      // plot area of the calorie chart
+  axisWidth: 24,    // y-axis label column
+  axisGap: 8,       // axis labels → plot
+  barPadding: 8,    // plot side padding before the first / after the last bar
+  barGapWeek: 16,
+  barGapMonth: 2,   // 28–31 thin bars
+  barGapYear: 8,
+  barRadiusTop: 8,
+  barRadiusBottom: 4,
+  goalDash: [4, 3] as readonly number[], // dashed goal line
+  goalLineWidth: 1.5,
+  gridLineWidth: 1,
+  tooltipGap: 8,    // bar top → tooltip
+  tooltipOverhang: 4, // tooltip may stick out of the plot by this much
+  monthLabelWidth: 24, // sparse day labels in the month view
+  donutSize: 116,
+  donutViewBox: 120,
+  donutRadius: 46,
+  donutStroke: 16,
+  donutGap: 3,      // gap between donut segments
 } as const;
 
 export const borderWidth = {
@@ -255,6 +284,13 @@ export const shadow = {
     shadowOffset: { width: 0, height: 0 },
     elevation: 0,
   },
+  segment: {        // selected segment of the large segmented control
+    shadowColor: '#0E5A3A',
+    shadowOpacity: 0.25,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 3,
+  },
   snackbar: {
     shadowColor: '#000000',
     shadowOpacity: 0.2,
@@ -278,6 +314,7 @@ export const tokens = {
   radius,
   size,
   scan,
+  chart,
   borderWidth,
   opacity,
   iconStroke,

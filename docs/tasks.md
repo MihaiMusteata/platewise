@@ -29,7 +29,7 @@ One task per agent session. Tick `[x]` when done and verified (`npm run typechec
 - [x] **T4.4 Scan counter.** Count successful barcode lookups in the iOS Keychain via `expo-secure-store`, keyed by calendar month (local time). 10 successful lookups per month; "not found" and offline do not count. Show remaining scans on the scan screen. At the limit show a calm message (no paywall yet); manual search and logging stay available. *Done when:* counter logic is unit-tested (month rollover, not-found not counted, limit reached).
 
 ## Phase 5 — Progress & Settings
-- [ ] **T5.1 Progress** per `Progress.html`: week/month/year segments, calorie bar chart with goal line and tooltip, weekly goal card, macro donut (`react-native-svg`), weight-off card.
+- [x] **T5.1 Progress** per `Progress.html`: week/month/year segments, calorie bar chart with goal line and tooltip, weekly goal card, macro donut (`react-native-svg`), weight-off card.
 - [ ] **T5.2 Settings** per `Settings.html`: target/goal links to onboarding steps, toggles, export CSV (share sheet), delete all data with confirmation, links (privacy, support).
 
 ## Phase 6 — Demo
