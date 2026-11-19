@@ -2,8 +2,41 @@
 
 Running log for the autonomous demo build. If resumed: read this first, then continue from the first unticked task in `docs/tasks.md` (skip T6.2).
 
-## Status
-In progress.
+## Status — Demo complete (2026-11-19)
+All tasks except T6.2 (human-only) are done on branch `demo`. Verify: `npm run typecheck && npm run lint && npm test` → clean, 0 lint warnings, 43 suites / 332 tests.
+
+### What works
+- First launch → onboarding (18+ gate, live Mifflin–St Jeor target, or "Îmi setez singur ținta") → Home.
+- Home: today's totals, remaining / over goal (neutral), macro cards, meals with entries, swipe to delete + 5 s undo, empty-day state.
+- Add food: offline search over ~59 common Romanian foods + my foods + recent; Open Food Facts text search when online; quick add; Log food with grams/servings, meal choice and live totals.
+- Scan: camera (EAN-13/8, UPC-A/E), torch, manual entry, camera-off state; lookup with local cache → Product found / Not found → Add product from label / Offline / limit. 10 successful lookups per month counted in the Keychain; "not found" and offline never count.
+- Progress: week/month/year chart with goal line and tooltip, weekly goal, macro donut, weight card.
+- Settings: edit target/goal, weight tracking and pause toggles, CSV export via share sheet, delete all data, privacy screen, support mail. Hidden dev section (long-press "Setări" 1,5 s): demo week on/off, reset scans, components gallery.
+- App name Platewise, icon, splash, Romanian camera permission text. All data stays on the device.
+
+### How to test on the phone
+1. Rebuild the dev client on the iPhone once (name/icon/scheme and native modules changed): `cd app && npx expo run:ios --device`, then `npx expo start`.
+2. First launch: fill Despre tine (age, height, weight, sex) → Obiectiv → Ținta → "Începe monitorizarea". Or tick 18+ and tap "Îmi setez singur ținta".
+3. Demo data: Setări → long-press the "Setări" title ~1,5 s → "Date demo" on → Acasă and Progres fill with a sample week.
+4. Search: center + → type "branza" (local) or a brand name (Open Food Facts, needs internet) → tap a result → adjust → "Adaugă la …". The + on a row quick-adds with undo.
+5. Scan: + → scan icon → point at a product barcode (e.g. any Coca-Cola, 5449000000996) → Product found → add. An unknown code → Not found → "Adaugă produsul" → fill label values → save. Airplane mode → Offline state. The pill shows remaining scans; Setări dev section resets them.
+6. Delete: swipe an entry left on Acasă → Șterge → "Anulează" within 5 s.
+7. Export: Setări → Exportă datele (CSV) → share sheet. Delete all: Setări → Șterge toate datele mele → confirm → back to onboarding.
+
+### Known gaps and items for product review
+- Copy without a design (needs review): scan counter pill and limit state, "Vezi opțiuni de sprijin" care text, Planuri "În curând", privacy screen text, Home info alert, Progress weight-on card.
+- Design deviations: lucide icons and letter thumbnails instead of custom icons/photos; "Fă o poză" shutter removed (expo-camera can't read EAN from photos on iOS); static scan line; native Switch size; a few type weights (see task notes below).
+- Open Food Facts legacy text search is often throttled; the app falls back to local results with a calm note.
+- Onboarding skip path saves missing age/height/weight as 0 (treated as unknown in Settings).
+- Meal reminders are a disabled "În curând" toggle (no notifications in the demo).
+- The icon is a simple generated mark; replace with a designed icon before the store.
+- Simulator-only verification for several error states (Not found, Offline, limit) is by unit/screen tests; Product found was verified live.
+
+### T6.2 (human-only, not attempted)
+EAS project setup (`eas init`), Apple Developer team access and signing, App Store Connect app record for `com.mihaimusteata.platewise` on the account holder's team (not the personal team), `eas build -p ios --profile production`, `eas submit` to TestFlight. Before that: R1 items (`PrivacyInfo.xcprivacy`, hosted privacy policy URL).
+
+### After demo (from tasks.md)
+B1/B2 backend scan proxy + server-side limit, M1/M2 paywall and RevenueCat "Plus", R1 privacy manifest and policy URL, R2 store release; plus Backup și sincronizare and the Planuri tab.
 
 ## Global decisions
 - Work happens on branch `demo` (pushed to `origin/demo`); `main` stays at the pre-demo state until a human merges.
