@@ -52,6 +52,18 @@ jest.mock('@/services/foodApi', () => ({
   },
 }));
 
+// Scan lookups and the Keychain counter: not found, full allowance.
+jest.mock('@/services/barcodeLookup', () => ({
+  lookupBarcode: async () => ({
+    status: 'not_found',
+    scans: { used: 0, remaining: 10, limit: 10, limitReached: false },
+  }),
+}));
+jest.mock('@/services/scanCounter', () => ({
+  ...jest.requireActual('@/services/scanCounter'),
+  getScanStatus: async () => ({ used: 0, remaining: 10, limit: 10, limitReached: false }),
+}));
+
 // The scanner renders a native camera; a plain View with access granted is enough here.
 jest.mock('expo-camera', () => {
   const { createElement } = jest.requireActual('react');
@@ -150,15 +162,16 @@ describe('navigation shell', () => {
     await fireEvent.press(screen.getByTestId('scan-manual'));
     await fireEvent.changeText(screen.getByTestId('manual-input'), '5449000000996');
     await fireEvent.press(screen.getByTestId('manual-submit'));
-    expect(screen).toHavePathname('/scan/product/5449000000996');
-    await fireEvent.press(screen.getByTestId('placeholder-dismiss'));
+    // The lookup finds nothing, so the product screen is replaced by "not found".
+    await screen.findByTestId('not-found');
+    expect(screen).toHavePathname('/scan/not-found');
+    expect(screen).toHaveSearchParams({ barcode: '5449000000996' });
+    await fireEvent.press(screen.getByTestId('not-found-rescan'));
     expect(screen).toHavePathname('/scan');
     await fireEvent.press(screen.getByTestId('scan-manual'));
     await fireEvent.changeText(screen.getByTestId('manual-input'), '5449000000996');
     await fireEvent.press(screen.getByTestId('manual-submit'));
-    await fireEvent.press(screen.getByTestId('link-not-found'));
-    expect(screen).toHavePathname('/scan/not-found');
-    await fireEvent.press(screen.getByTestId('link-new-product'));
+    await fireEvent.press(await screen.findByTestId('not-found-add'));
     expect(screen).toHavePathname('/scan/new-product');
   });
 

@@ -16,7 +16,9 @@ import {
 } from '@/components';
 import ro from '@/i18n/ro';
 import { SCAN_BARCODE_TYPES, isValidBarcode, normalizeBarcode } from '@/lib/barcode';
-import { colors, layout, scan, size, space } from '@/theme';
+import { remainingScansText, scanLimitText } from '@/lib/scanLimit';
+import { getScanStatus, type ScanStatus } from '@/services/scanCounter';
+import { colors, layout, radius, scan, size, space } from '@/theme';
 
 const scannerSettings = { barcodeTypes: [...SCAN_BARCODE_TYPES] };
 
@@ -27,6 +29,7 @@ export default function ScanScreen() {
   const [focused, setFocused] = useState(false);
   const [torch, setTorch] = useState(false);
   const [manualOpen, setManualOpen] = useState(false);
+  const [scans, setScans] = useState<ScanStatus | null>(null);
   // Only the first scan counts; unlocked again when the screen regains focus.
   const locked = useRef(false);
 
@@ -34,7 +37,13 @@ export default function ScanScreen() {
     useCallback(() => {
       locked.current = false;
       setFocused(true);
+      // Refresh the monthly counter every time the scanner comes back into view.
+      let active = true;
+      getScanStatus()
+        .then((status) => active && setScans(status))
+        .catch(() => {});
       return () => {
+        active = false;
         setFocused(false);
         setTorch(false);
       };
@@ -153,9 +162,32 @@ export default function ScanScreen() {
           <AppText variant="bodyL" color="scanTextSecondary" align="center">
             {ro.scan.hint}
           </AppText>
-          {/* T4.4: remaining-scans counter goes here (Scan.html has no slot for it yet). */}
         </View>
+        {scans && !scans.limitReached ? (
+          <View style={styles.counter} testID="scan-remaining">
+            <AppText variant="label" color="onBrand" tabular>
+              {remainingScansText(scans.remaining)}
+            </AppText>
+          </View>
+        ) : null}
+        {scans?.limitReached ? (
+          // Products already on the device still open without a scan, so the camera stays on.
+          <View style={styles.limit} testID="scan-limit">
+            <AppText variant="body" color="onBrand" align="center">
+              {scanLimitText(scans.limit, new Date())}
+            </AppText>
+          </View>
+        ) : null}
         <View style={styles.flex} />
+        {scans?.limitReached ? (
+          <Button
+            testID="scan-search"
+            variant="dark"
+            label={ro.scan.searchManually}
+            onPress={() => router.push('/add')}
+            style={styles.search}
+          />
+        ) : null}
         <Button
           testID="scan-manual"
           variant="dark"
@@ -180,6 +212,22 @@ const styles = StyleSheet.create({
   },
   headerGap: { height: scan.headerGap },
   instructions: { marginTop: scan.textGap, gap: space.xs, alignItems: 'center' },
+  counter: {
+    marginTop: space.m,
+    alignSelf: 'center',
+    height: size.codePill,
+    paddingHorizontal: space.m,
+    borderRadius: radius.l,
+    backgroundColor: colors.scanButton,
+    justifyContent: 'center',
+  },
+  limit: {
+    marginTop: space.m,
+    padding: space.m,
+    borderRadius: radius.m,
+    backgroundColor: colors.scanButton,
+  },
   flex: { flex: 1 },
   manual: { alignSelf: 'center' },
+  search: { alignSelf: 'center', marginBottom: space.xs },
 });

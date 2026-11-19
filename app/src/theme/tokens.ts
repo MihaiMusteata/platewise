@@ -120,6 +120,7 @@ export const size = {
   thumb: 56,
   thumbSmall: 48,
   thumbLarge: 64,   // food header on Log food
+  thumbProduct: 72, // product tile on Product found
   fab: 56,
   tabBar: 56,       // content height; add bottom safe-area inset
   tabIndicatorWidth: 24, // active tab underline
@@ -142,6 +143,7 @@ export const size = {
   infoIcon: 28,     // small info button next to a label (hitSlop brings it to 48)
   stateBadge: 96,   // icon circle on full-screen states (camera off)
   stateIcon: 40,    // icon inside the state badge
+  codePill: 40,     // barcode pill on Scan not found, remaining-scans pill on Scan
 } as const;
 
 /** Scan screen geometry (Scan.html). */

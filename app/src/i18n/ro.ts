@@ -208,6 +208,47 @@ const ro = {
       body: 'Avem nevoie de cameră ca să citim codurile. Pozele nu se salvează. O poți porni din Setări sau poți introduce numărul.',
       openSettings: 'Deschide Setările',
     },
+    searchManually: 'Caută manual',
+  },
+  scanLimit: {
+    remaining: {
+      one: 'scanare rămasă luna aceasta',
+      few: 'scanări rămase luna aceasta',
+      other: 'de scanări rămase luna aceasta',
+    },
+    title: 'Ai folosit scanările lunii',
+    body: (limit: string, resetDate: string) =>
+      `Ai folosit cele ${limit} scanări din luna aceasta. Poți căuta manual oricând; scanările revin pe ${resetDate}.`,
+  },
+  scanResult: {
+    title: 'Rezultatul scanării',
+    loading: 'Căutăm produsul…',
+    code: (barcode: string) => `Cod ${barcode}`,
+    found: {
+      title: 'Produs găsit',
+      attribution: 'Date din Open Food Facts, o bază comunitară. Valorile pot fi incomplete sau greșite.',
+    },
+    notFound: {
+      title: 'Nu avem încă acest produs',
+      body: 'Codul nu există în baza Open Food Facts. Îl poți adăuga după etichetă. Rămâne pe telefonul tău.',
+      addProduct: 'Adaugă produsul',
+      search: 'Caută în schimb',
+      scanAgain: 'Scanează din nou',
+    },
+    offline: {
+      title: 'Ești offline',
+      body: 'Căutarea după cod are nevoie de internet. Jurnalul funcționează în continuare. Alege un aliment recent sau încearcă mai târziu.',
+      recent: 'Alimente recente',
+      retry: 'Încearcă din nou',
+      searchMine: 'Caută în alimentele mele',
+    },
+    error: {
+      title: 'Căutarea nu răspunde acum',
+      body: 'Open Food Facts nu a răspuns. Jurnalul funcționează în continuare. Alege un aliment recent sau încearcă mai târziu.',
+    },
+    limit: {
+      search: 'Caută manual',
+    },
   },
   meals: {
     breakfast: 'Mic dejun',

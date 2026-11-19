@@ -124,3 +124,13 @@ All pre-approved native deps installed together (expo-sqlite, zustand, expo-secu
 - Decision: "Fă o poză" shutter omitted — expo-camera can only read QR from photos on iOS, so it could not read EAN codes; hint copy changed to "Se scanează singur. Sau introdu numărul." (needs product review).
 - Decision: scan line is static (no animation).
 - Visual differences: CameraOff has extra bottom padding (safe area); outline button background transparent instead of white; manual sheet leaves some space above the keyboard.
+
+### T4.2 + T4.4 — Lookup results and scan counter — done (one commit, they share the lookup service)
+- `services/barcodeLookup.ts`: product already on the device → returned without network and without using a scan; at the limit → no network call; otherwise OFF lookup, found products cached (`upsertFood`) and counted. Not found / offline / error never count.
+- `services/scanCounter.ts`: 10 successful lookups per calendar month in the iOS Keychain (`expo-secure-store`, AFTER_FIRST_UNLOCK, key `platewise.scanCounter`, `{month, count}`); new month starts at 0.
+- `scan/product/[barcode].tsx`: loading → Product found (ProductFound.html; shares `LogFoodForm` with Log food) / replace to `scan/not-found` (copy from ScanNotFound.html) / Offline.html state with retry and up to 3 recent foods / error (Offline layout, "Căutarea nu răspunde acum") / calm limit state ("Ai folosit scanările lunii", next reset date, "Caută manual", "Închide"; no paywall, no red).
+- Scan screen shows "N scanări rămase luna aceasta" (Romanian plurals in `lib/scanLimit.ts`), refreshed on focus; at 0 a calm message + "Caută manual", camera stays usable (cached products still resolve).
+- New shared components: `LogFoodForm`, `FlowHeader`, `StateView` (CameraOff/NotFound/Offline/limit). Tokens added (mirrored): size.thumbProduct 72, size.codePill 40.
+- Decisions: "Caută în alimentele mele" opens search filtered to Alimentele mele; "Editează" and package size omitted on Product found (no destination/data); subtitle "brand · 1 porție = X g · Cod …".
+- Needs product review: limit-state copy and the scan counter pill (no design).
+- Simulator: scan screen counter verified (10 remaining) and Product found verified live with 5449000000996 (Coca-Cola, 145 kcal / 330 g). Not found, Offline and limit states verified by tests only (MCP automation hung during the subagent's run).

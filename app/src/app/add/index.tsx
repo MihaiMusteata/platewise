@@ -33,6 +33,8 @@ import { colors, iconStroke, layout, opacity, size, space } from '@/theme';
 import type { Food, Meal } from '@/types/models';
 
 const isMeal = (value: unknown): value is Meal => MEALS.includes(value as Meal);
+const isFilter = (value: unknown): value is SearchFilter =>
+  SEARCH_FILTERS.includes(value as SearchFilter);
 
 /** Caches an Open Food Facts result locally so Log food, the log and "Recente" can use it offline. */
 async function ensureCached(food: Food): Promise<void> {
@@ -46,10 +48,12 @@ async function ensureCached(food: Food): Promise<void> {
  * Row → Log food; plus → quick add one serving to the current meal with an undo snackbar.
  */
 export default function AddFoodScreen() {
-  const params = useLocalSearchParams<{ meal?: string }>();
+  const params = useLocalSearchParams<{ meal?: string; filter?: string }>();
   const [meal] = useState<Meal>(() => (isMeal(params.meal) ? params.meal : defaultMealFor(new Date())));
   const [query, setQuery] = useState('');
-  const [filter, setFilter] = useState<SearchFilter>('all');
+  const [filter, setFilter] = useState<SearchFilter>(() =>
+    isFilter(params.filter) ? params.filter : 'all',
+  );
   const [addedId, setAddedId] = useState<string | null>(null);
   const search = useFoodSearch(query, filter);
   const snackbar = useUndoSnackbar();

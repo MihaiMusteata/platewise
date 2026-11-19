@@ -30,7 +30,15 @@ jest.mock('expo-camera', () => {
   };
 });
 
+let mockRemaining = 7;
+jest.mock('@/services/scanCounter', () => ({
+  ...jest.requireActual('@/services/scanCounter'),
+  getScanStatus: async () =>
+    jest.requireActual('@/services/scanCounter').statusFor(10 - mockRemaining),
+}));
+
 const Home = () => <Text>home</Text>;
+const Search = () => <Text>search</Text>;
 const Product = () => <Text>product</Text>;
 
 const routes = {
@@ -38,6 +46,7 @@ const routes = {
   'scan/_layout': ScanFlowLayout,
   'scan/index': ScanScreen,
   'scan/product/[barcode]': Product,
+  'add/index': Search,
 };
 
 const granted: MockPermission = { granted: true, status: 'granted', canAskAgain: true };
@@ -47,6 +56,7 @@ const scan = (data: string, type = 'ean13') =>
   act(async () => mockOnScan?.({ data, type } as BarcodeScanningResult));
 
 beforeEach(() => {
+  mockRemaining = 7;
   mockOnScan = undefined;
   mockRequestPermission.mockClear();
 });
@@ -118,6 +128,40 @@ describe('Scan screen — camera granted', () => {
     await fireEvent.changeText(screen.getByTestId('manual-input'), '5449000000996');
     await fireEvent.press(screen.getByTestId('manual-submit'));
     expect(screen).toHavePathname('/scan/product/5449000000996');
+  });
+});
+
+describe('Scan screen — monthly scans', () => {
+  beforeEach(() => {
+    mockPermission = granted;
+  });
+
+  it('shows how many scans are left this month', async () => {
+    await renderRouter(routes, { initialUrl: '/scan' });
+    expect(await screen.findByTestId('scan-remaining')).toHaveTextContent(
+      '7 scanări rămase luna aceasta',
+    );
+    expect(screen.queryByTestId('scan-limit')).toBeNull();
+  });
+
+  it('uses the singular for the last scan', async () => {
+    mockRemaining = 1;
+    await renderRouter(routes, { initialUrl: '/scan' });
+    expect(await screen.findByTestId('scan-remaining')).toHaveTextContent(
+      '1 scanare rămasă luna aceasta',
+    );
+  });
+
+  it('at the limit shows a calm message, keeps the camera and offers manual search', async () => {
+    mockRemaining = 0;
+    await renderRouter(routes, { initialUrl: '/scan' });
+    expect(await screen.findByTestId('scan-limit')).toHaveTextContent(
+      /Ai folosit cele 10 scanări din luna aceasta\. Poți căuta manual oricând/,
+    );
+    expect(screen.queryByTestId('scan-remaining')).toBeNull();
+    expect(screen.getByTestId('scan-camera')).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('scan-search'));
+    expect(screen).toHavePathname('/add');
   });
 });
 

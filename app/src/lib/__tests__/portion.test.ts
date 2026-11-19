@@ -6,6 +6,7 @@ import {
   initialPortion,
   portionLabel,
   portionUnit,
+  productSubtitle,
   servingGramsOf,
   stepAmount,
   toGrams,
@@ -101,6 +102,32 @@ describe('portion helpers', () => {
     ).toBe('Ferrero · 1 porție = 15 g · Open Food Facts');
     expect(foodSubtitle({ ...oats, servingGrams: undefined, source: 'custom' })).toBe(
       'Alimentele mele',
+    );
+  });
+});
+
+describe('productSubtitle', () => {
+  const nutella: Food = {
+    id: 'off:3017620422003',
+    name: 'Nutella',
+    brand: 'Ferrero',
+    barcode: '3017620422003',
+    per100g: { kcal: 539, protein: 6.3, carbs: 57.5, fat: 30.9 },
+    servingName: 'porție',
+    servingGrams: 15,
+    source: 'off',
+  };
+
+  it('shows brand, serving and code', () => {
+    expect(productSubtitle(nutella)).toBe('Ferrero · 1 porție = 15 g · Cod 3017620422003');
+  });
+
+  it('skips unknown parts', () => {
+    expect(productSubtitle({ ...nutella, brand: undefined, servingGrams: undefined })).toBe(
+      'Cod 3017620422003',
+    );
+    expect(productSubtitle({ ...nutella, barcode: undefined }, '123')).toBe(
+      'Ferrero · 1 porție = 15 g · Cod 123',
     );
   });
 });

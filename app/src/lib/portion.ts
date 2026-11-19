@@ -107,3 +107,20 @@ export function foodSubtitle(food: Food): string {
       : undefined;
   return [brand, serving, ro.logFood.sources[food.source]].filter(Boolean).join(' · ');
 }
+
+/**
+ * Line under the product name on Product found (ProductFound.html), e.g.
+ * "Ferrero · 1 porție = 15 g · Cod 3017620422003". Brand and serving are skipped when unknown.
+ */
+export function productSubtitle(food: Food, barcode?: string): string {
+  const servingGrams = servingGramsOf(food);
+  const serving = servingGrams
+    ? ro.logFood.servingSize(food.servingName ?? ro.logFood.serving, formatAmount(servingGrams))
+    : undefined;
+  const brand =
+    food.brand && !normalizeForSearch(food.name).includes(normalizeForSearch(food.brand))
+      ? food.brand
+      : undefined;
+  const code = barcode ?? food.barcode;
+  return [brand, serving, code ? ro.scanResult.code(code) : undefined].filter(Boolean).join(' · ');
+}
