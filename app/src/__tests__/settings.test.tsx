@@ -195,3 +195,13 @@ describe('editing from settings', () => {
     expect(useProfileStore.getState().profile).toMatchObject({ goal: 'maintain', dailyTargetKcal: 1900 });
   });
 });
+
+describe('hidden dev section', () => {
+  it('appears after long-pressing the title', async () => {
+    await renderSettings();
+    expect(screen.queryByTestId('dev-demo-data')).toBeNull();
+    await fireEvent(screen.getByTestId('settings-title'), 'longPress');
+    expect(screen.getByTestId('dev-demo-data')).toBeTruthy();
+    expect(screen.getByTestId('dev-reset-scans')).toBeTruthy();
+  });
+});

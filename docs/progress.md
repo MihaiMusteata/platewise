@@ -158,3 +158,10 @@ All pre-approved native deps installed together (expo-sqlite, zustand, expo-secu
 - Decisions: goal edit recalculates the target only when age/height/weight are all known (skip path saved 0s → target kept with a calm note); re-selecting the current goal no longer drops a manual target; Pause is a Switch (design shows a chevron); meal reminders disabled "În curând" (no notifications in demo); Backup și sincronizare and Restaurează achizițiile muted with "În curând" pill (post-demo); unit rows informational; "Sprijin și linii de ajutor" opens calm care guidance with "Scrie-ne" mailto; no app version row (not in design).
 - Open: hosted privacy policy URL still needed (R1).
 - Simulator: top three sections, weight toggle, target edit + back, CSV share sheet, privacy screen verified. Lower section (badges, delete row) verified by tests only (scroll unavailable). Native Switch 51×31 vs design 56×32.
+
+### T6.1 — Demo polish — done
+- app.json: name "Platewise", slug/scheme "platewise", `userInterfaceStyle: "light"` (no dark theme exists), iOS icon `assets/images/icon.png` (Icon Composer `expo.icon` removed), splash on brand green `#0E5A3A` with the Platewise mark, Android adaptive icons + favicon regenerated. Camera permission text was already set (T4.1 prep).
+- Icon: simple mark drawn with PIL (white plate ring + lime leaf on the hero gradient), generator script kept out of the repo. Replace with a designed icon before the store release.
+- Hidden dev section at the bottom of Settings, toggled by long-pressing the "Setări" title for 1,5 s: "Date demo" switch (seeds/clears a sample week via `services/demoData.ts`; only the demo entries are removed — ids stored in kv), "Resetează scanările lunii", link to /dev/components.
+- Native rebuild done (`expo prebuild --clean` + `run:ios`); the dev client URL scheme is now `exp+platewise://`. The physical iPhone's dev build must be rebuilt (`npx expo run:ios --device`) to pick up the new name, icon and scheme.
+- Simulator: fresh install → onboarding (skip path) → empty Home → demo data toggle → Progress shows the week. Home-screen icon and name verified.

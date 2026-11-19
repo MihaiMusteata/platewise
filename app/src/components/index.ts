@@ -51,3 +51,4 @@ export {
   type SettingsRowProps,
   type SettingsSectionProps,
 } from './SettingsRow';
+export * from './DevSection';

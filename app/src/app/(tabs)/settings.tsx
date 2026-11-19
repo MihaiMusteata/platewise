@@ -1,8 +1,8 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Alert, Linking, StyleSheet, View } from 'react-native';
+import { Alert, Linking, Pressable, StyleSheet, View } from 'react-native';
 
-import { AppText, Screen, SettingsRow, SettingsSection } from '@/components';
+import { AppText, DevSection, Screen, SettingsRow, SettingsSection } from '@/components';
 import ro from '@/i18n/ro';
 import { formatNumber } from '@/lib/format';
 import { draftFromProfile } from '@/lib/onboarding';
@@ -23,6 +23,7 @@ export default function SettingsScreen() {
   const profile = useProfileStore((s) => s.profile);
   const updateProfile = useProfileStore((s) => s.updateProfile);
   const [exporting, setExporting] = useState(false);
+  const [devVisible, setDevVisible] = useState(false);
 
   /** Opens an onboarding step in edit mode, prefilled from the saved profile. */
   const edit = (pathname: '/onboarding/goal' | '/onboarding/target') => {
@@ -71,9 +72,16 @@ export default function SettingsScreen() {
       <View style={styles.blob} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />
 
       <View style={styles.header}>
-        <AppText variant="h1" accessibilityRole="header">
-          {t.title}
-        </AppText>
+        {/* Long-press (1,5 s) toggles the hidden dev section. */}
+        <Pressable
+          delayLongPress={1500}
+          onLongPress={() => setDevVisible((v) => !v)}
+          testID="settings-title"
+        >
+          <AppText variant="h1" accessibilityRole="header">
+            {t.title}
+          </AppText>
+        </Pressable>
       </View>
 
       <SettingsSection title={t.sections.goals}>
@@ -144,7 +152,7 @@ export default function SettingsScreen() {
         <SettingsRow title={t.foodData} subtitle={t.foodDataHint} />
       </SettingsSection>
 
-      {/* T6.1: hidden dev section (demo seed data toggle) goes here. Not built yet. */}
+      {devVisible ? <DevSection /> : null}
     </Screen>
   );
 }

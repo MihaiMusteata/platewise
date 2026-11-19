@@ -390,6 +390,14 @@ const ro = {
     fat: 'Grăsimi',
   },
   dev: {
+    section: {
+      title: 'Dezvoltare',
+      demoData: 'Date demo',
+      demoDataHint: 'O săptămână de mese exemplu',
+      resetScans: 'Resetează scanările lunii',
+      scansResetTitle: 'Scanări resetate',
+      scansResetBody: 'Ai din nou 10 scanări luna aceasta.',
+    },
     components: 'Componente',
     typography: 'Tipografie',
     sections: {

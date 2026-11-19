@@ -33,7 +33,7 @@ One task per agent session. Tick `[x]` when done and verified (`npm run typechec
 - [x] **T5.2 Settings** per `Settings.html`: target/goal links to onboarding steps, toggles, export CSV (share sheet), delete all data with confirmation, links (privacy, support).
 
 ## Phase 6 — Demo
-- [ ] **T6.1 Demo polish.** App icon, splash, app name "Platewise", camera permission text in `app.json`. Hidden dev section in Settings with a "demo seed data" toggle that fills/clears a sample week of log entries. *Done when:* a fresh install shows the Platewise name/icon and the toggle populates Home and Progress.
+- [x] **T6.1 Demo polish.** App icon, splash, app name "Platewise", camera permission text in `app.json`. Hidden dev section in Settings with a "demo seed data" toggle that fills/clears a sample week of log entries. *Done when:* a fresh install shows the Platewise name/icon and the toggle populates Home and Progress.
 - [ ] **T6.2 EAS build + TestFlight.** Human-only (Apple team access, signing, App Store Connect). Agents do not attempt this.
 
 ## After demo
