@@ -29,6 +29,17 @@ interface LogState {
   clearAll: () => Promise<void>;
 }
 
+/**
+ * Runs DB writes one after another. expo-sqlite transactions are not exclusive,
+ * so two overlapping `withTransactionAsync` calls (e.g. fast quick-adds) would collide.
+ */
+let writeQueue: Promise<unknown> = Promise.resolve();
+function serial<T>(task: () => Promise<T>): Promise<T> {
+  const run = writeQueue.then(task, task);
+  writeQueue = run.catch(() => undefined);
+  return run;
+}
+
 export const useLogStore = create<LogState>()((set, get) => {
   const reload = async () => {
     const db = await getDb();
@@ -47,34 +58,39 @@ export const useLogStore = create<LogState>()((set, get) => {
       await reload();
     },
 
-    add: async ({ date, ...input }) => {
-      const db = await getDb();
-      const entry = await addEntry(db, { ...input, date: date ?? toDateKey(new Date()) });
-      if (entry.date === get().date) await reload();
-      else set((state) => ({ revision: state.revision + 1 }));
-      return entry;
-    },
+    add: ({ date, ...input }) =>
+      serial(async () => {
+        const db = await getDb();
+        const entry = await addEntry(db, { ...input, date: date ?? toDateKey(new Date()) });
+        if (entry.date === get().date) await reload();
+        else set((state) => ({ revision: state.revision + 1 }));
+        return entry;
+      }),
 
-    remove: async (id) => {
+    remove: (id) => {
       const removed = get().entries.find((e) => e.id === id);
       // Optimistic: hide the row immediately, then persist.
       set((state) => ({ entries: state.entries.filter((e) => e.id !== id) }));
-      const db = await getDb();
-      await deleteEntry(db, id);
-      set((state) => ({ revision: state.revision + 1 }));
-      return removed;
+      return serial(async () => {
+        const db = await getDb();
+        await deleteEntry(db, id);
+        set((state) => ({ revision: state.revision + 1 }));
+        return removed;
+      });
     },
 
-    restore: async ({ id, date, meal, foodId, grams, createdAt }) => {
-      const db = await getDb();
-      await restoreEntry(db, { id, date, meal, foodId, grams, createdAt });
-      await reload();
-    },
+    restore: ({ id, date, meal, foodId, grams, createdAt }) =>
+      serial(async () => {
+        const db = await getDb();
+        await restoreEntry(db, { id, date, meal, foodId, grams, createdAt });
+        await reload();
+      }),
 
-    clearAll: async () => {
-      const db = await getDb();
-      await deleteAllData(db);
-      await reload();
-    },
+    clearAll: () =>
+      serial(async () => {
+        const db = await getDb();
+        await deleteAllData(db);
+        await reload();
+      }),
   };
 });

@@ -83,3 +83,14 @@ describe('log store', () => {
     expect(useLogStore.getState().entries).toHaveLength(0);
   });
 });
+
+describe('log store writes', () => {
+  it('serializes concurrent adds instead of colliding', async () => {
+    await useLogStore.getState().load();
+    const adds = Array.from({ length: 5 }, () =>
+      useLogStore.getState().add({ meal: 'snack', foodId: 'common:ou-fiert', grams: 50 }),
+    );
+    await Promise.all(adds);
+    expect(useLogStore.getState().entries).toHaveLength(5);
+  });
+});
