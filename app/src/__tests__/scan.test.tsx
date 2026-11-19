@@ -52,6 +52,15 @@ const routes = {
 const granted: MockPermission = { granted: true, status: 'granted', canAskAgain: true };
 const denied: MockPermission = { granted: false, status: 'denied', canAskAgain: false };
 
+/** Renders the scanner and waits for the camera's mount delay (after the modal transition). */
+async function renderScanner() {
+  await renderRouter(routes, { initialUrl: '/scan' });
+  // expo-router's test renderer runs on fake timers.
+  await act(async () => {
+    jest.advanceTimersByTime(650);
+  });
+}
+
 const scan = (data: string, type = 'ean13') =>
   act(async () => mockOnScan?.({ data, type } as BarcodeScanningResult));
 
@@ -67,7 +76,7 @@ describe('Scan screen — camera granted', () => {
   });
 
   it('renders the camera, frame and copy', async () => {
-    await renderRouter(routes, { initialUrl: '/scan' });
+    await renderScanner();
     expect(screen.getByTestId('scan-camera')).toBeTruthy();
     expect(screen.getByText(ro.scan.title)).toBeTruthy();
     expect(screen.getByText(ro.scan.instruction)).toBeTruthy();
@@ -75,7 +84,7 @@ describe('Scan screen — camera granted', () => {
   });
 
   it('opens the product for the first valid scan only, and scans again after coming back', async () => {
-    await renderRouter(routes, { initialUrl: '/scan' });
+    await renderScanner();
 
     await scan('5449000000997'); // misread check digit: ignored
     expect(screen).toHavePathname('/scan');
@@ -94,7 +103,7 @@ describe('Scan screen — camera granted', () => {
   });
 
   it('toggles the torch', async () => {
-    await renderRouter(routes, { initialUrl: '/scan' });
+    await renderScanner();
     expect(screen.getByTestId('scan-camera').props.enableTorch).toBe(false);
     await fireEvent.press(screen.getByTestId('scan-torch'));
     expect(screen.getByTestId('scan-camera').props.enableTorch).toBe(true);
@@ -112,7 +121,7 @@ describe('Scan screen — camera granted', () => {
   });
 
   it('shows a calm hint for an invalid manual code and opens the product for a valid one', async () => {
-    await renderRouter(routes, { initialUrl: '/scan' });
+    await renderScanner();
     await fireEvent.press(screen.getByTestId('scan-manual'));
 
     await fireEvent.changeText(screen.getByTestId('manual-input'), '12345');
@@ -137,7 +146,7 @@ describe('Scan screen — monthly scans', () => {
   });
 
   it('shows how many scans are left this month', async () => {
-    await renderRouter(routes, { initialUrl: '/scan' });
+    await renderScanner();
     expect(await screen.findByTestId('scan-remaining')).toHaveTextContent(
       '7 scanări rămase luna aceasta',
     );
@@ -146,7 +155,7 @@ describe('Scan screen — monthly scans', () => {
 
   it('uses the singular for the last scan', async () => {
     mockRemaining = 1;
-    await renderRouter(routes, { initialUrl: '/scan' });
+    await renderScanner();
     expect(await screen.findByTestId('scan-remaining')).toHaveTextContent(
       '1 scanare rămasă luna aceasta',
     );
@@ -154,7 +163,7 @@ describe('Scan screen — monthly scans', () => {
 
   it('at the limit shows a calm message, keeps the camera and offers manual search', async () => {
     mockRemaining = 0;
-    await renderRouter(routes, { initialUrl: '/scan' });
+    await renderScanner();
     expect(await screen.findByTestId('scan-limit')).toHaveTextContent(
       /Ai folosit cele 10 scanări din luna aceasta\. Poți căuta manual oricând/,
     );
@@ -168,7 +177,7 @@ describe('Scan screen — monthly scans', () => {
 describe('Scan screen — permission', () => {
   it('asks for camera access when not decided yet', async () => {
     mockPermission = { granted: false, status: 'undetermined', canAskAgain: true };
-    await renderRouter(routes, { initialUrl: '/scan' });
+    await renderScanner();
     expect(mockRequestPermission).toHaveBeenCalledTimes(1);
     expect(screen.queryByTestId('scan-camera')).toBeNull();
     expect(screen.queryByText(ro.scan.cameraOff.title)).toBeNull();
@@ -177,7 +186,7 @@ describe('Scan screen — permission', () => {
   it('shows the camera-off state with settings and manual entry when denied', async () => {
     mockPermission = denied;
     const openSettings = jest.spyOn(Linking, 'openSettings').mockResolvedValue();
-    await renderRouter(routes, { initialUrl: '/scan' });
+    await renderScanner();
 
     expect(screen.queryByTestId('scan-camera')).toBeNull();
     expect(screen.getByText(ro.scan.cameraOff.title)).toBeTruthy();

@@ -1,6 +1,6 @@
 import { CameraView, useCameraPermissions, type BarcodeScanningResult } from 'expo-camera';
 import * as Haptics from 'expo-haptics';
-import { Stack, router, useFocusEffect } from 'expo-router';
+import { Stack, router, useFocusEffect, useNavigation } from 'expo-router';
 import { X, Zap } from 'lucide-react-native';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AppState, Linking, StyleSheet, View } from 'react-native';
@@ -22,11 +22,18 @@ import { colors, layout, radius, scan, size, space } from '@/theme';
 
 const scannerSettings = { barcodeTypes: [...SCAN_BARCODE_TYPES] };
 
+/** Fallback if the modal's transitionEnd event never arrives. */
+const CAMERA_MOUNT_DELAY_MS = 600;
+
 /** Barcode scanner (full-screen modal, Scan.html); CameraOff.html when access is denied. */
 export default function ScanScreen() {
   const insets = useSafeAreaInsets();
   const [permission, requestPermission, getPermission] = useCameraPermissions();
+  const navigation = useNavigation();
   const [focused, setFocused] = useState(false);
+  // iOS can start the camera with a black preview when it mounts mid-transition,
+  // so the preview waits until the full-screen modal has finished opening.
+  const [transitionDone, setTransitionDone] = useState(false);
   const [torch, setTorch] = useState(false);
   const [manualOpen, setManualOpen] = useState(false);
   const [scans, setScans] = useState<ScanStatus | null>(null);
@@ -49,6 +56,15 @@ export default function ScanScreen() {
       };
     }, []),
   );
+
+  useEffect(() => {
+    const timer = setTimeout(() => setTransitionDone(true), CAMERA_MOUNT_DELAY_MS);
+    const unsubscribe = navigation.addListener('transitionEnd' as never, () => setTransitionDone(true));
+    return () => {
+      clearTimeout(timer);
+      unsubscribe();
+    };
+  }, [navigation]);
 
   // Ask once when the user has not decided yet.
   const undetermined = permission?.status === 'undetermined';
@@ -106,13 +122,15 @@ export default function ScanScreen() {
     );
   }
 
-  const cameraOn = permission?.granted === true && focused;
+  const cameraOn = permission?.granted === true && focused && transitionDone;
 
   return (
     <View style={styles.screen}>
       <Stack.Screen options={{ statusBarStyle: 'light' }} />
       {cameraOn ? (
         <CameraView
+          // Remount when access changes (e.g. just granted) so iOS starts a fresh session.
+          key={permission?.status}
           testID="scan-camera"
           style={StyleSheet.absoluteFill}
           facing="back"
@@ -120,6 +138,7 @@ export default function ScanScreen() {
           barcodeScannerSettings={scannerSettings}
           onBarcodeScanned={manualOpen ? undefined : onBarcodeScanned}
           accessibilityLabel={ro.scan.camera}
+          onMountError={(e) => console.warn('[scan] camera mount error:', e.message)}
         />
       ) : null}
       <View

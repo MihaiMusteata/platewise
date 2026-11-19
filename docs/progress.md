@@ -204,3 +204,8 @@ All pre-approved native deps installed together (expo-sqlite, zustand, expo-secu
 - Fix per expo-sqlite "Web setup" docs: new `app/metro.config.js` adds `wasm` to `resolver.assetExts` and sets COEP `credentialless` / COOP `same-origin` headers (needed for SharedArrayBuffer).
 - `app.json` web output changed from `server` to `single`: the app is iOS-only, and server rendering tried to start expo-sqlite's devtools in Node ("window is not defined").
 - Verified: web index + web bundle return 200, iOS bundle builds, no errors in the Metro log; no native rebuild needed.
+
+### Fix — black camera preview on the iPhone (after demo)
+- Reported on device: permission granted, controls visible, preview black. Not reproducible on the simulator (no camera).
+- Change in `scan/index.tsx`: the `CameraView` mounts only after the full-screen modal's `transitionEnd` (600 ms fallback), is remounted when the permission status changes (`key={permission.status}`), and logs `onMountError` as `[scan] camera mount error: …` in the Metro terminal.
+- Pending: confirmation on the iPhone.
