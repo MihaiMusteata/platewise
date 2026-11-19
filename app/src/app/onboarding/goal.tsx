@@ -3,7 +3,7 @@ import { Equal, TrendingDown, TrendingUp, type LucideIcon } from 'lucide-react-n
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, ChoiceCard, HeroCard, OnboardingStep } from '@/components';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { formatNumber } from '@/lib/format';
 import { draftTarget, editTarget, estimateTarget } from '@/lib/onboarding';
 import { useOnboardingStore } from '@/stores/onboarding';
@@ -11,12 +11,12 @@ import { useProfileStore } from '@/stores/profile';
 import { layout, space } from '@/theme';
 import type { Goal } from '@/types/models';
 
-const t = ro.onboarding.goal;
+const t = strings.onboarding.goal;
 
 const GOALS: { value: Goal; title: string; subtitle: string; icon: LucideIcon }[] = [
-  { value: 'lose', title: t.lose, subtitle: t.loseHint, icon: TrendingDown },
-  { value: 'maintain', title: t.maintain, subtitle: t.maintainHint, icon: Equal },
-  { value: 'gain', title: t.gain, subtitle: t.gainHint, icon: TrendingUp },
+  { value: 'lose', get title() { return t.lose; }, get subtitle() { return t.loseHint; }, icon: TrendingDown },
+  { value: 'maintain', get title() { return t.maintain; }, get subtitle() { return t.maintainHint; }, icon: Equal },
+  { value: 'gain', get title() { return t.gain; }, get subtitle() { return t.gainHint; }, icon: TrendingUp },
 ];
 
 /**
@@ -30,7 +30,7 @@ export default function GoalScreen() {
   const saved = useProfileStore((s) => s.profile?.dailyTargetKcal);
   const kcal = edit && saved != null ? editTarget(draft, saved) : draftTarget(draft);
   const target = formatNumber(kcal);
-  const note = edit && estimateTarget(draft) == null ? ro.onboarding.edit.goalNoteManual : t.note;
+  const note = edit && estimateTarget(draft) == null ? strings.onboarding.edit.goalNoteManual : t.note;
 
   const save = () => {
     useProfileStore.getState().updateProfile({ goal: draft.goal, dailyTargetKcal: kcal });
@@ -42,10 +42,10 @@ export default function GoalScreen() {
       step={edit ? undefined : 2}
       title={t.title}
       intro={t.intro}
-      primaryLabel={edit ? ro.onboarding.edit.save : ro.common.continue}
+      primaryLabel={edit ? strings.onboarding.edit.save : strings.common.continue}
       onPrimary={edit ? save : () => router.push('/onboarding/target')}
       primaryTestID={edit ? 'onb-save' : 'onb-continue'}
-      secondaryLabel={edit ? ro.common.cancel : ro.common.back}
+      secondaryLabel={edit ? strings.common.cancel : strings.common.back}
       onSecondary={() => router.back()}
       secondaryTestID="onb-back"
     >

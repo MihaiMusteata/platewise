@@ -2,17 +2,15 @@ import { File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 
 import { allEntries, getDb } from '@/db';
-import ro from '@/i18n/ro';
+import { getLanguage, strings } from '@/i18n';
 import { buildLogCsv, type CsvLabels } from '@/lib/csv';
 import { toDateKey } from '@/lib/date';
 
 export type ExportResult = 'shared' | 'empty';
 
-const labels: CsvLabels = { header: ro.csv.header, meals: ro.meals };
-
-/** File name for the export on a given day: `platewise-jurnal-YYYY-MM-DD.csv`. */
+/** File name for the export on a given day: `platewise-jurnal-YYYY-MM-DD.csv` (en `platewise-log-…`). */
 export function exportFileName(today: Date): string {
-  return `platewise-jurnal-${toDateKey(today)}.csv`;
+  return `${strings.csv.filePrefix}-${toDateKey(today)}.csv`;
 }
 
 /**
@@ -27,7 +25,8 @@ export async function exportLogCsv(today = new Date()): Promise<ExportResult> {
   const file = new File(Paths.cache, exportFileName(today));
   if (file.exists) file.delete();
   file.create();
-  await file.write(buildLogCsv(entries, labels));
+  const labels: CsvLabels = { header: strings.csv.header, meals: strings.meals };
+  await file.write(buildLogCsv(entries, labels, getLanguage() === 'en' ? 'en' : 'ro'));
 
   await Sharing.shareAsync(file.uri, {
     mimeType: 'text/csv',

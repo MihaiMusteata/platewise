@@ -2,7 +2,7 @@ import { router, type Href } from 'expo-router';
 import { ChevronLeft, X } from 'lucide-react-native';
 import { StyleSheet, View } from 'react-native';
 
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { space } from '@/theme';
 
 import { AppText } from './AppText';
@@ -33,7 +33,7 @@ export interface PlaceholderScreenProps {
 /** Temporary screen for routes whose real UI comes in a later task. */
 export function PlaceholderScreen({
   title,
-  body = ro.placeholder.body,
+  body = strings.placeholder.body,
   dismiss = 'none',
   links = [],
   bottomInset = true,
@@ -46,7 +46,7 @@ export function PlaceholderScreen({
         <IconButton
           testID="placeholder-dismiss"
           icon={dismiss === 'close' ? X : ChevronLeft}
-          accessibilityLabel={dismiss === 'close' ? ro.common.close : ro.common.back}
+          accessibilityLabel={dismiss === 'close' ? strings.common.close : strings.common.back}
           onPress={() => router.back()}
         />
       )}

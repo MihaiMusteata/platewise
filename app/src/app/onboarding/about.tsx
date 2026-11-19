@@ -9,24 +9,24 @@ import {
   SelectField,
   TextField,
 } from '@/components';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { validateAbout, type FieldResult } from '@/lib/onboarding';
 import { useOnboardingStore } from '@/stores/onboarding';
 import { space } from '@/theme';
 import type { Activity, Sex } from '@/types/models';
 
-const t = ro.onboarding.about;
+const t = strings.onboarding.about;
 
 const ACTIVITY_OPTIONS: { value: Activity; label: string }[] = [
-  { value: 'sedentary', label: ro.onboarding.activity.sedentary },
-  { value: 'light', label: ro.onboarding.activity.light },
-  { value: 'moderate', label: ro.onboarding.activity.moderate },
-  { value: 'intense', label: ro.onboarding.activity.intense },
+  { value: 'sedentary', get label() { return strings.onboarding.activity.sedentary; } },
+  { value: 'light', get label() { return strings.onboarding.activity.light; } },
+  { value: 'moderate', get label() { return strings.onboarding.activity.moderate; } },
+  { value: 'intense', get label() { return strings.onboarding.activity.intense; } },
 ];
 
 const SEX_OPTIONS: { value: Sex; label: string }[] = [
-  { value: 'female', label: t.female },
-  { value: 'male', label: t.male },
+  { value: 'female', get label() { return t.female; } },
+  { value: 'male', get label() { return t.male; } },
 ];
 
 /** Calm inline hint; nothing for an empty field (the button just stays disabled). */
@@ -45,7 +45,7 @@ export default function AboutScreen() {
       step={1}
       title={t.title}
       intro={t.intro}
-      primaryLabel={ro.common.continue}
+      primaryLabel={strings.common.continue}
       onPrimary={() => router.push('/onboarding/goal')}
       primaryDisabled={!canContinue}
       primaryTestID="onb-continue"

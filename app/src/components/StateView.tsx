@@ -2,7 +2,7 @@ import { ChevronLeft, X, type LucideIcon } from 'lucide-react-native';
 import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { colors, iconStroke, layout, radius, size, space } from '@/theme';
 
 import { AppText } from './AppText';
@@ -54,7 +54,7 @@ export function StateView({
           testID={dismiss === 'close' ? 'scan-close' : 'state-back'}
           icon={dismiss === 'close' ? X : ChevronLeft}
           iconSize="S"
-          accessibilityLabel={dismiss === 'close' ? ro.common.close : ro.common.back}
+          accessibilityLabel={dismiss === 'close' ? strings.common.close : strings.common.back}
           onPress={onDismiss}
         />
         <AppText variant="bodyLStrong">{headerTitle}</AppText>

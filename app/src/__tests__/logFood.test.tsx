@@ -8,7 +8,7 @@ import { entriesForDate, upsertFood } from '@/db/index';
 import { migrate } from '@/db/schema';
 import { seedCommonFoods } from '@/db/seed';
 import { createTestDb, type TestDb } from '@/db/testing/testDb';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { toDateKey } from '@/lib/date';
 import { useLogStore } from '@/stores/log';
 import type { Food } from '@/types/models';
@@ -83,19 +83,19 @@ describe('Log food', () => {
     expect(screen.getByTestId('log-meal-lunch')).toBeSelected();
     expect(screen.queryByTestId('log-attribution')).toBeNull();
 
-    await fireEvent.press(screen.getByLabelText(ro.common.more));
+    await fireEvent.press(screen.getByLabelText(strings.common.more));
     expect(screen.getByTestId('log-kcal')).toHaveTextContent('116'); // 1,5 × 50 g = 75 g
     expect(screen.getByText('kcal pentru 1,5 bucăți')).toBeTruthy();
 
-    await fireEvent.press(screen.getByRole('tab', { name: ro.logFood.grams }));
+    await fireEvent.press(screen.getByRole('tab', { name: strings.logFood.grams }));
     expect(screen.getByText('kcal pentru 75 g')).toBeTruthy();
-    await fireEvent.press(screen.getByLabelText(ro.common.more));
+    await fireEvent.press(screen.getByLabelText(strings.common.more));
     expect(screen.getByTestId('log-kcal')).toHaveTextContent('132'); // 85 g
-    expect(screen.getByTestId('log-macro-protein')).toHaveTextContent(`${ro.macros.protein}10,7 g`);
+    expect(screen.getByTestId('log-macro-protein')).toHaveTextContent(`${strings.macros.protein}10,7 g`);
 
     await press('log-meal-dinner');
     expect(screen.getByTestId('log-save')).toHaveTextContent(
-      ro.logFood.save(ro.meals.dinner, '132'),
+      strings.logFood.save(strings.meals.dinner, '132'),
     );
     await press('log-save');
 
@@ -114,7 +114,7 @@ describe('Log food', () => {
     expect(screen.getByTestId('log-subtitle')).toHaveTextContent(
       'Ferrero · 1 porție = 15 g · Open Food Facts',
     );
-    expect(screen.getByTestId('log-attribution')).toHaveTextContent(ro.addFood.attribution);
+    expect(screen.getByTestId('log-attribution')).toHaveTextContent(strings.addFood.attribution);
     expect(screen.getByTestId('log-meal-snack')).toBeSelected();
     expect(screen.getByTestId('log-kcal')).toHaveTextContent('81');
   });
@@ -123,16 +123,16 @@ describe('Log food', () => {
     await upsertFood(mockDb, plain);
     await renderRouter(routes, { initialUrl: '/add/food/custom-1' });
     expect(await screen.findByTestId('log-name')).toHaveTextContent(plain.name);
-    expect(screen.queryByRole('tab', { name: ro.logFood.servings })).toBeNull();
+    expect(screen.queryByRole('tab', { name: strings.logFood.servings })).toBeNull();
     expect(screen.getByText('kcal pentru 100 g')).toBeTruthy();
     expect(screen.getByTestId('log-kcal')).toHaveTextContent('80');
-    await fireEvent.press(screen.getByLabelText(ro.common.less));
+    await fireEvent.press(screen.getByLabelText(strings.common.less));
     expect(screen.getByTestId('log-kcal')).toHaveTextContent('72'); // 90 g
   });
 
   it('shows a calm note when the food does not exist', async () => {
     await renderRouter(routes, { initialUrl: '/add/food/common:nu-exista' });
-    expect(await screen.findByTestId('log-not-found')).toHaveTextContent(ro.logFood.notFoundTitle, {
+    expect(await screen.findByTestId('log-not-found')).toHaveTextContent(strings.logFood.notFoundTitle, {
       exact: false,
     });
   });

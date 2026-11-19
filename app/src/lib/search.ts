@@ -1,7 +1,7 @@
 import { formatNumber } from '@/lib/format';
 import { nutrientsFor } from '@/lib/nutrition';
 import { normalizeForSearch } from '@/lib/text';
-import ro from '@/i18n/ro';
+import { servingName, strings } from '@/i18n';
 import type { ThumbTint } from '@/components/FoodThumb';
 import type { Food } from '@/types/models';
 
@@ -84,9 +84,9 @@ export function resultSubtitle(food: Food): string {
   const grams = defaultGrams(food);
   const named = food.servingGrams && food.servingName && food.servingName !== 'porție';
   const amount = named
-    ? ro.addFood.oneServing(food.servingName as string)
-    : ro.addFood.grams(formatNumber(grams));
-  const kcal = ro.addFood.kcal(formatNumber(nutrientsFor(food.per100g, grams).kcal));
+    ? strings.addFood.oneServing(servingName(food.servingName as string))
+    : strings.addFood.grams(formatNumber(grams));
+  const kcal = strings.addFood.kcal(formatNumber(nutrientsFor(food.per100g, grams).kcal));
   // Skip the brand when the name already contains it ("Almette Crema de brânză").
   const brand =
     food.brand && !normalizeForSearch(food.name).includes(normalizeForSearch(food.brand))

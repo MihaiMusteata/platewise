@@ -1,7 +1,7 @@
 import { Redirect, Tabs } from 'expo-router';
 
 import { TabBar } from '@/components';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { useProfileStore } from '@/stores/profile';
 import { colors } from '@/theme';
 
@@ -14,10 +14,10 @@ export default function TabsLayout() {
       tabBar={(props) => <TabBar {...props} />}
       screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: colors.background } }}
     >
-      <Tabs.Screen name="index" options={{ title: ro.tabs.home }} />
-      <Tabs.Screen name="progress" options={{ title: ro.tabs.progress }} />
-      <Tabs.Screen name="plans" options={{ title: ro.tabs.plans }} />
-      <Tabs.Screen name="settings" options={{ title: ro.tabs.settings }} />
+      <Tabs.Screen name="index" options={{ title: strings.tabs.home }} />
+      <Tabs.Screen name="progress" options={{ title: strings.tabs.progress }} />
+      <Tabs.Screen name="plans" options={{ title: strings.tabs.plans }} />
+      <Tabs.Screen name="settings" options={{ title: strings.tabs.settings }} />
     </Tabs>
   );
 }

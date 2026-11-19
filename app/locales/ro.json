@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Platewise",
+    "NSCameraUsageDescription": "Platewise folosește camera pentru a scana codurile de bare ale produselor."
+  }
+}

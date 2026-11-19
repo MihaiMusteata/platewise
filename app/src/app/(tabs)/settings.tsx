@@ -1,18 +1,20 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Alert, Linking, Pressable, StyleSheet, View } from 'react-native';
+import { ActionSheetIOS, Alert, Linking, Platform, Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText, DevSection, Screen, SettingsRow, SettingsSection } from '@/components';
-import ro from '@/i18n/ro';
+import { strings, type LanguagePreference } from '@/i18n';
 import { formatNumber } from '@/lib/format';
 import { draftFromProfile } from '@/lib/onboarding';
 import { exportLogCsv } from '@/services/exportCsv';
 import { useLogStore } from '@/stores/log';
 import { useOnboardingStore } from '@/stores/onboarding';
 import { useProfileStore } from '@/stores/profile';
+import { useSettingsStore } from '@/stores/settings';
 import { colors, decor, layout, radius, size } from '@/theme';
 
-const t = ro.settings;
+const t = strings.settings;
+const LANGUAGES: readonly LanguagePreference[] = ['system', 'ro', 'en'];
 const SUPPORT_MAIL = 'mailto:musteatamihai2002@icloud.com?subject=Platewise';
 
 /**
@@ -24,6 +26,8 @@ export default function SettingsScreen() {
   const updateProfile = useProfileStore((s) => s.updateProfile);
   const [exporting, setExporting] = useState(false);
   const [devVisible, setDevVisible] = useState(false);
+  const language = useSettingsStore((s) => s.language);
+  const setLanguage = useSettingsStore((s) => s.setLanguage);
 
   /** Opens an onboarding step in edit mode, prefilled from the saved profile. */
   const edit = (pathname: '/onboarding/goal' | '/onboarding/target') => {
@@ -47,7 +51,7 @@ export default function SettingsScreen() {
 
   const deleteAll = () =>
     Alert.alert(t.deleteTitle, t.deleteBody, [
-      { text: ro.common.cancel, style: 'cancel' },
+      { text: strings.common.cancel, style: 'cancel' },
       {
         text: t.deleteConfirm,
         style: 'destructive',
@@ -61,10 +65,35 @@ export default function SettingsScreen() {
       },
     ]);
 
+  /** Native sheet: Automat / Română / English. Choosing one re-mounts the app in that language. */
+  const chooseLanguage = () => {
+    const labels = LANGUAGES.map((l) => t.languageOptions[l]);
+    const pick = (index: number) => {
+      const choice = LANGUAGES[index];
+      if (choice && choice !== language) setLanguage(choice);
+    };
+    if (Platform.OS === 'ios') {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          title: t.language,
+          message: t.languageSheetMessage,
+          options: [...labels, strings.common.cancel],
+          cancelButtonIndex: labels.length,
+        },
+        pick,
+      );
+    } else {
+      Alert.alert(t.language, t.languageSheetMessage, [
+        ...labels.map((text, i) => ({ text, onPress: () => pick(i) })),
+        { text: strings.common.cancel, style: 'cancel' as const },
+      ]);
+    }
+  };
+
   const support = () =>
     Alert.alert(t.support, t.supportBody, [
       { text: t.supportEmail, onPress: () => void Linking.openURL(SUPPORT_MAIL) },
-      { text: ro.common.close, style: 'cancel' },
+      { text: strings.common.close, style: 'cancel' },
     ]);
 
   return (
@@ -95,12 +124,18 @@ export default function SettingsScreen() {
         <SettingsRow
           testID="settings-goal"
           title={t.goal}
-          value={profile ? ro.onboarding.goal[profile.goal] : undefined}
+          value={profile ? strings.onboarding.goal[profile.goal] : undefined}
           onPress={() => edit('/onboarding/goal')}
         />
         {/* Only kcal and kg exist in the demo, so the unit rows are informational. */}
-        <SettingsRow title={t.energyUnit} value={ro.common.kcal} />
-        <SettingsRow title={t.weightUnit} value={ro.common.kg} />
+        <SettingsRow title={t.energyUnit} value={strings.common.kcal} />
+        <SettingsRow title={t.weightUnit} value={strings.common.kg} />
+        <SettingsRow
+          testID="settings-language"
+          title={t.language}
+          value={t.languageOptions[language]}
+          onPress={chooseLanguage}
+        />
       </SettingsSection>
 
       <SettingsSection title={t.sections.tracking}>

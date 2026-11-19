@@ -1,41 +1,27 @@
-const WEEKDAYS = ['Duminică', 'Luni', 'Marți', 'Miercuri', 'Joi', 'Vineri', 'Sâmbătă'];
-const WEEKDAYS_SHORT = ['D', 'L', 'Ma', 'Mi', 'J', 'V', 'S'];
-const WEEKDAYS_ABBR = ['Du', 'Lu', 'Ma', 'Mi', 'Jo', 'Vi', 'Sâ'];
-const MONTHS = [
-  'ianuarie',
-  'februarie',
-  'martie',
-  'aprilie',
-  'mai',
-  'iunie',
-  'iulie',
-  'august',
-  'septembrie',
-  'octombrie',
-  'noiembrie',
-  'decembrie',
-];
+import { strings } from '@/i18n';
 
-/** "Miercuri, 18 noiembrie" */
+/** Weekday and month names come from the active dictionary (`strings.calendar`). */
+const cal = () => strings.calendar;
+
+/** "Miercuri, 18 noiembrie" (ro), "Wednesday, 18 November" (en). */
 export function formatDateLong(date: Date): string {
-  return `${WEEKDAYS[date.getDay()]}, ${date.getDate()} ${MONTHS[date.getMonth()]}`;
+  return `${cal().weekdays[date.getDay()]}, ${formatDayMonth(date)}`;
 }
 
-/** "18 noiembrie" */
+/** "18 noiembrie" (ro), "18 November" (en). */
 export function formatDayMonth(date: Date): string {
-  return `${date.getDate()} ${MONTHS[date.getMonth()]}`;
+  return `${date.getDate()} ${cal().months[date.getMonth()]}`;
 }
 
-/** One- or two-letter weekday label for charts ("L", "Ma", "Mi", …). */
+/** One- or two-letter weekday label ("L", "Ma", "Mi", … / "M", "Tu", "W", …). */
 export function weekdayShort(date: Date): string {
-  return WEEKDAYS_SHORT[date.getDay()];
+  return cal().weekdaysShort[date.getDay()];
 }
 
-/** Two-letter weekday label as in the Progress chart ("Lu", "Ma", …, "Du"). */
+/** Two-letter weekday label as in the Progress chart ("Lu", "Ma", …, "Du" / "Mo", "Tu", …, "Su"). */
 export function weekdayAbbr(date: Date): string {
-  return WEEKDAYS_ABBR[date.getDay()];
+  return cal().weekdaysAbbr[date.getDay()];
 }
-
 /** Monday of the week containing `date` (local, midnight). */
 export function startOfWeek(date: Date): Date {
   const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -45,7 +31,12 @@ export function startOfWeek(date: Date): Date {
 }
 
 export function monthName(monthIndex: number): string {
-  return MONTHS[monthIndex];
+  return cal().months[monthIndex];
+}
+
+/** Short month label for the year chart ("ian", "feb" / "Jan", "Feb"). */
+export function monthShort(monthIndex: number): string {
+  return cal().monthsShort[monthIndex];
 }
 
 const pad = (n: number) => String(n).padStart(2, '0');

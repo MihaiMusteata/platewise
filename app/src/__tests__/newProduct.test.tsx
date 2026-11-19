@@ -7,7 +7,7 @@ import NewProductScreen from '@/app/scan/new-product';
 import { entriesForDate, getFood, myFoods } from '@/db/index';
 import { migrate } from '@/db/schema';
 import { createTestDb, type TestDb } from '@/db/testing/testDb';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { toDateKey } from '@/lib/date';
 import { useLogStore } from '@/stores/log';
 
@@ -67,7 +67,7 @@ afterEach(() => mockDb.close());
 describe('Add product from label', () => {
   it('saves a custom food with the barcode, logs one serving and goes Home', async () => {
     await open({ barcode: '4000000000000', meal: 'lunch' });
-    expect(screen.getByText(ro.addProduct.title)).toBeTruthy();
+    expect(screen.getByText(strings.addProduct.title)).toBeTruthy();
     expect(screen.getByTestId('product-subtitle')).toHaveTextContent(
       'Cod 4000000000000 · valori la 100 g',
     );
@@ -112,7 +112,7 @@ describe('Add product from label', () => {
     await open({});
     await fillGranola();
     await type('kcal', '1200');
-    expect(screen.getByText(ro.addProduct.errors.kcal)).toBeTruthy();
+    expect(screen.getByText(strings.addProduct.errors.kcal)).toBeTruthy();
     expect(screen.getByTestId('product-save')).toBeDisabled();
     await fireEvent.press(screen.getByTestId('product-save'));
     expect(await myFoods(mockDb)).toHaveLength(0);

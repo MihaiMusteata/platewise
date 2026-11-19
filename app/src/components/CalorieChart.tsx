@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, View, type LayoutChangeEvent } from 'react-native';
 import Svg, { Line, Path } from 'react-native-svg';
 
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import {
   axisLabel,
   axisTicks,
@@ -147,7 +147,7 @@ export function CalorieChart({
               testID={`chart-bar-${bars[i].key}`}
               onPress={() => onSelect(bars[i].key)}
               accessibilityRole="button"
-              accessibilityLabel={ro.progress.barLabel(bars[i].label, formatNumber(bars[i].kcal))}
+              accessibilityLabel={strings.progress.barLabel(bars[i].label, formatNumber(bars[i].kcal))}
               accessibilityState={{ selected: bars[i].key === selectedKey }}
               style={[styles.hit, { left: slot.hitX, width: slot.hitWidth }]}
             />
@@ -170,7 +170,7 @@ export function CalorieChart({
               ]}
             >
               <AppText variant="bodyStrong" tabular numberOfLines={1}>
-                {ro.progress.kcal(formatNumber(selected.kcal))}
+                {strings.progress.kcal(formatNumber(selected.kcal))}
               </AppText>
             </View>
           ) : null}

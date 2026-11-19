@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { donutArcs } from '@/lib/chartGeometry';
 import { formatNumber } from '@/lib/format';
 import type { MacroShare } from '@/lib/progress';
@@ -39,8 +39,8 @@ export function MacroDonut({ share, averageKcal }: MacroDonutProps) {
         accessibilityRole="image"
         accessibilityLabel={
           empty
-            ? ro.progress.macrosEmpty
-            : ro.progress.donutLabel(pct(share.protein), pct(share.carbs), pct(share.fat))
+            ? strings.progress.macrosEmpty
+            : strings.progress.donutLabel(pct(share.protein), pct(share.carbs), pct(share.fat))
         }
       >
         <Svg
@@ -80,14 +80,14 @@ export function MacroDonut({ share, averageKcal }: MacroDonutProps) {
             {formatNumber(averageKcal)}
           </AppText>
           <AppText variant="footnote" color="textSecondary">
-            {ro.progress.perDay}
+            {strings.progress.perDay}
           </AppText>
         </View>
       </View>
 
       {empty ? (
         <AppText variant="body" color="textSecondary" style={styles.legend} testID="macros-empty">
-          {ro.progress.macrosEmpty}
+          {strings.progress.macrosEmpty}
         </AppText>
       ) : (
         <View style={styles.legend}>
@@ -95,7 +95,7 @@ export function MacroDonut({ share, averageKcal }: MacroDonutProps) {
             <View key={key} style={styles.legendRow}>
               <View style={[styles.dot, { backgroundColor: macros[key].bar }]} />
               <AppText variant="bodyL" color="textTertiary" style={styles.legendLabel}>
-                {ro.macros[key]}
+                {strings.macros[key]}
               </AppText>
               <AppText variant="numberS" tabular testID={`legend-${key}`}>
                 {pct(share[key])}

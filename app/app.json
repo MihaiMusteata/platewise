@@ -9,7 +9,19 @@
     "userInterfaceStyle": "light",
     "ios": {
       "icon": "./assets/images/icon.png",
-      "bundleIdentifier": "com.mihaimusteata.platewise.dev"
+      "bundleIdentifier": "com.mihaimusteata.platewise.dev",
+      "infoPlist": {
+        "CFBundleDevelopmentRegion": "ro",
+        "CFBundleLocalizations": [
+          "ro",
+          "en"
+        ],
+        "CFBundleAllowMixedLocalizations": true
+      }
+    },
+    "locales": {
+      "ro": "./locales/ro.json",
+      "en": "./locales/en.json"
     },
     "android": {
       "adaptiveIcon": {

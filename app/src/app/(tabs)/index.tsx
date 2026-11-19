@@ -30,7 +30,7 @@ import {
   type ThumbTint,
 } from '@/components';
 import { useUndoSnackbar } from '@/hooks/useUndoSnackbar';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { formatDateLong, toDateKey } from '@/lib/date';
 import { formatNumber } from '@/lib/format';
 import { daySummary, greetingFor } from '@/lib/home';
@@ -82,7 +82,7 @@ export default function HomeScreen() {
   const deleteEntry = async (entry: LogEntryWithFood) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
     const removed = await remove(entry.id);
-    if (removed) snackbar.show(ro.home.deleted(removed.food.name), () => void restore(removed));
+    if (removed) snackbar.show(strings.home.deleted(removed.food.name), () => void restore(removed));
   };
 
   useFocusEffect(
@@ -109,7 +109,7 @@ export default function HomeScreen() {
         <View style={styles.header}>
           <View style={styles.headerText}>
             <AppText variant="h1" accessibilityRole="header">
-              {ro.home.greeting[greetingFor(now)]}
+              {strings.home.greeting[greetingFor(now)]}
             </AppText>
             <AppText variant="body" color="textSecondary">
               {formatDateLong(now)}
@@ -119,7 +119,7 @@ export default function HomeScreen() {
             testID="home-profile"
             onPress={() => router.navigate('/settings')}
             accessibilityRole="button"
-            accessibilityLabel={ro.home.profile}
+            accessibilityLabel={strings.home.profile}
             style={({ pressed }) => [styles.avatar, pressed && styles.avatarPressed]}
           >
             <UserRound size={size.iconM} color={colors.brand} strokeWidth={iconStroke.regular} />
@@ -130,29 +130,29 @@ export default function HomeScreen() {
           <EmptyDay target={target} paused={paused} />
         ) : (
           <>
-            <HeroCard contentStyle={styles.hero} accessibilityLabel={ro.home.caloriesToday}>
+            <HeroCard contentStyle={styles.hero} accessibilityLabel={strings.home.caloriesToday}>
               <View style={styles.heroTop}>
                 {paused ? (
                   <View style={styles.heroText} testID="home-paused">
                     <AppText variant="h3" color="onBrand">
-                      {ro.home.pausedTitle}
+                      {strings.home.pausedTitle}
                     </AppText>
                     <AppText variant="body" color="heroTextSecondary">
-                      {ro.home.pausedBody}
+                      {strings.home.pausedBody}
                     </AppText>
                   </View>
                 ) : (
                   <View style={styles.heroText}>
                     <View style={styles.heroLabel}>
                       <AppText variant="labelL" color="onBrand">
-                        {ro.home.caloriesToday}
+                        {strings.home.caloriesToday}
                       </AppText>
                       <Pressable
                         testID="home-info"
-                        onPress={() => Alert.alert(ro.home.howTitle, ro.home.howBody)}
+                        onPress={() => Alert.alert(strings.home.howTitle, strings.home.howBody)}
                         hitSlop={INFO_HIT_SLOP}
                         accessibilityRole="button"
-                        accessibilityLabel={ro.home.howCalculated}
+                        accessibilityLabel={strings.home.howCalculated}
                         style={styles.info}
                       >
                         <Info size={size.iconS} color={colors.onBrand} strokeWidth={iconStroke.thin} />
@@ -163,13 +163,13 @@ export default function HomeScreen() {
                         {formatNumber(summary.food)}
                       </AppText>
                       <AppText variant="heroUnit" color="heroTextSecondary" tabular>
-                        {ro.home.ofTarget(formatNumber(target))}
+                        {strings.home.ofTarget(formatNumber(target))}
                       </AppText>
                     </View>
                     <AppText variant="body" color="heroTextSecondary" tabular testID="home-remaining">
                       {summary.over
-                        ? ro.home.over(formatNumber(summary.remaining))
-                        : ro.home.remaining(formatNumber(summary.remaining))}
+                        ? strings.home.over(formatNumber(summary.remaining))
+                        : strings.home.remaining(formatNumber(summary.remaining))}
                     </AppText>
                   </View>
                 )}
@@ -184,7 +184,7 @@ export default function HomeScreen() {
                     color={colors.lime}
                     trackColor={colors.heroTrack}
                     height={size.progressBarHero}
-                    accessibilityLabel={ro.home.progressLabel(percent)}
+                    accessibilityLabel={strings.home.progressLabel(percent)}
                     style={styles.progressBar}
                   />
                   <AppText variant="bodyLStrong" color="onBrand" tabular>
@@ -204,7 +204,7 @@ export default function HomeScreen() {
 
         <View style={empty ? styles.mealsHeaderEmpty : styles.mealsHeader}>
           <AppText variant="sectionTitle" accessibilityRole="header">
-            {ro.home.mealsTitle}
+            {strings.home.mealsTitle}
           </AppText>
         </View>
         <View style={empty ? styles.mealsEmpty : styles.meals}>
@@ -212,12 +212,12 @@ export default function HomeScreen() {
             empty ? (
               <EmptyMealRow
                 key={meal}
-                title={ro.meals[meal]}
-                subtitle={ro.home.mealEmpty}
+                title={strings.meals[meal]}
+                subtitle={strings.home.mealEmpty}
                 icon={MEAL_THUMBS[meal].icon}
                 action={{
-                  label: ro.home.add,
-                  accessibilityLabel: ro.home.addTo(ro.meals[meal]),
+                  label: strings.home.add,
+                  accessibilityLabel: strings.home.addTo(strings.meals[meal]),
                   onPress: () => openAdd(meal),
                   testID: `home-add-${meal}`,
                 }}
@@ -226,8 +226,8 @@ export default function HomeScreen() {
               <View key={meal} style={styles.meal}>
                 <MealRow
                   testID={`home-meal-${meal}`}
-                  title={ro.meals[meal]}
-                  subtitle={mealFoodNames(entries, meal) || ro.home.mealEmpty}
+                  title={strings.meals[meal]}
+                  subtitle={mealFoodNames(entries, meal) || strings.home.mealEmpty}
                   kcal={byMeal[meal].kcal}
                   tint={MEAL_THUMBS[meal].tint}
                   icon={MEAL_THUMBS[meal].icon}
@@ -240,7 +240,7 @@ export default function HomeScreen() {
                       key={entry.id}
                       testID={`home-entry-${entry.id}`}
                       title={entry.food.name}
-                      subtitle={ro.home.grams(formatNumber(entry.grams))}
+                      subtitle={strings.home.grams(formatNumber(entry.grams))}
                       kcal={entry.nutrients.kcal}
                       tint={MEAL_THUMBS[meal].tint}
                       onDelete={() => void deleteEntry(entry)}
@@ -262,7 +262,7 @@ export default function HomeScreen() {
       ) : empty ? null : (
         <Fab
           testID="home-add"
-          label={ro.home.addFood}
+          label={strings.home.addFood}
           icon={Plus}
           onPress={() => openAdd(defaultMealFor(new Date()))}
           style={styles.fab}
@@ -275,32 +275,32 @@ export default function HomeScreen() {
 /** Hero of an empty day (TodayEmpty.html): full target left and the two ways to log the first food. */
 function EmptyDay({ target, paused }: { target: number; paused: boolean }) {
   return (
-    <HeroCard contentStyle={styles.hero} accessibilityLabel={ro.home.newDay}>
+    <HeroCard contentStyle={styles.hero} accessibilityLabel={strings.home.newDay}>
       <View style={styles.heroTop}>
         {paused ? (
           <View style={styles.heroText} testID="home-paused">
             <AppText variant="h3" color="onBrand">
-              {ro.home.pausedTitle}
+              {strings.home.pausedTitle}
             </AppText>
             <AppText variant="body" color="heroTextSecondary">
-              {ro.home.pausedBody}
+              {strings.home.pausedBody}
             </AppText>
           </View>
         ) : (
           <View style={styles.heroText} testID="home-empty">
             <AppText variant="labelL" color="onBrand">
-              {ro.home.newDay}
+              {strings.home.newDay}
             </AppText>
             <View style={styles.heroNumbers}>
               <AppText variant="display" color="onBrand" tabular>
                 {formatNumber(target)}
               </AppText>
               <AppText variant="heroUnit" color="heroTextSecondary">
-                {ro.home.remainingUnit}
+                {strings.home.remainingUnit}
               </AppText>
             </View>
             <AppText variant="body" color="heroTextSecondary">
-              {ro.home.newDayHint}
+              {strings.home.newDayHint}
             </AppText>
           </View>
         )}
@@ -317,24 +317,24 @@ function EmptyDay({ target, paused }: { target: number; paused: boolean }) {
           testID="home-scan"
           onPress={() => router.push('/scan')}
           accessibilityRole="button"
-          accessibilityLabel={ro.home.scan}
+          accessibilityLabel={strings.home.scan}
           style={({ pressed }) => [styles.heroAction, styles.heroActionFilled, pressed && styles.heroActionPressed]}
         >
           <ScanBarcode size={size.iconS} color={colors.brand} strokeWidth={iconStroke.navActive} />
           <AppText variant="button" color="brand">
-            {ro.home.scan}
+            {strings.home.scan}
           </AppText>
         </Pressable>
         <Pressable
           testID="home-search"
           onPress={() => openAdd(defaultMealFor(new Date()))}
           accessibilityRole="button"
-          accessibilityLabel={ro.home.search}
+          accessibilityLabel={strings.home.search}
           style={({ pressed }) => [styles.heroAction, styles.heroActionOutline, pressed && styles.heroActionPressed]}
         >
           <Search size={size.iconS} color={colors.onBrand} strokeWidth={iconStroke.navActive} />
           <AppText variant="button" color="onBrand">
-            {ro.home.search}
+            {strings.home.search}
           </AppText>
         </Pressable>
       </View>

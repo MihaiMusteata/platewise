@@ -27,8 +27,8 @@ docs/
 3. **Type scale (ratio 1.25):** 12/16, 14/20, 16/24, 20/28, 24/32, 32/40, 40/40, 48/48 (size/lineHeight). Font: Plus Jakarta Sans (500 body, 600 labels, 700 titles & buttons, 800 display & H1). Use `fontVariant: ['tabular-nums']` for numbers.
 4. **Touch targets ≥ 48.** Primary button 56 high (pill), chip 48, text input 56 (radius 16), icon button 48, icons 20 or 24.
 5. **Match the reference screen.** Each screen has `design/screens/<Name>.html`. Read its markup and reproduce layout, copy and values faithfully. After UI work, take a simulator screenshot and compare.
-6. **UI copy is Romanian**, kept in `app/src/i18n/ro.ts`. No emoji in UI. Tone is calm and never shaming (no red for "over goal", no guilt language).
-7. **Numbers in Romanian format:** thousands with dot (`2.000`), decimals with comma (`72,4`). Use the shared `formatNumber` / `formatDecimal` helpers.
+6. **UI copy is Romanian (source) and English.** Copy lives in `app/src/i18n/ro.ts` (Romanian source) and `app/src/i18n/en.ts` (English); both must be updated together (same keys, checked by typecheck). Screens read it via `import { strings } from '@/i18n'`. No emoji in UI. Tone is calm and never shaming (no red for "over goal", no guilt language).
+7. **Numbers follow the active language:** Romanian `2.000` / `72,4`, English `2,000` / `72.4`. Always use the shared `formatNumber` / `formatDecimal` helpers (and `@/lib/date` for dates); never format by hand.
 8. **Never edit `app/ios/` by hand.** It is generated (Continuous Native Generation). Native config goes in `app.json` / config plugins.
 9. **No new libraries without asking** in the chat first. Prefer Expo modules.
 10. **No secrets in Git.** Keys go in `.env` (git-ignored) or EAS secrets.

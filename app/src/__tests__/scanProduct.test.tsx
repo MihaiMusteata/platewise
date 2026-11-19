@@ -9,7 +9,7 @@ import { entriesForDate, upsertFood } from '@/db/index';
 import { migrate } from '@/db/schema';
 import { seedCommonFoods } from '@/db/seed';
 import { createTestDb, type TestDb } from '@/db/testing/testDb';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { toDateKey } from '@/lib/date';
 import type { ScanResult } from '@/services/barcodeLookup';
 import { statusFor } from '@/services/scanCounter';
@@ -85,12 +85,12 @@ describe('Scan result', () => {
 
     expect(await screen.findByTestId('log-name')).toHaveTextContent('Original Taste');
     expect(mockLookup.mock.calls[0][2]).toBe('5449000000996');
-    expect(screen.getByText(ro.scanResult.found.title)).toBeTruthy();
+    expect(screen.getByText(strings.scanResult.found.title)).toBeTruthy();
     expect(screen.getByTestId('log-subtitle')).toHaveTextContent(
       'Coca-Cola · 1 porție = 330 g · Cod 5449000000996',
     );
     expect(screen.getByTestId('log-kcal')).toHaveTextContent('139'); // 330 g × 0,42
-    expect(screen.getByTestId('log-attribution')).toHaveTextContent(ro.scanResult.found.attribution);
+    expect(screen.getByTestId('log-attribution')).toHaveTextContent(strings.scanResult.found.attribution);
 
     await fireEvent.press(screen.getByTestId('log-meal-snack'));
     await fireEvent.press(screen.getByTestId('log-save'));
@@ -105,9 +105,9 @@ describe('Scan result', () => {
     mockLookup.mockResolvedValue({ status: 'not_found', scans: statusFor(3) });
     await openProduct('2000000000008');
 
-    expect(await screen.findByText(ro.scanResult.notFound.title)).toBeTruthy();
+    expect(await screen.findByText(strings.scanResult.notFound.title)).toBeTruthy();
     expect(screen).toHavePathname('/scan/not-found');
-    expect(screen.getByText(ro.scanResult.notFound.body)).toBeTruthy();
+    expect(screen.getByText(strings.scanResult.notFound.body)).toBeTruthy();
     expect(screen.getByTestId('not-found-code')).toHaveTextContent('Cod 2000000000008');
 
     // Back goes to the scanner, not to the replaced product screen.
@@ -121,8 +121,8 @@ describe('Scan result', () => {
     mockLookup.mockResolvedValueOnce({ status: 'offline', scans: statusFor(3) });
     await openProduct('5449000000996');
 
-    expect(await screen.findByText(ro.scanResult.offline.title)).toBeTruthy();
-    expect(screen.getByText(ro.scanResult.offline.body)).toBeTruthy();
+    expect(await screen.findByText(strings.scanResult.offline.title)).toBeTruthy();
+    expect(screen.getByText(strings.scanResult.offline.body)).toBeTruthy();
     expect(screen.getByTestId(`product-recent-${coke.id}`)).toBeTruthy();
 
     mockLookup.mockResolvedValueOnce({
@@ -140,7 +140,7 @@ describe('Scan result', () => {
     mockLookup.mockResolvedValue({ status: 'error', scans: statusFor(3) });
     await openProduct('5449000000996');
 
-    expect(await screen.findByText(ro.scanResult.error.title)).toBeTruthy();
+    expect(await screen.findByText(strings.scanResult.error.title)).toBeTruthy();
     await fireEvent.press(screen.getByTestId('product-search'));
     expect(screen).toHavePathname('/add');
     expect(screen).toHaveSearchParams({ filter: 'mine', meal: expect.any(String) });
@@ -150,7 +150,7 @@ describe('Scan result', () => {
     mockLookup.mockResolvedValue({ status: 'limit', scans: statusFor(10) });
     await openProduct('5449000000996');
 
-    expect(await screen.findByText(ro.scanLimit.title)).toBeTruthy();
+    expect(await screen.findByText(strings.scanLimit.title)).toBeTruthy();
     expect(
       screen.getByText(/Ai folosit cele 10 scanări din luna aceasta\. Poți căuta manual oricând; scanările revin pe 1 /),
     ).toBeTruthy();

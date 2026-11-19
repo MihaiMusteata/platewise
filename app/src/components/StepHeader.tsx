@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { colors, radius, size, space } from '@/theme';
 
 import { AppText } from './AppText';
@@ -13,7 +13,7 @@ export interface StepHeaderProps {
 
 /** Segmented step bars plus "Pasul x din y" (onboarding). */
 export function StepHeader({ step, total }: StepHeaderProps) {
-  const label = ro.onboarding.step(step, total);
+  const label = strings.onboarding.step(step, total);
   return (
     <>
       <View style={styles.bars} accessibilityRole="image" accessibilityLabel={label}>

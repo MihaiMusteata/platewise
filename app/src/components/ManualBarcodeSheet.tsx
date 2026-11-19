@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { KeyboardAvoidingView, Modal, Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { checkBarcodeEntry, type BarcodeEntryError } from '@/lib/barcode';
 import { colors, layout, radius, space } from '@/theme';
 
@@ -47,7 +47,7 @@ export function ManualBarcodeSheet({ visible, onClose, onSubmit }: ManualBarcode
           style={StyleSheet.absoluteFill}
           onPress={close}
           accessibilityRole="button"
-          accessibilityLabel={ro.common.close}
+          accessibilityLabel={strings.common.close}
           testID="manual-backdrop"
         />
         <View
@@ -56,15 +56,15 @@ export function ManualBarcodeSheet({ visible, onClose, onSubmit }: ManualBarcode
         >
           <View style={styles.text}>
             <AppText variant="h3" accessibilityRole="header">
-              {ro.scan.manual.title}
+              {strings.scan.manual.title}
             </AppText>
             <AppText variant="bodyL" color="textSecondary">
-              {ro.scan.manual.body}
+              {strings.scan.manual.body}
             </AppText>
           </View>
           <TextField
             testID="manual-input"
-            label={ro.scan.manual.label}
+            label={strings.scan.manual.label}
             value={value}
             onChangeText={(text) => {
               setValue(text);
@@ -75,11 +75,11 @@ export function ManualBarcodeSheet({ visible, onClose, onSubmit }: ManualBarcode
             maxLength={16}
             textContentType="none"
             autoComplete="off"
-            error={error ? ro.scan.manual.errors[error] : undefined}
+            error={error ? strings.scan.manual.errors[error] : undefined}
           />
           <View style={styles.actions}>
-            <Button testID="manual-submit" label={ro.scan.manual.submit} onPress={submit} />
-            <Button testID="manual-cancel" variant="text" label={ro.common.cancel} onPress={close} />
+            <Button testID="manual-submit" label={strings.scan.manual.submit} onPress={submit} />
+            <Button testID="manual-cancel" variant="text" label={strings.common.cancel} onPress={close} />
           </View>
         </View>
       </KeyboardAvoidingView>

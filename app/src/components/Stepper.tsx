@@ -1,7 +1,7 @@
 import { Minus, Plus } from 'lucide-react-native';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { formatDecimal } from '@/lib/format';
 import { colors, iconStroke, opacity, radius, shadow, size, space } from '@/theme';
 
@@ -44,7 +44,7 @@ export function Stepper({
         onPress={() => canDec && onChange(clamp(value - step))}
         disabled={!canDec}
         accessibilityRole="button"
-        accessibilityLabel={ro.common.less}
+        accessibilityLabel={strings.common.less}
         accessibilityState={{ disabled: !canDec }}
         style={({ pressed }) => [styles.button, pressed && styles.pressed, !canDec && styles.disabled]}
       >
@@ -63,7 +63,7 @@ export function Stepper({
         onPress={() => canInc && onChange(clamp(value + step))}
         disabled={!canInc}
         accessibilityRole="button"
-        accessibilityLabel={ro.common.more}
+        accessibilityLabel={strings.common.more}
         accessibilityState={{ disabled: !canInc }}
         style={({ pressed }) => [styles.button, pressed && styles.pressed, !canInc && styles.disabled]}
       >

@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, FlowHeader, LogFoodForm, Screen } from '@/components';
 import { getDb, getFood } from '@/db';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { defaultMealFor, MEALS } from '@/lib/meals';
 import { foodSubtitle } from '@/lib/portion';
 import { useLogStore } from '@/stores/log';
@@ -37,7 +37,7 @@ export default function LogFoodScreen() {
     };
   }, [id]);
 
-  const header = <FlowHeader title={ro.logFood.title} onBack={() => router.back()} />;
+  const header = <FlowHeader title={strings.logFood.title} onBack={() => router.back()} />;
 
   if (food === undefined) {
     return <Screen topInset={false}>{header}</Screen>;
@@ -48,12 +48,12 @@ export default function LogFoodScreen() {
       <Screen topInset={false}>
         {header}
         <View style={styles.notFound} testID="log-not-found">
-          <AppText variant="h3">{ro.logFood.notFoundTitle}</AppText>
+          <AppText variant="h3">{strings.logFood.notFoundTitle}</AppText>
           <AppText variant="bodyL" color="textSecondary">
-            {ro.logFood.notFoundBody}
+            {strings.logFood.notFoundBody}
           </AppText>
         </View>
-        <Button variant="outline" label={ro.logFood.backToSearch} onPress={() => router.back()} />
+        <Button variant="outline" label={strings.logFood.backToSearch} onPress={() => router.back()} />
       </Screen>
     );
   }
@@ -68,13 +68,13 @@ export default function LogFoodScreen() {
   return (
     <LogFoodForm
       food={food}
-      title={ro.logFood.title}
+      title={strings.logFood.title}
       subtitle={foodSubtitle(food)}
       initialMeal={initialMeal}
       onBack={() => router.back()}
       onSave={save}
       attribution={
-        food.source === 'off' ? { text: ro.addFood.attribution, position: 'above' } : undefined
+        food.source === 'off' ? { text: strings.addFood.attribution, position: 'above' } : undefined
       }
     />
   );

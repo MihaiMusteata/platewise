@@ -2,10 +2,10 @@ import { router } from 'expo-router';
 import { StyleSheet } from 'react-native';
 
 import { AppText, Card, FlowHeader, Screen } from '@/components';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { space } from '@/theme';
 
-const t = ro.privacy;
+const t = strings.privacy;
 
 /** Short in-app privacy summary, opened from Settings. A hosted policy URL is still needed (R1). */
 export default function PrivacyScreen() {

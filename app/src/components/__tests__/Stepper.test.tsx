@@ -2,15 +2,15 @@ import { fireEvent, render, screen } from '@testing-library/react-native';
 import { useState } from 'react';
 
 import { Stepper } from '@/components';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 
 function Harness({ initial, min, max, step }: { initial: number; min?: number; max?: number; step?: number }) {
   const [value, setValue] = useState(initial);
   return <Stepper value={value} onChange={setValue} min={min} max={max} step={step} unit="g" />;
 }
 
-const less = () => screen.getByRole('button', { name: ro.common.less });
-const more = () => screen.getByRole('button', { name: ro.common.more });
+const less = () => screen.getByRole('button', { name: strings.common.less });
+const more = () => screen.getByRole('button', { name: strings.common.more });
 
 describe('Stepper', () => {
   it('increments and decrements by step', async () => {

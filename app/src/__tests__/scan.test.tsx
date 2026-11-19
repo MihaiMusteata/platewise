@@ -5,7 +5,7 @@ import { Linking, Text } from 'react-native';
 
 import ScanFlowLayout from '@/app/scan/_layout';
 import ScanScreen from '@/app/scan/index';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 
 type MockPermission = { granted: boolean; status: string; canAskAgain: boolean } | null;
 
@@ -78,8 +78,8 @@ describe('Scan screen — camera granted', () => {
   it('renders the camera, frame and copy', async () => {
     await renderScanner();
     expect(screen.getByTestId('scan-camera')).toBeTruthy();
-    expect(screen.getByText(ro.scan.title)).toBeTruthy();
-    expect(screen.getByText(ro.scan.instruction)).toBeTruthy();
+    expect(screen.getByText(strings.scan.title)).toBeTruthy();
+    expect(screen.getByText(strings.scan.instruction)).toBeTruthy();
     expect(mockRequestPermission).not.toHaveBeenCalled();
   });
 
@@ -126,12 +126,12 @@ describe('Scan screen — camera granted', () => {
 
     await fireEvent.changeText(screen.getByTestId('manual-input'), '12345');
     await fireEvent.press(screen.getByTestId('manual-submit'));
-    expect(screen.getByText(ro.scan.manual.errors.format)).toBeTruthy();
+    expect(screen.getByText(strings.scan.manual.errors.format)).toBeTruthy();
 
     await fireEvent.changeText(screen.getByTestId('manual-input'), '5449000000997');
-    expect(screen.queryByText(ro.scan.manual.errors.format)).toBeNull();
+    expect(screen.queryByText(strings.scan.manual.errors.format)).toBeNull();
     await fireEvent.press(screen.getByTestId('manual-submit'));
-    expect(screen.getByText(ro.scan.manual.errors.checkDigit)).toBeTruthy();
+    expect(screen.getByText(strings.scan.manual.errors.checkDigit)).toBeTruthy();
     expect(screen).toHavePathname('/scan');
 
     await fireEvent.changeText(screen.getByTestId('manual-input'), '5449000000996');
@@ -180,7 +180,7 @@ describe('Scan screen — permission', () => {
     await renderScanner();
     expect(mockRequestPermission).toHaveBeenCalledTimes(1);
     expect(screen.queryByTestId('scan-camera')).toBeNull();
-    expect(screen.queryByText(ro.scan.cameraOff.title)).toBeNull();
+    expect(screen.queryByText(strings.scan.cameraOff.title)).toBeNull();
   });
 
   it('shows the camera-off state with settings and manual entry when denied', async () => {
@@ -189,8 +189,8 @@ describe('Scan screen — permission', () => {
     await renderScanner();
 
     expect(screen.queryByTestId('scan-camera')).toBeNull();
-    expect(screen.getByText(ro.scan.cameraOff.title)).toBeTruthy();
-    expect(screen.getByText(ro.scan.cameraOff.body)).toBeTruthy();
+    expect(screen.getByText(strings.scan.cameraOff.title)).toBeTruthy();
+    expect(screen.getByText(strings.scan.cameraOff.body)).toBeTruthy();
     expect(mockRequestPermission).not.toHaveBeenCalled();
 
     await fireEvent.press(screen.getByTestId('camera-settings'));

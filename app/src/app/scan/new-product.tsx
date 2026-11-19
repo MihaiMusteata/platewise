@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, FlowHeader, Screen, TextField } from '@/components';
 import { getDb, upsertFood } from '@/db';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { formatNumber } from '@/lib/format';
 import { defaultMealFor, isMeal } from '@/lib/meals';
 import {
@@ -35,13 +35,27 @@ const ROWS: readonly [ProductField, ProductField][] = [
 ];
 
 const LABELS: Record<ProductField, string> = {
-  name: ro.addProduct.name,
-  brand: ro.addProduct.brand,
-  servingGrams: ro.addProduct.serving,
-  kcal: ro.addProduct.kcal,
-  protein: ro.addProduct.protein,
-  carbs: ro.addProduct.carbs,
-  fat: ro.addProduct.fat,
+  get name() {
+    return strings.addProduct.name;
+  },
+  get brand() {
+    return strings.addProduct.brand;
+  },
+  get servingGrams() {
+    return strings.addProduct.serving;
+  },
+  get kcal() {
+    return strings.addProduct.kcal;
+  },
+  get protein() {
+    return strings.addProduct.protein;
+  },
+  get carbs() {
+    return strings.addProduct.carbs;
+  },
+  get fat() {
+    return strings.addProduct.fat;
+  },
 };
 
 const isNumberField = (field: ProductField): field is NumberField =>
@@ -93,7 +107,7 @@ export default function NewProductScreen() {
           label={LABELS[key]}
           value={values[key]}
           onChangeText={set(key)}
-          error={error ? ro.addProduct.errors[error] : undefined}
+          error={error ? strings.addProduct.errors[error] : undefined}
           keyboardType={numeric ? 'decimal-pad' : 'default'}
           autoCapitalize={numeric ? 'none' : 'sentences'}
           autoCorrect={false}
@@ -106,14 +120,14 @@ export default function NewProductScreen() {
 
   return (
     <Screen scroll topInset contentStyle={styles.content}>
-      <FlowHeader title={ro.addProduct.header} onBack={() => router.back()} />
+      <FlowHeader title={strings.addProduct.header} onBack={() => router.back()} />
 
       <View style={styles.titleBlock}>
         <AppText variant="h2" accessibilityRole="header">
-          {ro.addProduct.title}
+          {strings.addProduct.title}
         </AppText>
         <AppText variant="body" color="textSecondary" tabular testID="product-subtitle">
-          {barcode ? ro.addProduct.subtitleWithCode(barcode) : ro.addProduct.subtitle}
+          {barcode ? strings.addProduct.subtitleWithCode(barcode) : strings.addProduct.subtitle}
         </AppText>
       </View>
 
@@ -129,7 +143,7 @@ export default function NewProductScreen() {
 
       {result.macroSumError ? (
         <AppText variant="caption" color="attention" testID="product-macro-sum">
-          {ro.addProduct.errors.macroSum}
+          {strings.addProduct.errors.macroSum}
         </AppText>
       ) : null}
       {result.kcalMismatch ? (
@@ -139,7 +153,7 @@ export default function NewProductScreen() {
           testID="product-kcal-hint"
           accessibilityLiveRegion="polite"
         >
-          {ro.addProduct.kcalMismatch(formatNumber(result.kcalEstimate))}
+          {strings.addProduct.kcalMismatch(formatNumber(result.kcalEstimate))}
         </AppText>
       ) : null}
 
@@ -147,7 +161,7 @@ export default function NewProductScreen() {
 
       <Button
         testID="product-save"
-        label={ro.addProduct.save}
+        label={strings.addProduct.save}
         onPress={() => void save()}
         disabled={!result.valid || saving}
       />

@@ -1,7 +1,7 @@
 import { randomUUID } from 'expo-crypto';
 
-import ro from '@/i18n/ro';
 import { parseDecimal } from '@/lib/format';
+import { DEFAULT_SERVING_NAME } from '@/lib/portion';
 import type { Food, Nutrients } from '@/types/models';
 
 export const NAME_MAX = 80;
@@ -37,7 +37,7 @@ export const EMPTY_PRODUCT_FORM: ProductFormValues = {
 
 export type ProductField = keyof ProductFormValues;
 
-/** Message keys in `ro.addProduct.errors`. */
+/** Message keys in `strings.addProduct.errors`. */
 export type ProductErrorKey = 'name' | 'serving' | 'kcal' | 'macro' | 'macroSum';
 
 /** Parsed, valid product data. */
@@ -148,7 +148,7 @@ export function buildCustomFood(data: ProductData, barcode?: string): Food {
   if (data.brand) food.brand = data.brand;
   if (barcode) food.barcode = barcode;
   if (data.servingGrams) {
-    food.servingName = ro.addProduct.servingName;
+    food.servingName = DEFAULT_SERVING_NAME;
     food.servingGrams = data.servingGrams;
   }
   return food;

@@ -15,7 +15,7 @@ import {
   StateView,
 } from '@/components';
 import { getDb, recentFoods } from '@/db';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { defaultMealFor } from '@/lib/meals';
 import { productSubtitle } from '@/lib/portion';
 import { scanLimitText } from '@/lib/scanLimit';
@@ -76,11 +76,11 @@ export default function ScanProductScreen() {
   if (!result || result.status === 'not_found') {
     return (
       <Screen>
-        <FlowHeader title={ro.scanResult.title} onBack={() => router.back()} />
+        <FlowHeader title={strings.scanResult.title} onBack={() => router.back()} />
         <View style={styles.loading} testID="product-loading">
           <ActivityIndicator color={colors.brand} />
           <AppText variant="body" color="textSecondary">
-            {ro.scanResult.loading}
+            {strings.scanResult.loading}
           </AppText>
         </View>
       </Screen>
@@ -92,7 +92,7 @@ export default function ScanProductScreen() {
     return (
       <LogFoodForm
         food={food}
-        title={ro.scanResult.found.title}
+        title={strings.scanResult.found.title}
         subtitle={productSubtitle(food, barcode)}
         initialMeal={meal}
         thumbSize="xl"
@@ -102,7 +102,7 @@ export default function ScanProductScreen() {
         onSave={(chosenMeal, grams) => saveAndClose(food, chosenMeal, grams)}
         attribution={
           food.source === 'off'
-            ? { text: ro.scanResult.found.attribution, position: 'below' }
+            ? { text: strings.scanResult.found.attribution, position: 'below' }
             : undefined
         }
       />
@@ -113,23 +113,23 @@ export default function ScanProductScreen() {
     return (
       <StateView
         testID="product-limit"
-        headerTitle={ro.scanResult.title}
+        headerTitle={strings.scanResult.title}
         dismiss="back"
         onDismiss={() => router.back()}
         icon={CalendarClock}
-        title={ro.scanLimit.title}
+        title={strings.scanLimit.title}
         body={scanLimitText(result.scans.limit, new Date())}
         actions={
           <>
             <Button
               testID="product-search"
-              label={ro.scanResult.limit.search}
+              label={strings.scanResult.limit.search}
               onPress={() => router.push({ pathname: '/add', params: { meal } })}
             />
             <Button
               testID="product-close"
               variant="text"
-              label={ro.common.close}
+              label={strings.common.close}
               onPress={() => router.dismissTo('/')}
             />
           </>
@@ -140,11 +140,11 @@ export default function ScanProductScreen() {
 
   // Offline or Open Food Facts not answering: same calm state, the log keeps working.
   const offline = result.status === 'offline';
-  const copy = offline ? ro.scanResult.offline : ro.scanResult.error;
+  const copy = offline ? strings.scanResult.offline : strings.scanResult.error;
   return (
     <StateView
       testID={offline ? 'product-offline' : 'product-error'}
-      headerTitle={ro.scanResult.title}
+      headerTitle={strings.scanResult.title}
       dismiss="back"
       onDismiss={() => router.back()}
       icon={offline ? WifiOff : CloudOff}
@@ -154,7 +154,7 @@ export default function ScanProductScreen() {
         <>
           <Button
             testID="product-retry"
-            label={ro.scanResult.offline.retry}
+            label={strings.scanResult.offline.retry}
             onPress={() => {
               setResult(null);
               setAttempt((n) => n + 1);
@@ -163,7 +163,7 @@ export default function ScanProductScreen() {
           <Button
             testID="product-search"
             variant="outline"
-            label={ro.scanResult.offline.searchMine}
+            label={strings.scanResult.offline.searchMine}
             onPress={() => router.push({ pathname: '/add', params: { meal, filter: 'mine' } })}
           />
         </>
@@ -172,7 +172,7 @@ export default function ScanProductScreen() {
       {recent.length > 0 ? (
         <View style={styles.recent}>
           <AppText variant="overline" color="textSecondary">
-            {ro.scanResult.offline.recent}
+            {strings.scanResult.offline.recent}
           </AppText>
           <Card padded={false}>
             {recent.map((food, index) => (
@@ -183,7 +183,7 @@ export default function ScanProductScreen() {
                 subtitle={resultSubtitle(food)}
                 tint={thumbTintFor(food.id)}
                 divider={index > 0}
-                quickAddLabel={ro.addFood.quickAdd(food.name)}
+                quickAddLabel={strings.addFood.quickAdd(food.name)}
                 onPress={() =>
                   router.push({ pathname: '/add/food/[id]', params: { id: food.id, meal } })
                 }

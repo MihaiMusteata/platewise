@@ -1,4 +1,4 @@
-import ro from '@/i18n/ro';
+import { getLanguage, strings } from '@/i18n';
 import { formatDayMonth } from '@/lib/date';
 import { formatNumber } from '@/lib/format';
 
@@ -20,10 +20,23 @@ export function pluralRo(count: number, forms: PluralForms): string {
   return forms.other;
 }
 
-/** "7 scanări rămase luna aceasta", "1 scanare rămasă luna aceasta", "20 de scanări rămase…". */
+/** English plural form: `one` for exactly 1, `other` for everything else (0 scans, 2 scans). */
+export function pluralEn(count: number, forms: Pick<PluralForms, 'one' | 'other'>): string {
+  return Math.abs(count) === 1 ? forms.one : forms.other;
+}
+
+/** Plural form for a count in the active language. */
+export function plural(count: number, forms: PluralForms): string {
+  return getLanguage() === 'en' ? pluralEn(count, forms) : pluralRo(count, forms);
+}
+
+/**
+ * "7 scanări rămase luna aceasta", "1 scanare rămasă luna aceasta", "20 de scanări rămase…";
+ * in English "1 scan left this month", "7 scans left this month".
+ */
 export function remainingScansText(remaining: number): string {
-  const forms = ro.scanLimit.remaining;
-  return `${formatNumber(remaining)} ${pluralRo(remaining, forms)}`;
+  const forms = strings.scanLimit.remaining;
+  return `${formatNumber(remaining)} ${plural(remaining, forms)}`;
 }
 
 /** First day of the next calendar month (local), when the monthly scans come back. */
@@ -33,5 +46,5 @@ export function nextScanReset(now: Date): Date {
 
 /** Calm limit message: "Ai folosit cele 10 scanări din luna aceasta. … revin pe 1 decembrie." */
 export function scanLimitText(limit: number, now: Date): string {
-  return ro.scanLimit.body(formatNumber(limit), formatDayMonth(nextScanReset(now)));
+  return strings.scanLimit.body(formatNumber(limit), formatDayMonth(nextScanReset(now)));
 }

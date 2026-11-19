@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Platewise",
+    "NSCameraUsageDescription": "Platewise uses the camera to scan product barcodes."
+  }
+}

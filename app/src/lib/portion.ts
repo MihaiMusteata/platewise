@@ -1,8 +1,14 @@
-import ro from '@/i18n/ro';
+import { servingName as servingDisplayName, servingNamePlural, strings } from '@/i18n';
 import { formatDecimal } from '@/lib/format';
 import { DEFAULT_GRAMS } from '@/lib/search';
 import { normalizeForSearch } from '@/lib/text';
 import type { Food } from '@/types/models';
+
+/**
+ * Serving name stored for foods without a named serving (custom products, Open Food Facts).
+ * Serving names are data in Romanian; they are translated on display (`servingName` in `@/i18n`).
+ */
+export const DEFAULT_SERVING_NAME = 'porție';
 
 /** How the amount on Log food is entered. */
 export type PortionMode = 'grams' | 'servings';
@@ -74,11 +80,9 @@ export function initialPortion(food: Pick<Food, 'servingGrams'>): Portion {
 
 /** Unit after the amount: "g", or the serving name ("bol", plural "boluri" unless exactly 1). */
 export function portionUnit(portion: Portion, servingName?: string): string {
-  if (portion.mode === 'grams') return ro.common.grams;
-  const name = servingName ?? ro.logFood.serving;
-  if (portion.amount === 1) return name;
-  const plurals: Record<string, string> = ro.logFood.servingPlurals;
-  return plurals[name] ?? name;
+  if (portion.mode === 'grams') return strings.common.grams;
+  const name = servingName ?? DEFAULT_SERVING_NAME;
+  return portion.amount === 1 ? servingDisplayName(name) : servingNamePlural(name);
 }
 
 /** Amount as shown to the user: "250", "1,5" (Romanian decimals, no trailing ",0"). */
@@ -98,14 +102,17 @@ export function portionLabel(portion: Portion, servingName?: string): string {
 export function foodSubtitle(food: Food): string {
   const servingGrams = servingGramsOf(food);
   const serving = servingGrams
-    ? ro.logFood.servingSize(food.servingName ?? ro.logFood.serving, formatAmount(servingGrams))
+    ? strings.logFood.servingSize(
+        servingDisplayName(food.servingName ?? DEFAULT_SERVING_NAME),
+        formatAmount(servingGrams),
+      )
     : undefined;
   // Skip the brand when the name already contains it ("Almette Crema de brânză").
   const brand =
     food.brand && !normalizeForSearch(food.name).includes(normalizeForSearch(food.brand))
       ? food.brand
       : undefined;
-  return [brand, serving, ro.logFood.sources[food.source]].filter(Boolean).join(' · ');
+  return [brand, serving, strings.logFood.sources[food.source]].filter(Boolean).join(' · ');
 }
 
 /**
@@ -115,12 +122,15 @@ export function foodSubtitle(food: Food): string {
 export function productSubtitle(food: Food, barcode?: string): string {
   const servingGrams = servingGramsOf(food);
   const serving = servingGrams
-    ? ro.logFood.servingSize(food.servingName ?? ro.logFood.serving, formatAmount(servingGrams))
+    ? strings.logFood.servingSize(
+        servingDisplayName(food.servingName ?? DEFAULT_SERVING_NAME),
+        formatAmount(servingGrams),
+      )
     : undefined;
   const brand =
     food.brand && !normalizeForSearch(food.name).includes(normalizeForSearch(food.brand))
       ? food.brand
       : undefined;
   const code = barcode ?? food.barcode;
-  return [brand, serving, code ? ro.scanResult.code(code) : undefined].filter(Boolean).join(' · ');
+  return [brand, serving, code ? strings.scanResult.code(code) : undefined].filter(Boolean).join(' · ');
 }

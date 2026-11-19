@@ -1,17 +1,21 @@
 import { act, fireEvent, renderRouter, screen } from 'expo-router/testing-library';
-import { Alert, Linking, type AlertButton } from 'react-native';
+import { ActionSheetIOS, Alert, Linking, type AlertButton } from 'react-native';
 
+// Registers the root layout's language subscription (settings store → active language).
+import '@/app/_layout';
 import TabsLayout from '@/app/(tabs)/_layout';
 import SettingsScreen from '@/app/(tabs)/settings';
 import OnboardingLayout from '@/app/onboarding/_layout';
 import GoalScreen from '@/app/onboarding/goal';
 import TargetScreen from '@/app/onboarding/target';
 import PrivacyScreen from '@/app/privacy';
+import { getLanguage, setLanguage } from '@/i18n';
 import { calcTarget } from '@/lib/nutrition';
 import { exportLogCsv } from '@/services/exportCsv';
 import { useLogStore } from '@/stores/log';
 import { useOnboardingStore } from '@/stores/onboarding';
 import { useProfileStore } from '@/stores/profile';
+import { useSettingsStore } from '@/stores/settings';
 import type { UserProfile } from '@/types/models';
 
 jest.mock('expo-sqlite/kv-store', () => ({
@@ -146,6 +150,74 @@ describe('settings', () => {
     await fireEvent.press(screen.getByTestId('settings-privacy'));
     expect(screen).toHavePathname('/privacy');
     openURL.mockRestore();
+  });
+});
+
+describe('language', () => {
+  let sheet: jest.SpyInstance;
+
+  /** Makes the next action sheet pick the option at this index. */
+  const pickInSheet = (index: number) =>
+    sheet.mockImplementation((_options, callback: (i: number) => void) => callback(index));
+
+  beforeEach(() => {
+    useSettingsStore.setState({ language: 'system' });
+    sheet = jest.spyOn(ActionSheetIOS, 'showActionSheetWithOptions').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    sheet.mockRestore();
+    setLanguage('ro');
+  });
+
+  it('shows the current choice and offers Automat / Română / English', async () => {
+    await renderSettings();
+    expect(screen.getByTestId('settings-language')).toHaveTextContent(/Limbă \/ Language/);
+    expect(screen.getByTestId('settings-language')).toHaveTextContent(/Automat/);
+    await fireEvent.press(screen.getByTestId('settings-language'));
+    expect(sheet).toHaveBeenCalledWith(
+      expect.objectContaining({
+        options: ['Automat', 'Română', 'English', 'Renunță'],
+        cancelButtonIndex: 3,
+      }),
+      expect.any(Function),
+    );
+  });
+
+  it('saves the chosen language in the settings store', async () => {
+    await renderSettings();
+    pickInSheet(2);
+    await fireEvent.press(screen.getByTestId('settings-language'));
+    expect(useSettingsStore.getState().language).toBe('en');
+    pickInSheet(0);
+    await fireEvent.press(screen.getByTestId('settings-language'));
+    expect(useSettingsStore.getState().language).toBe('system');
+  });
+
+  it('cancel keeps the language', async () => {
+    await renderSettings();
+    pickInSheet(3);
+    await fireEvent.press(screen.getByTestId('settings-language'));
+    expect(useSettingsStore.getState().language).toBe('system');
+  });
+
+  it('the root layout applies a change to the active language', async () => {
+    expect(getLanguage()).toBe('ro');
+    useSettingsStore.getState().setLanguage('en');
+    expect(getLanguage()).toBe('en');
+    useSettingsStore.getState().setLanguage('ro');
+    expect(getLanguage()).toBe('ro');
+  });
+
+  it('renders in English after switching', async () => {
+    useSettingsStore.setState({ language: 'en' });
+    await renderSettings({ dailyTargetKcal: 2000, goal: 'lose' });
+    expect(screen.getByTestId('settings-title')).toHaveTextContent('Settings');
+    expect(screen.getByText('Goals and units')).toBeTruthy();
+    expect(screen.getByTestId('settings-target')).toHaveTextContent(/2,000 kcal/);
+    expect(screen.getByTestId('settings-goal')).toHaveTextContent(/Lose weight/);
+    expect(screen.getByTestId('settings-language')).toHaveTextContent(/English/);
+    expect(screen.getByText('Home')).toBeTruthy();
   });
 });
 

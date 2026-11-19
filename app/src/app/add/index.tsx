@@ -19,7 +19,7 @@ import {
 import { getDb, upsertFood } from '@/db';
 import { useFoodSearch } from '@/hooks/useFoodSearch';
 import { useUndoSnackbar } from '@/hooks/useUndoSnackbar';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { defaultMealFor, MEALS } from '@/lib/meals';
 import {
   defaultGrams,
@@ -73,7 +73,7 @@ export default function AddFoodScreen() {
         .add({ meal, foodId: food.id, grams: defaultGrams(food) });
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
       setAddedId(food.id);
-      snackbar.show(ro.addFood.added(food.name), () => {
+      snackbar.show(strings.addFood.added(food.name), () => {
         setAddedId(null);
         void useLogStore.getState().remove(entry.id);
       });
@@ -93,8 +93,8 @@ export default function AddFoodScreen() {
           tint={thumbTintFor(food.id)}
           divider={index > 0}
           added={snackbar.current != null && addedId === food.id}
-          quickAddLabel={ro.addFood.quickAdd(food.name)}
-          addedLabel={ro.addFood.addedLabel(food.name)}
+          quickAddLabel={strings.addFood.quickAdd(food.name)}
+          addedLabel={strings.addFood.addedLabel(food.name)}
           onPress={() => void openFood(food)}
           onQuickAdd={() => void quickAdd(food)}
         />
@@ -108,9 +108,9 @@ export default function AddFoodScreen() {
   const onlineSettled = search.onlineStatus === 'idle' || search.onlineStatus === 'done';
   let emptyText: string | null = null;
   if (localEmpty) {
-    if (q && onlineSettled && search.online.length === 0) emptyText = ro.addFood.noResults(q);
-    else if (!q && search.section === 'recent') emptyText = ro.addFood.emptyRecent;
-    else if (!q && search.section === 'mine') emptyText = ro.addFood.emptyMine;
+    if (q && onlineSettled && search.online.length === 0) emptyText = strings.addFood.noResults(q);
+    else if (!q && search.section === 'recent') emptyText = strings.addFood.emptyRecent;
+    else if (!q && search.section === 'mine') emptyText = strings.addFood.emptyMine;
   }
 
   return (
@@ -122,30 +122,30 @@ export default function AddFoodScreen() {
       >
         <View style={styles.header}>
           <AppText variant="h1" accessibilityRole="header" style={styles.title}>
-            {ro.addFood.title}
+            {strings.addFood.title}
           </AppText>
           <Pressable
             testID="add-done"
             onPress={() => router.back()}
             accessibilityRole="button"
-            accessibilityLabel={ro.addFood.done}
+            accessibilityLabel={strings.addFood.done}
             hitSlop={space.xs}
             style={({ pressed }) => [styles.done, pressed && styles.pressed]}
           >
             <AppText variant="button" color="brand">
-              {ro.addFood.done}
+              {strings.addFood.done}
             </AppText>
           </Pressable>
         </View>
         <AppText variant="body" color="textSecondary" style={styles.subtitle} testID="add-meal">
-          {`${ro.addFood.addingTo} `}
-          <AppText variant="bodyStrong">{ro.meals[meal]}</AppText>
+          {`${strings.addFood.addingTo} `}
+          <AppText variant="bodyStrong">{strings.meals[meal]}</AppText>
         </AppText>
 
         <View style={styles.searchRow}>
           <SearchField
             testID="add-search"
-            label={ro.addFood.searchLabel}
+            label={strings.addFood.searchLabel}
             value={query}
             onChangeText={setQuery}
           />
@@ -154,17 +154,17 @@ export default function AddFoodScreen() {
             icon={ScanBarcode}
             variant="brand"
             buttonSize="l"
-            accessibilityLabel={ro.addFood.scan}
+            accessibilityLabel={strings.addFood.scan}
             onPress={() => router.push('/scan')}
           />
         </View>
 
-        <View style={styles.chips} accessibilityLabel={ro.addFood.filterGroup}>
+        <View style={styles.chips} accessibilityLabel={strings.addFood.filterGroup}>
           {SEARCH_FILTERS.map((f) => (
             <Chip
               key={f}
               testID={`filter-${f}`}
-              label={ro.addFood.filters[f]}
+              label={strings.addFood.filters[f]}
               selected={filter === f}
               onPress={() => setFilter(f)}
             />
@@ -174,7 +174,7 @@ export default function AddFoodScreen() {
         {search.local.length > 0 ? (
           <View style={styles.section}>
             <AppText variant="overline" color="textSecondary">
-              {ro.addFood.sections[search.section]}
+              {strings.addFood.sections[search.section]}
             </AppText>
             {renderRows(search.local, 'result')}
           </View>
@@ -190,7 +190,7 @@ export default function AddFoodScreen() {
           <View style={styles.note} testID="add-online-loading">
             <ActivityIndicator color={colors.textSecondary} />
             <AppText variant="body" color="textSecondary">
-              {ro.addFood.searchingOnline}
+              {strings.addFood.searchingOnline}
             </AppText>
           </View>
         ) : null}
@@ -199,7 +199,7 @@ export default function AddFoodScreen() {
           <View style={styles.note} testID="add-online-note" accessibilityLiveRegion="polite">
             <CloudOff size={size.iconS} color={colors.textSecondary} strokeWidth={iconStroke.thin} />
             <AppText variant="body" color="textSecondary" style={styles.noteText}>
-              {search.onlineStatus === 'offline' ? ro.addFood.offline : ro.addFood.onlineError}
+              {search.onlineStatus === 'offline' ? strings.addFood.offline : strings.addFood.onlineError}
             </AppText>
           </View>
         ) : null}
@@ -207,11 +207,11 @@ export default function AddFoodScreen() {
         {search.online.length > 0 ? (
           <View style={styles.section}>
             <AppText variant="overline" color="textSecondary">
-              {ro.addFood.sections.online}
+              {strings.addFood.sections.online}
             </AppText>
             {renderRows(search.online, 'online')}
             <AppText variant="caption" color="textSecondary" testID="add-attribution">
-              {ro.addFood.attribution}
+              {strings.addFood.attribution}
             </AppText>
           </View>
         ) : null}
@@ -220,7 +220,7 @@ export default function AddFoodScreen() {
           testID="add-create"
           variant="outline"
           icon={Plus}
-          label={ro.addFood.create}
+          label={strings.addFood.create}
           onPress={() => router.push({ pathname: '/scan/new-product', params: { meal } })}
         />
       </Screen>

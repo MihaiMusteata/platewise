@@ -5,7 +5,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText, CalorieChart, Card, MacroDonut, ProgressBar, Screen, SegmentedControl } from '@/components';
 import { dailyTotals, getDb } from '@/db';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { formatDecimal, formatNumber } from '@/lib/format';
 import {
   averageKcal,
@@ -23,9 +23,9 @@ import { useProfileStore } from '@/stores/profile';
 import { colors, decor, iconStroke, layout, opacity, radius, size, space } from '@/theme';
 
 const PERIODS: readonly { value: Period; label: string }[] = [
-  { value: 'week', label: ro.progress.periods.week },
-  { value: 'month', label: ro.progress.periods.month },
-  { value: 'year', label: ro.progress.periods.year },
+  { value: 'week', get label() { return strings.progress.periods.week; } },
+  { value: 'month', get label() { return strings.progress.periods.month; } },
+  { value: 'year', get label() { return strings.progress.periods.year; } },
 ];
 
 interface Data {
@@ -95,8 +95,8 @@ export default function ProgressScreen() {
   const weeklyPercent = `${Math.round(weekly.ratio * 100)}%`;
 
   const chartLabel = [
-    `${ro.progress.chartLabel[period]}: ${bars.map((b) => `${b.label} ${formatNumber(b.kcal)}`).join(', ')}.`,
-    goalLine ? ro.progress.chartGoal(formatNumber(goalLine)) : '',
+    `${strings.progress.chartLabel[period]}: ${bars.map((b) => `${b.label} ${formatNumber(b.kcal)}`).join(', ')}.`,
+    goalLine ? strings.progress.chartGoal(formatNumber(goalLine)) : '',
   ]
     .join(' ')
     .trim();
@@ -107,7 +107,7 @@ export default function ProgressScreen() {
 
       <View style={styles.header}>
         <AppText variant="h1" accessibilityRole="header">
-          {ro.progress.title}
+          {strings.progress.title}
         </AppText>
       </View>
 
@@ -116,19 +116,19 @@ export default function ProgressScreen() {
         options={PERIODS}
         value={period}
         onChange={changePeriod}
-        accessibilityLabel={ro.progress.periodGroup}
+        accessibilityLabel={strings.progress.periodGroup}
       />
 
       <Card style={styles.chartCard}>
         <View style={styles.chartHeader}>
           <View style={styles.chartTitle}>
             <ChartNoAxesColumn size={size.iconS} color={colors.brand} strokeWidth={iconStroke.bold} />
-            <AppText variant="bodyLStrong">{ro.progress.caloriesTitle}</AppText>
+            <AppText variant="bodyLStrong">{strings.progress.caloriesTitle}</AppText>
           </View>
           <AppText variant="body" color="textSecondary" testID="progress-average">
-            {ro.progress.average}
+            {strings.progress.average}
             <AppText variant="bodyStrong" tabular>
-              {ro.progress.kcal(formatNumber(average))}
+              {strings.progress.kcal(formatNumber(average))}
             </AppText>
           </AppText>
         </View>
@@ -150,10 +150,10 @@ export default function ProgressScreen() {
           </View>
           <View style={styles.weeklyText}>
             <AppText variant="label" color="textTertiary">
-              {ro.progress.pausedTitle}
+              {strings.progress.pausedTitle}
             </AppText>
             <AppText variant="body" color="textSecondary">
-              {ro.progress.pausedBody}
+              {strings.progress.pausedBody}
             </AppText>
           </View>
         </View>
@@ -162,7 +162,7 @@ export default function ProgressScreen() {
           style={styles.weekly}
           testID="progress-weekly"
           accessible
-          accessibilityLabel={`${ro.progress.weeklyTitle}. ${ro.progress.weeklyLabel(
+          accessibilityLabel={`${strings.progress.weeklyTitle}. ${strings.progress.weeklyLabel(
             formatNumber(weekly.consumed),
             formatNumber(weekly.goal),
             weeklyPercent,
@@ -173,14 +173,14 @@ export default function ProgressScreen() {
           </View>
           <View style={styles.weeklyText}>
             <AppText variant="label" color="textTertiary">
-              {ro.progress.weeklyTitle}
+              {strings.progress.weeklyTitle}
             </AppText>
             <View style={styles.weeklyNumbers}>
               <AppText variant="body" color="textSecondary" tabular testID="progress-weekly-value">
                 <AppText variant="sectionTitle" tabular>
                   {formatNumber(weekly.consumed)}
                 </AppText>
-                {ro.progress.weeklyOf(formatNumber(weekly.goal))}
+                {strings.progress.weeklyOf(formatNumber(weekly.goal))}
               </AppText>
               <AppText variant="numberS" tabular testID="progress-weekly-percent">
                 {weeklyPercent}
@@ -197,7 +197,7 @@ export default function ProgressScreen() {
       )}
 
       <AppText variant="sectionTitle" accessibilityRole="header" style={styles.macrosTitle}>
-        {ro.progress.macrosTitle}
+        {strings.progress.macrosTitle}
       </AppText>
       <View style={styles.donut}>
         <MacroDonut share={macroShare(totals)} averageKcal={average} />
@@ -220,11 +220,11 @@ export default function ProgressScreen() {
           <View style={styles.weightText}>
             <AppText variant="bodyStrong">
               {profile?.weightTracking && profile.weightKg > 0
-                ? ro.progress.weightOnTitle(formatDecimal(profile.weightKg, 1, true))
-                : ro.progress.weightOffTitle}
+                ? strings.progress.weightOnTitle(formatDecimal(profile.weightKg, 1, true))
+                : strings.progress.weightOffTitle}
             </AppText>
             <AppText variant="footnote" color="textSecondary">
-              {profile?.weightTracking ? ro.progress.weightOnBody : ro.progress.weightOffBody}
+              {profile?.weightTracking ? strings.progress.weightOnBody : strings.progress.weightOffBody}
             </AppText>
           </View>
           <ChevronRight size={size.iconS} color={colors.chevron} strokeWidth={iconStroke.regular} />

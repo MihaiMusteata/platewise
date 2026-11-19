@@ -14,7 +14,7 @@ import {
   ManualBarcodeSheet,
   ScanFrame,
 } from '@/components';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { SCAN_BARCODE_TYPES, isValidBarcode, normalizeBarcode } from '@/lib/barcode';
 import { remainingScansText, scanLimitText } from '@/lib/scanLimit';
 import { getScanStatus, type ScanStatus } from '@/services/scanCounter';
@@ -137,7 +137,7 @@ export default function ScanScreen() {
           enableTorch={torch}
           barcodeScannerSettings={scannerSettings}
           onBarcodeScanned={manualOpen ? undefined : onBarcodeScanned}
-          accessibilityLabel={ro.scan.camera}
+          accessibilityLabel={strings.scan.camera}
           onMountError={(e) => console.warn('[scan] camera mount error:', e.message)}
         />
       ) : null}
@@ -155,11 +155,11 @@ export default function ScanScreen() {
             testID="scan-close"
             icon={X}
             variant="dark"
-            accessibilityLabel={ro.common.close}
+            accessibilityLabel={strings.common.close}
             onPress={() => router.back()}
           />
           <AppText variant="bodyLStrong" color="onBrand" accessibilityRole="header">
-            {ro.scan.title}
+            {strings.scan.title}
           </AppText>
           <IconButton
             testID="scan-torch"
@@ -168,7 +168,7 @@ export default function ScanScreen() {
             variant={torch ? 'darkSelected' : 'dark'}
             selected={torch}
             disabled={!cameraOn}
-            accessibilityLabel={ro.scan.torch}
+            accessibilityLabel={strings.scan.torch}
             onPress={() => setTorch((on) => !on)}
           />
         </View>
@@ -176,10 +176,10 @@ export default function ScanScreen() {
         <ScanFrame />
         <View style={styles.instructions}>
           <AppText variant="h2" color="onBrand" align="center">
-            {ro.scan.instruction}
+            {strings.scan.instruction}
           </AppText>
           <AppText variant="bodyL" color="scanTextSecondary" align="center">
-            {ro.scan.hint}
+            {strings.scan.hint}
           </AppText>
         </View>
         {scans && !scans.limitReached ? (
@@ -202,7 +202,7 @@ export default function ScanScreen() {
           <Button
             testID="scan-search"
             variant="dark"
-            label={ro.scan.searchManually}
+            label={strings.scan.searchManually}
             onPress={() => router.push('/add')}
             style={styles.search}
           />
@@ -210,7 +210,7 @@ export default function ScanScreen() {
         <Button
           testID="scan-manual"
           variant="dark"
-          label={ro.scan.manualEntry}
+          label={strings.scan.manualEntry}
           onPress={() => setManualOpen(true)}
           style={styles.manual}
         />

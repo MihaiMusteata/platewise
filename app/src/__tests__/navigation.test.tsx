@@ -14,7 +14,7 @@ import ScanScreen from '@/app/scan/index';
 import NewProductScreen from '@/app/scan/new-product';
 import ScanNotFoundScreen from '@/app/scan/not-found';
 import ProductFoundScreen from '@/app/scan/product/[barcode]';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { useProfileStore } from '@/stores/profile';
 import type { UserProfile } from '@/types/models';
 
@@ -122,10 +122,10 @@ describe('navigation shell', () => {
 
   it('renders the four tab labels and the Log button', async () => {
     await renderRouter(routes);
-    for (const label of [ro.tabs.home, ro.tabs.progress, ro.tabs.plans, ro.tabs.settings]) {
+    for (const label of [strings.tabs.home, strings.tabs.progress, strings.tabs.plans, strings.tabs.settings]) {
       expect(screen.getByText(label)).toBeTruthy();
     }
-    expect(screen.getByTestId('tab-log').props.accessibilityLabel).toBe(ro.tabs.log);
+    expect(screen.getByTestId('tab-log').props.accessibilityLabel).toBe(strings.tabs.log);
     expect(screen.getByTestId('tab-index').props.accessibilityState).toEqual({ selected: true });
   });
 
@@ -138,7 +138,7 @@ describe('navigation shell', () => {
 
     await fireEvent.press(screen.getByTestId('tab-plans'));
     expect(screen).toHavePathname('/plans');
-    expect(screen.getByText(ro.placeholder.plansBody)).toBeTruthy();
+    expect(screen.getByText(strings.placeholder.plansBody)).toBeTruthy();
 
     await fireEvent.press(screen.getByTestId('tab-settings'));
     expect(screen).toHavePathname('/settings');
@@ -180,6 +180,6 @@ describe('navigation shell', () => {
     await fireEvent.press(await screen.findByTestId('result-common:ou-fiert'));
     expect(screen).toHavePathname('/add/food/common:ou-fiert');
     expect(screen).toHaveSearchParams({ id: 'common:ou-fiert', meal: 'lunch' });
-    expect(screen.getByText(ro.placeholder.food)).toBeTruthy();
+    expect(screen.getByText(strings.placeholder.food)).toBeTruthy();
   });
 });

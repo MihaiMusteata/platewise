@@ -5,12 +5,12 @@ import { Alert } from 'react-native';
 
 import { SettingsRow, SettingsSection } from '@/components/SettingsRow';
 import { getDb } from '@/db';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { clearDemoData, hasDemoData, seedDemoData } from '@/services/demoData';
 import { resetScanCounter } from '@/services/scanCounter';
 import { useLogStore } from '@/stores/log';
 
-const t = ro.dev.section;
+const t = strings.dev.section;
 
 /** Hidden dev tools at the bottom of Settings (revealed by long-pressing the title). */
 export function DevSection() {
@@ -47,7 +47,7 @@ export function DevSection() {
       />
       <SettingsRow title={t.resetScans} onPress={resetScans} divider testID="dev-reset-scans" />
       <SettingsRow
-        title={ro.dev.components}
+        title={strings.dev.components}
         onPress={() => router.push('/dev/components')}
         divider
         testID="dev-components"

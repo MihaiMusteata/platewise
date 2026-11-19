@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { colors, radius, shadow, size, space } from '@/theme';
 
 import { AppText } from './AppText';
@@ -17,7 +17,7 @@ export interface SnackbarProps {
 /** Dark 56-high status bar with a lime text action. Positioning and timing are up to the screen. */
 export function Snackbar({
   message,
-  actionLabel = ro.common.undo,
+  actionLabel = strings.common.undo,
   onAction,
   style,
   testID,

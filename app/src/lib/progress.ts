@@ -1,4 +1,4 @@
-import { addDays, fromDateKey, monthName, startOfWeek, toDateKey, weekdayAbbr } from '@/lib/date';
+import { addDays, fromDateKey, monthShort, startOfWeek, toDateKey, weekdayAbbr } from '@/lib/date';
 import { KCAL_PER_GRAM } from '@/lib/nutrition';
 import type { Nutrients } from '@/types/models';
 
@@ -64,7 +64,7 @@ export function buildBars(period: Period, totals: DayTotals[], today: Date): Bar
     const kcal = days.length ? days.reduce((sum, t) => sum + t.kcal, 0) / days.length : 0;
     return {
       key: prefix,
-      label: monthName(month).slice(0, 3),
+      label: monthShort(month),
       kcal,
       isCurrent: month === today.getMonth(),
     };

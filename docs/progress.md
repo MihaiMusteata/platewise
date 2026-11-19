@@ -209,3 +209,10 @@ All pre-approved native deps installed together (expo-sqlite, zustand, expo-secu
 - Reported on device: permission granted, controls visible, preview black. Not reproducible on the simulator (no camera).
 - Change in `scan/index.tsx`: the `CameraView` mounts only after the full-screen modal's `transitionEnd` (600 ms fallback), is remounted when the permission status changes (`key={permission.status}`), and logs `onMountError` as `[scan] camera mount error: …` in the Metro terminal.
 - Pending: confirmation on the iPhone.
+
+### English UI language (after demo)
+- `app/src/i18n/`: `ro.ts` (Romanian source), `en.ts` (English, typed by `Strings` so keys must match), `index.ts` (live `strings` object swapped in place by `setLanguage`), `device.ts` (device language via `Intl`, no new dependency). Screens import `{ strings } from '@/i18n'`.
+- Preference in `stores/settings.ts` (`system` | `ro` | `en`, default system → Romanian if the phone is in Romanian, otherwise English). Settings row "Limbă / Language". Root layout re-mounts the stack on change.
+- Numbers, dates, chart labels, plurals and CSV (English: `,` separator, `platewise-log-…csv`) follow the language. Serving names are translated on display; food names stay as stored.
+- iOS: `app.json` `locales` (ro/en InfoPlist strings: display name, camera permission), `CFBundleLocalizations` ["ro","en"], `CFBundleDevelopmentRegion` "ro", `CFBundleAllowMixedLocalizations`. Needs a native rebuild.
+- CLAUDE.md rules 6–7 and spec "Formatting" updated. 45 suites / 358 tests.

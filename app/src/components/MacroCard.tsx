@@ -1,7 +1,7 @@
 import { Droplet, Dumbbell, Wheat, type LucideIcon } from 'lucide-react-native';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { formatDecimal, formatNumber } from '@/lib/format';
 import { colors, iconStroke, macros, radius, size, space } from '@/theme';
 
@@ -45,8 +45,8 @@ export function MacroCard({
   const hasGoal = goal != null;
   const ratio = goal != null && goal > 0 ? value / goal : 0;
   const percent = `${formatNumber(ratio * 100)}%`;
-  const label = ro.macros[macro];
-  const unit = ro.common.grams;
+  const label = strings.macros[macro];
+  const unit = strings.common.grams;
   const amount = `${formatNumber(value)} ${unit}`;
 
   if (variant === 'compact') {

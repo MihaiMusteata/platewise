@@ -1,7 +1,7 @@
 import { ChevronRight, Plus, type LucideIcon } from 'lucide-react-native';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { formatNumber } from '@/lib/format';
 import { colors, iconStroke, radius, shadow, size, space } from '@/theme';
 
@@ -45,7 +45,7 @@ export function MealRow({
   showChevron = onPress != null,
   testID,
 }: MealRowProps) {
-  const kcalText = `${formatNumber(kcal)} ${ro.common.kcal}`;
+  const kcalText = `${formatNumber(kcal)} ${strings.common.kcal}`;
   return (
     <Pressable
       testID={testID}

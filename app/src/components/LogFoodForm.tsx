@@ -2,7 +2,7 @@ import { ChevronLeft } from 'lucide-react-native';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { formatDecimal, formatNumber } from '@/lib/format';
 import { MEALS } from '@/lib/meals';
 import { macroGoals, nutrientsFor } from '@/lib/nutrition';
@@ -35,8 +35,8 @@ import { SegmentedControl, type SegmentOption } from './SegmentedControl';
 import { Stepper } from './Stepper';
 
 const MODE_OPTIONS: readonly SegmentOption<PortionMode>[] = [
-  { value: 'grams', label: ro.logFood.grams },
-  { value: 'servings', label: ro.logFood.servings },
+  { value: 'grams', get label() { return strings.logFood.grams; } },
+  { value: 'servings', get label() { return strings.logFood.servings; } },
 ];
 
 const MACRO_KEYS = ['protein', 'carbs', 'fat'] as const;
@@ -49,7 +49,7 @@ export function FlowHeader({ title, onBack }: { title: string; onBack: () => voi
         testID="log-back"
         icon={ChevronLeft}
         iconSize="S"
-        accessibilityLabel={ro.common.back}
+        accessibilityLabel={strings.common.back}
         onPress={onBack}
       />
       <AppText variant="bodyLStrong" accessibilityRole="header">
@@ -149,14 +149,14 @@ export function LogFoodForm({
       </View>
 
       <Card style={styles.nutrition}>
-        <View accessibilityLabel={ro.logFood.nutritionLabel} style={styles.kcalRow}>
+        <View accessibilityLabel={strings.logFood.nutritionLabel} style={styles.kcalRow}>
           <AppText variant="numberL" tabular testID="log-kcal">
             {kcal}
           </AppText>
           <AppText variant="labelL" color="textSecondary" style={styles.kcalUnit}>
-            {ro.logFood.kcalFor(
+            {strings.logFood.kcalFor(
               portion.mode === 'grams'
-                ? `${formatAmount(grams)} ${ro.common.grams}`
+                ? `${formatAmount(grams)} ${strings.common.grams}`
                 : portionLabel(portion, food.servingName),
             )}
           </AppText>
@@ -175,7 +175,7 @@ export function LogFoodForm({
         </View>
         <View style={styles.per100}>
           <AppText variant="footnote" color="textSecondary" tabular>
-            {ro.logFood.per100(
+            {strings.logFood.per100(
               formatNumber(per100.kcal),
               formatDecimal(per100.protein, 1, true),
               formatDecimal(per100.carbs, 1, true),
@@ -190,13 +190,13 @@ export function LogFoodForm({
           options={MODE_OPTIONS}
           value={portion.mode}
           onChange={(mode) => setPortion(convertPortion(portion, mode, servingGrams))}
-          accessibilityLabel={ro.logFood.unitGroup}
+          accessibilityLabel={strings.logFood.unitGroup}
         />
       ) : null}
 
       <View style={styles.quantity}>
         <AppText variant="label" color="textTertiary">
-          {ro.logFood.quantity}
+          {strings.logFood.quantity}
         </AppText>
         <Stepper
           value={portion.amount}
@@ -206,16 +206,16 @@ export function LogFoodForm({
           max={range.max}
           format={formatAmount}
           unit={portionUnit(portion, food.servingName)}
-          accessibilityLabel={ro.logFood.quantity}
+          accessibilityLabel={strings.logFood.quantity}
         />
       </View>
 
-      <View style={styles.meals} accessibilityLabel={ro.logFood.mealGroup}>
+      <View style={styles.meals} accessibilityLabel={strings.logFood.mealGroup}>
         {MEALS.map((m) => (
           <Chip
             key={m}
             testID={`log-meal-${m}`}
-            label={ro.meals[m]}
+            label={strings.meals[m]}
             selected={meal === m}
             onPress={() => setMeal(m)}
             style={styles.mealChip}
@@ -229,7 +229,7 @@ export function LogFoodForm({
 
       <Button
         testID="log-save"
-        label={ro.logFood.save(ro.meals[meal], kcal)}
+        label={strings.logFood.save(strings.meals[meal], kcal)}
         onPress={() => void save()}
         disabled={saving}
       />

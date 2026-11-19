@@ -1,6 +1,6 @@
 import { CameraOff } from 'lucide-react-native';
 
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { space } from '@/theme';
 
 import { Button } from './Button';
@@ -16,24 +16,24 @@ export interface CameraOffStateProps {
 export function CameraOffState({ onClose, onOpenSettings, onManualEntry }: CameraOffStateProps) {
   return (
     <StateView
-      headerTitle={ro.scan.title}
+      headerTitle={strings.scan.title}
       dismiss="close"
       onDismiss={onClose}
       icon={CameraOff}
-      title={ro.scan.cameraOff.title}
-      body={ro.scan.cameraOff.body}
+      title={strings.scan.cameraOff.title}
+      body={strings.scan.cameraOff.body}
       topSpace={space.xxxl}
       actions={
         <>
           <Button
             testID="camera-settings"
-            label={ro.scan.cameraOff.openSettings}
+            label={strings.scan.cameraOff.openSettings}
             onPress={onOpenSettings}
           />
           <Button
             testID="scan-manual"
             variant="outline"
-            label={ro.scan.manualEntry}
+            label={strings.scan.manualEntry}
             onPress={onManualEntry}
           />
         </>

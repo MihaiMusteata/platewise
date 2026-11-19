@@ -1,4 +1,8 @@
-/** Romanian UI copy. All user-facing strings live here, grouped by area. */
+/**
+ * Romanian UI copy (source language). All user-facing strings live here, grouped by area.
+ * `en.ts` must have exactly the same shape; update both together. Screens read the active
+ * language through `strings` from `@/i18n`, never from this file directly.
+ */
 const ro = {
   common: {
     undo: 'Anulează',
@@ -177,7 +181,6 @@ const ro = {
     quantity: 'Cantitate consumată',
     mealGroup: 'Masa',
     save: (meal: string, kcal: string) => `Adaugă la ${meal} · ${kcal} kcal`,
-    serving: 'porție',
     servingPlurals: {
       bol: 'boluri',
       bucată: 'bucăți',
@@ -186,6 +189,16 @@ const ro = {
       lingură: 'linguri',
       porție: 'porții',
       pahar: 'pahare',
+    },
+    /** Serving names as stored in the food data (keys), as shown in this language. */
+    servingNames: {
+      bol: 'bol',
+      bucată: 'bucată',
+      cană: 'cană',
+      felie: 'felie',
+      lingură: 'lingură',
+      porție: 'porție',
+      pahar: 'pahar',
     },
     notFoundTitle: 'Nu am găsit alimentul',
     notFoundBody: 'Poate a fost șters între timp. Caută-l din nou sau alege altul.',
@@ -267,7 +280,6 @@ const ro = {
     protein: 'Proteine (g)',
     carbs: 'Carbohidrați (g)',
     fat: 'Grăsimi (g)',
-    servingName: 'porție',
     save: 'Salvează și adaugă',
     errors: {
       name: 'Numele poate avea cel mult 80 de caractere.',
@@ -359,6 +371,13 @@ const ro = {
       'Datele nutriționale vin de la contribuitorii Open Food Facts. Pot fi incomplete sau greșite.',
     soon: 'În curând',
     version: 'Versiune',
+    language: 'Limbă / Language',
+    languageSheetMessage: 'Automat folosește limba telefonului.',
+    languageOptions: {
+      system: 'Automat',
+      ro: 'Română',
+      en: 'English',
+    },
   },
   privacy: {
     title: 'Confidențialitate',
@@ -382,7 +401,29 @@ const ro = {
     ],
   },
   csv: {
+    filePrefix: 'platewise-jurnal',
     header: ['Data', 'Masă', 'Aliment', 'Marcă', 'Grame', 'kcal', 'Proteine (g)', 'Carbohidrați (g)', 'Grăsimi (g)'],
+  },
+  calendar: {
+    /** Sunday first, as `Date.getDay()`. */
+    weekdays: ['Duminică', 'Luni', 'Marți', 'Miercuri', 'Joi', 'Vineri', 'Sâmbătă'],
+    weekdaysShort: ['D', 'L', 'Ma', 'Mi', 'J', 'V', 'S'],
+    weekdaysAbbr: ['Du', 'Lu', 'Ma', 'Mi', 'Jo', 'Vi', 'Sâ'],
+    months: [
+      'ianuarie',
+      'februarie',
+      'martie',
+      'aprilie',
+      'mai',
+      'iunie',
+      'iulie',
+      'august',
+      'septembrie',
+      'octombrie',
+      'noiembrie',
+      'decembrie',
+    ],
+    monthsShort: ['ian', 'feb', 'mar', 'apr', 'mai', 'iun', 'iul', 'aug', 'sep', 'oct', 'noi', 'dec'],
   },
   macros: {
     protein: 'Proteine',

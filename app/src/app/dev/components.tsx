@@ -20,13 +20,14 @@ import {
   TextField,
   type TextVariant,
 } from '@/components';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { borderWidth, colors, macros, radius, size, space, type } from '@/theme';
 
-const t = ro.dev.samples;
-const sections = ro.dev.sections;
+const t = strings.dev.samples;
+const sections = strings.dev.sections;
 
-const typeSamples = Object.entries(ro.dev.typeSamples).map(([variant, sample]) => ({
+const typeSamples = () =>
+  Object.entries(strings.dev.typeSamples).map(([variant, sample]) => ({
   variant: variant as TextVariant,
   sample,
 }));
@@ -35,7 +36,7 @@ const spaceSamples = Object.entries(space) as [string, number][];
 const radiusSamples = [radius.s, radius.m, radius.l];
 
 type Unit = 'g' | 's';
-type MealKey = keyof typeof ro.meals;
+type MealKey = keyof typeof strings.meals;
 
 /** Dev-only screen: every core component, grouped like design/screens/System.html. */
 export default function ComponentsScreen() {
@@ -52,14 +53,14 @@ export default function ComponentsScreen() {
         <IconButton
           icon={ChevronLeft}
           iconSize="S"
-          accessibilityLabel={ro.common.back}
+          accessibilityLabel={strings.common.back}
           onPress={() => router.back()}
         />
-        <AppText variant="h1">{ro.dev.components}</AppText>
+        <AppText variant="h1">{strings.dev.components}</AppText>
       </View>
 
       <Section title={sections.text}>
-        {typeSamples.map(({ variant, sample }) => (
+        {typeSamples().map(({ variant, sample }) => (
           <Row key={variant} note={`${variant} · ${type[variant].fontSize}/${type[variant].lineHeight}`}>
             <AppText variant={variant} tabular numberOfLines={1} style={styles.shrink}>
               {sample}
@@ -82,10 +83,10 @@ export default function ComponentsScreen() {
 
       <Section title={sections.chips}>
         <View style={styles.chipGrid}>
-          {(Object.keys(ro.meals) as MealKey[]).map((key) => (
+          {(Object.keys(strings.meals) as MealKey[]).map((key) => (
             <Chip
               key={key}
-              label={ro.meals[key]}
+              label={strings.meals[key]}
               selected={meal === key}
               onPress={() => setMeal(key)}
               style={styles.flex}
@@ -103,10 +104,10 @@ export default function ComponentsScreen() {
           label={t.weight}
           value={weight}
           onChangeText={setWeight}
-          suffix={ro.common.kg}
+          suffix={strings.common.kg}
           keyboardType="decimal-pad"
         />
-        <TextField label={t.height} defaultValue="172" suffix={ro.common.cm} keyboardType="number-pad" />
+        <TextField label={t.height} defaultValue="172" suffix={strings.common.cm} keyboardType="number-pad" />
         <TextField
           label={t.name}
           value={name}
@@ -130,7 +131,7 @@ export default function ComponentsScreen() {
         <AppText variant="label" color="textTertiary">
           {t.quantity}
         </AppText>
-        <Stepper value={amount} onChange={setAmount} step={10} min={5} unit={ro.common.grams} />
+        <Stepper value={amount} onChange={setAmount} step={10} min={5} unit={strings.common.grams} />
       </Section>
 
       <Section title={sections.progress}>
@@ -169,7 +170,7 @@ export default function ComponentsScreen() {
       <Section title={sections.mealRows}>
         <View style={styles.list}>
           <MealRow
-            title={ro.meals.breakfast}
+            title={strings.meals.breakfast}
             subtitle={t.breakfastItems}
             kcal={320}
             tint="berry"
@@ -177,25 +178,25 @@ export default function ComponentsScreen() {
             onPress={() => {}}
           />
           <MealRow
-            title={ro.meals.lunch}
+            title={strings.meals.lunch}
             subtitle={t.lunchItems}
             kcal={420}
             tint="green"
             icon={Salad}
             onPress={() => {}}
           />
-          <MealRow title={ro.meals.dinner} subtitle={t.dinnerItems} kcal={1250} tint="amber" icon={Soup} />
+          <MealRow title={strings.meals.dinner} subtitle={t.dinnerItems} kcal={1250} tint="amber" icon={Soup} />
         </View>
       </Section>
 
       <Section title={sections.iconButtons}>
         <View style={styles.wrapRow}>
-          <IconButton icon={ChevronLeft} accessibilityLabel={ro.common.back} variant="surface" iconSize="S" />
-          <IconButton icon={ChevronLeft} accessibilityLabel={ro.common.back} variant="outline" />
-          <IconButton icon={Plus} accessibilityLabel={ro.common.more} variant="soft" />
-          <IconButton icon={Plus} accessibilityLabel={ro.common.more} variant="mint" />
+          <IconButton icon={ChevronLeft} accessibilityLabel={strings.common.back} variant="surface" iconSize="S" />
+          <IconButton icon={ChevronLeft} accessibilityLabel={strings.common.back} variant="outline" />
+          <IconButton icon={Plus} accessibilityLabel={strings.common.more} variant="soft" />
+          <IconButton icon={Plus} accessibilityLabel={strings.common.more} variant="mint" />
           <View style={styles.darkTile}>
-            <IconButton icon={Plus} accessibilityLabel={ro.common.more} variant="dark" />
+            <IconButton icon={Plus} accessibilityLabel={strings.common.more} variant="dark" />
           </View>
         </View>
       </Section>

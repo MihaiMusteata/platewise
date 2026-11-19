@@ -83,8 +83,9 @@ interface LogEntry {
 ```
 
 ## Formatting
-- Thousands separator dot, decimal comma: `2.000 kcal`, `72,4 kg`, `3,4 g`.
-- Dates in Romanian: „Miercuri, 18 noiembrie”.
+- UI language: Romanian (source) or English; Settings → „Limbă / Language” (Automat = phone language: `ro*` → Romanian, anything else → English).
+- Numbers follow the active language via the shared helpers: Romanian `2.000 kcal`, `72,4 kg`, `3,4 g`; English `2,000 kcal`, `72.4 kg`.
+- Dates follow the active language: „Miercuri, 18 noiembrie” / "Wednesday, 18 November".
 
 ## Non-goals for MVP
 Accounts, social features, recipes, Apple Health, widgets, Android.

@@ -1,7 +1,7 @@
 import { ChevronDown } from 'lucide-react-native';
 import { ActionSheetIOS, Alert, Keyboard, Platform, Pressable, StyleSheet, View } from 'react-native';
 
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { borderWidth, colors, iconStroke, radius, size, space } from '@/theme';
 
 import { AppText } from './AppText';
@@ -30,7 +30,7 @@ export function SelectField<T extends string>({
     const labels = options.map((o) => o.label);
     if (Platform.OS === 'ios') {
       ActionSheetIOS.showActionSheetWithOptions(
-        { title: label, options: [...labels, ro.common.cancel], cancelButtonIndex: labels.length },
+        { title: label, options: [...labels, strings.common.cancel], cancelButtonIndex: labels.length },
         (index) => {
           if (index < options.length) onChange(options[index].value);
         },
@@ -38,7 +38,7 @@ export function SelectField<T extends string>({
     } else {
       Alert.alert(label, undefined, [
         ...options.map((o) => ({ text: o.label, onPress: () => onChange(o.value) })),
-        { text: ro.common.cancel, style: 'cancel' as const },
+        { text: strings.common.cancel, style: 'cancel' as const },
       ]);
     }
   };

@@ -10,7 +10,7 @@ import {
 } from 'lucide-react-native';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { borderWidth, colors, iconStroke, opacity, radius, shadow, size, space } from '@/theme';
 
 import { AppText } from './AppText';
@@ -23,12 +23,12 @@ interface TabConfig {
 
 /** Tab routes in `(tabs)/`, left and right of the center Log button. */
 const LEFT_TABS: TabConfig[] = [
-  { name: 'index', label: ro.tabs.home, icon: House },
-  { name: 'progress', label: ro.tabs.progress, icon: ChartNoAxesColumn },
+  { name: 'index', get label() { return strings.tabs.home; }, icon: House },
+  { name: 'progress', get label() { return strings.tabs.progress; }, icon: ChartNoAxesColumn },
 ];
 const RIGHT_TABS: TabConfig[] = [
-  { name: 'plans', label: ro.tabs.plans, icon: Calendar },
-  { name: 'settings', label: ro.tabs.settings, icon: Settings },
+  { name: 'plans', get label() { return strings.tabs.plans; }, icon: Calendar },
+  { name: 'settings', get label() { return strings.tabs.settings; }, icon: Settings },
 ];
 
 /**
@@ -72,7 +72,7 @@ export function TabBar({ state, emitter, navigateToTab, insets }: BottomTabBarPr
   return (
     <View
       accessibilityRole="tablist"
-      accessibilityLabel={ro.tabs.navigation}
+      accessibilityLabel={strings.tabs.navigation}
       style={[styles.bar, { paddingBottom: insets.bottom }]}
     >
       {LEFT_TABS.map(renderTab)}
@@ -81,7 +81,7 @@ export function TabBar({ state, emitter, navigateToTab, insets }: BottomTabBarPr
           testID="tab-log"
           onPress={() => router.push('/add')}
           accessibilityRole="button"
-          accessibilityLabel={ro.tabs.log}
+          accessibilityLabel={strings.tabs.log}
           style={({ pressed }) => [styles.log, pressed && styles.logPressed]}
         >
           <Plus size={size.iconM} color={colors.onBrand} strokeWidth={iconStroke.bold} />

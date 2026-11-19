@@ -3,7 +3,7 @@ import { Heart, Minus, Plus } from 'lucide-react-native';
 import { Alert, Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText, HeroCard, OnboardingStep } from '@/components';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { formatNumber } from '@/lib/format';
 import { TARGET_MAX, TARGET_MIN, clampTarget, stepTarget } from '@/lib/nutrition';
 import { buildProfile, draftTarget, estimateTarget } from '@/lib/onboarding';
@@ -11,7 +11,7 @@ import { useOnboardingStore } from '@/stores/onboarding';
 import { useProfileStore } from '@/stores/profile';
 import { borderWidth, colors, iconStroke, opacity, radius, size, space } from '@/theme';
 
-const t = ro.onboarding.target;
+const t = strings.onboarding.target;
 
 function StepButton({
   icon: Icon,
@@ -74,10 +74,10 @@ export default function TargetScreen() {
       step={edit ? undefined : 3}
       title={t.title}
       intro={edit ? t.editIntro : t.intro}
-      primaryLabel={edit ? ro.onboarding.edit.save : t.start}
+      primaryLabel={edit ? strings.onboarding.edit.save : t.start}
       onPrimary={edit ? save : finish}
       primaryTestID={edit ? 'onb-save' : 'onb-start'}
-      secondaryLabel={edit ? ro.common.cancel : ro.common.back}
+      secondaryLabel={edit ? strings.common.cancel : strings.common.back}
       onSecondary={() => router.back()}
       secondaryTestID="onb-back"
     >

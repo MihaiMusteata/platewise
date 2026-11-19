@@ -2,6 +2,11 @@ import mockSafeAreaContext from 'react-native-safe-area-context/jest/mock';
 
 jest.mock('react-native-safe-area-context', () => mockSafeAreaContext);
 
+// Tests run in Romanian whatever the host locale: 'system' resolves to a Romanian phone, and
+// the active language starts as Romanian. Tests that switch to English switch back afterwards.
+jest.mock('@/i18n/device', () => ({ deviceLocale: () => 'ro-RO' }));
+require('@/i18n').setLanguage('ro');
+
 // lucide-react-native ships ESM for React Native; render every icon as a plain View in tests.
 jest.mock('lucide-react-native', () => {
   const { createElement } = jest.requireActual('react');

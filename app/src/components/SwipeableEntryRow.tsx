@@ -5,7 +5,7 @@ import ReanimatedSwipeable, {
   type SwipeableMethods,
 } from 'react-native-gesture-handler/ReanimatedSwipeable';
 
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { formatNumber } from '@/lib/format';
 import { colors, iconStroke, opacity, radius, shadow, size, space } from '@/theme';
 
@@ -37,7 +37,7 @@ export function SwipeableEntryRow({
   testID,
 }: SwipeableEntryRowProps) {
   const swipeable = useRef<SwipeableMethods>(null);
-  const kcalText = `${formatNumber(kcal)} ${ro.common.kcal}`;
+  const kcalText = `${formatNumber(kcal)} ${strings.common.kcal}`;
 
   const onAccessibilityAction = (event: AccessibilityActionEvent) => {
     if (event.nativeEvent.actionName === 'delete') onDelete();
@@ -51,12 +51,12 @@ export function SwipeableEntryRow({
         onDelete();
       }}
       accessibilityRole="button"
-      accessibilityLabel={`${ro.home.delete} ${title}`}
+      accessibilityLabel={`${strings.home.delete} ${title}`}
       style={({ pressed }) => [styles.delete, pressed && styles.deletePressed]}
     >
       <Trash2 size={size.iconS} color={colors.onBrand} strokeWidth={iconStroke.regular} />
       <AppText variant="bodyLStrong" color="onBrand">
-        {ro.home.delete}
+        {strings.home.delete}
       </AppText>
     </Pressable>
   );
@@ -76,7 +76,7 @@ export function SwipeableEntryRow({
           testID={testID}
           accessible
           accessibilityLabel={[title, subtitle, kcalText].filter(Boolean).join(', ')}
-          accessibilityActions={[{ name: 'delete', label: ro.home.delete }]}
+          accessibilityActions={[{ name: 'delete', label: strings.home.delete }]}
           onAccessibilityAction={onAccessibilityAction}
           style={styles.row}
         >

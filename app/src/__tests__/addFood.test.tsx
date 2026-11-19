@@ -6,7 +6,7 @@ import { getFood } from '@/db/foodsRepo';
 import { migrate } from '@/db/schema';
 import { seedCommonFoods } from '@/db/seed';
 import { createTestDb, type TestDb } from '@/db/testing/testDb';
-import ro from '@/i18n/ro';
+import { strings } from '@/i18n';
 import { toDateKey } from '@/lib/date';
 import { useLogStore } from '@/stores/log';
 import type { Food } from '@/types/models';
@@ -69,15 +69,15 @@ const type = (text: string) => fireEvent.changeText(screen.getByTestId('add-sear
 describe('Add food search', () => {
   it('shows the meal from the route and suggestions before anything was logged', async () => {
     await renderRouter(routes, { initialUrl: '/add?meal=dinner' });
-    expect(screen.getByTestId('add-meal')).toHaveTextContent(`${ro.addFood.addingTo} ${ro.meals.dinner}`);
-    expect(await screen.findByText(ro.addFood.sections.suggestions)).toBeTruthy();
+    expect(screen.getByTestId('add-meal')).toHaveTextContent(`${strings.addFood.addingTo} ${strings.meals.dinner}`);
+    expect(await screen.findByText(strings.addFood.sections.suggestions)).toBeTruthy();
   });
 
   it('lists recent foods first when the query is empty', async () => {
     await useLogStore.getState().add({ meal: 'lunch', foodId: 'common:banana', grams: 120 });
     await renderRouter(routes, { initialUrl: '/add' });
     expect(await screen.findByTestId('result-common:banana')).toBeTruthy();
-    expect(screen.getAllByText(ro.addFood.sections.recent)).toHaveLength(2); // chip + section
+    expect(screen.getAllByText(strings.addFood.sections.recent)).toHaveLength(2); // chip + section
   });
 
   it('finds seeded foods while typing, ignoring diacritics', async () => {
@@ -85,7 +85,7 @@ describe('Add food search', () => {
     await type('branza');
     expect(await screen.findByText('Brânză telemea')).toBeTruthy();
     expect(screen.getByText('Brânză de vaci')).toBeTruthy();
-    expect(screen.getByText(ro.addFood.sections.results)).toBeTruthy();
+    expect(screen.getByText(strings.addFood.sections.results)).toBeTruthy();
   });
 
   it('opens Log food with the meal when a result is pressed', async () => {
@@ -107,9 +107,9 @@ describe('Add food search', () => {
       grams: 40,
     });
     expect(screen.getByTestId('add-snackbar')).toHaveTextContent(/Adăugat: Fulgi de ovăz/);
-    expect(screen.getByLabelText(ro.addFood.addedLabel('Fulgi de ovăz'))).toBeTruthy();
+    expect(screen.getByLabelText(strings.addFood.addedLabel('Fulgi de ovăz'))).toBeTruthy();
 
-    await fireEvent.press(screen.getByText(ro.common.undo));
+    await fireEvent.press(screen.getByText(strings.common.undo));
     await waitFor(() => expect(useLogStore.getState().entries).toHaveLength(0));
   });
 
@@ -119,8 +119,8 @@ describe('Add food search', () => {
     await type('nutella');
     expect(await screen.findByTestId(`online-${nutella.id}`, {}, ONLINE_WAIT)).toBeTruthy();
     expect(mockSearch).toHaveBeenCalledWith('nutella');
-    expect(screen.getByText(ro.addFood.sections.online)).toBeTruthy();
-    expect(screen.getByTestId('add-attribution')).toHaveTextContent(ro.addFood.attribution);
+    expect(screen.getByText(strings.addFood.sections.online)).toBeTruthy();
+    expect(screen.getByTestId('add-attribution')).toHaveTextContent(strings.addFood.attribution);
     expect(screen.getByText('Ferrero · 15 g · 81 kcal')).toBeTruthy();
 
     await fireEvent.press(screen.getByTestId(`online-${nutella.id}`));
@@ -145,7 +145,7 @@ describe('Add food search', () => {
     await type('nutella');
     expect(await screen.findByTestId(`result-${nutella.id}`)).toBeTruthy();
     await waitFor(() => expect(mockSearch).toHaveBeenCalled(), ONLINE_WAIT);
-    await waitFor(() => expect(screen.queryByText(ro.addFood.searchingOnline)).toBeNull());
+    await waitFor(() => expect(screen.queryByText(strings.addFood.searchingOnline)).toBeNull());
     expect(screen.queryByTestId(`online-${nutella.id}`)).toBeNull();
   });
 
@@ -154,7 +154,7 @@ describe('Add food search', () => {
     await renderRouter(routes, { initialUrl: '/add' });
     await type('branza');
     expect(await screen.findByTestId('add-online-note', {}, ONLINE_WAIT)).toHaveTextContent(
-      ro.addFood.offline,
+      strings.addFood.offline,
     );
     expect(screen.getByText('Brânză telemea')).toBeTruthy();
   });
@@ -172,18 +172,18 @@ describe('Add food search', () => {
     await renderRouter(routes, { initialUrl: '/add' });
     await type('branza');
     expect(await screen.findByTestId('add-online-note', {}, ONLINE_WAIT)).toHaveTextContent(
-      ro.addFood.onlineError,
+      strings.addFood.onlineError,
     );
   });
 
   it('filters by chip without going online', async () => {
     await renderRouter(routes, { initialUrl: '/add' });
     await fireEvent.press(screen.getByTestId('filter-mine'));
-    expect(await screen.findByText(ro.addFood.emptyMine)).toBeTruthy();
+    expect(await screen.findByText(strings.addFood.emptyMine)).toBeTruthy();
     await fireEvent.press(screen.getByTestId('filter-recent'));
-    expect(await screen.findByText(ro.addFood.emptyRecent)).toBeTruthy();
+    expect(await screen.findByText(strings.addFood.emptyRecent)).toBeTruthy();
     await type('branza');
-    expect(await screen.findByText(ro.addFood.noResults('branza'))).toBeTruthy();
+    expect(await screen.findByText(strings.addFood.noResults('branza'))).toBeTruthy();
     expect(mockSearch).not.toHaveBeenCalled();
   });
 
