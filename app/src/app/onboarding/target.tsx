@@ -1,11 +1,11 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Heart, Minus, Plus } from 'lucide-react-native';
 import { Alert, Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText, HeroCard, OnboardingStep } from '@/components';
 import ro from '@/i18n/ro';
 import { formatNumber } from '@/lib/format';
-import { TARGET_MAX, TARGET_MIN, stepTarget } from '@/lib/nutrition';
+import { TARGET_MAX, TARGET_MIN, clampTarget, stepTarget } from '@/lib/nutrition';
 import { buildProfile, draftTarget, estimateTarget } from '@/lib/onboarding';
 import { useOnboardingStore } from '@/stores/onboarding';
 import { useProfileStore } from '@/stores/profile';
@@ -45,7 +45,12 @@ function StepButton({
   );
 }
 
+/**
+ * Onboarding step 3. With `?edit=1` (from Settings) it edits the saved target: no step bars and
+ * no "before you start" card; "Salvează" updates the profile and goes back.
+ */
 export default function TargetScreen() {
+  const edit = useLocalSearchParams<{ edit?: string }>().edit === '1';
   const draft = useOnboardingStore();
   const target = draftTarget(draft);
   // Body data present → the "calculated" note (even after ± tweaks); skip path → "starting value" note.
@@ -59,16 +64,22 @@ export default function TargetScreen() {
     useOnboardingStore.getState().reset();
   };
 
+  const save = () => {
+    useProfileStore.getState().updateProfile({ dailyTargetKcal: clampTarget(target) });
+    router.back();
+  };
+
   return (
     <OnboardingStep
-      step={3}
+      step={edit ? undefined : 3}
       title={t.title}
-      intro={t.intro}
-      primaryLabel={t.start}
-      onPrimary={finish}
-      primaryTestID="onb-start"
-      secondaryLabel={ro.common.back}
+      intro={edit ? t.editIntro : t.intro}
+      primaryLabel={edit ? ro.onboarding.edit.save : t.start}
+      onPrimary={edit ? save : finish}
+      primaryTestID={edit ? 'onb-save' : 'onb-start'}
+      secondaryLabel={edit ? ro.common.cancel : ro.common.back}
       onSecondary={() => router.back()}
+      secondaryTestID="onb-back"
     >
       <HeroCard contentStyle={styles.hero}>
         <View style={styles.stepRow}>
@@ -100,28 +111,30 @@ export default function TargetScreen() {
           {estimated ? t.note : t.noteManual}
         </AppText>
       </HeroCard>
-      <View style={styles.care}>
-        <View style={styles.careIcon}>
-          <Heart size={size.iconM} color={colors.brand} strokeWidth={iconStroke.regular} />
-        </View>
-        <View style={styles.careText}>
-          <AppText variant="bodyLStrong">{t.careTitle}</AppText>
-          <AppText variant="body" color="textOnMint">
-            {t.careBody}
-          </AppText>
-          <Pressable
-            onPress={() => Alert.alert(t.careLink, t.careSheet)}
-            accessibilityRole="link"
-            accessibilityLabel={t.careLink}
-            hitSlop={space.m}
-            style={({ pressed }) => [styles.careLink, pressed && styles.linkPressed]}
-          >
-            <AppText variant="bodyStrong" color="brand">
-              {t.careLink}
+      {!edit && (
+        <View style={styles.care}>
+          <View style={styles.careIcon}>
+            <Heart size={size.iconM} color={colors.brand} strokeWidth={iconStroke.regular} />
+          </View>
+          <View style={styles.careText}>
+            <AppText variant="bodyLStrong">{t.careTitle}</AppText>
+            <AppText variant="body" color="textOnMint">
+              {t.careBody}
             </AppText>
-          </Pressable>
+            <Pressable
+              onPress={() => Alert.alert(t.careLink, t.careSheet)}
+              accessibilityRole="link"
+              accessibilityLabel={t.careLink}
+              hitSlop={space.m}
+              style={({ pressed }) => [styles.careLink, pressed && styles.linkPressed]}
+            >
+              <AppText variant="bodyStrong" color="brand">
+                {t.careLink}
+              </AppText>
+            </Pressable>
+          </View>
         </View>
-      </View>
+      )}
     </OnboardingStep>
   );
 }

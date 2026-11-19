@@ -1,4 +1,4 @@
-import { parseDecimal } from '@/lib/format';
+import { formatDecimal, parseDecimal } from '@/lib/format';
 import { calcTarget, clampTarget } from '@/lib/nutrition';
 import type { Activity, Goal, Sex, UserProfile } from '@/types/models';
 
@@ -130,4 +130,34 @@ export function buildProfile(draft: OnboardingDraft): UserProfile {
     mealReminders: false,
     paused: false,
   };
+}
+
+/** Text for a saved body value; 0 means "not provided" (skip path) and becomes an empty field. */
+function bodyText(value: number): string {
+  return value > 0 ? formatDecimal(value, 1, true) : '';
+}
+
+/**
+ * Draft prefilled from the saved profile, for editing goal or target from Settings.
+ * The saved target is kept as the manual value until an estimate input changes.
+ */
+export function draftFromProfile(profile: UserProfile): OnboardingDraft {
+  return {
+    isAdult: profile.isAdult,
+    age: bodyText(profile.age),
+    height: bodyText(profile.heightCm),
+    weight: bodyText(profile.weightKg),
+    sex: profile.sex,
+    activity: profile.activity,
+    goal: profile.goal,
+    targetKcal: profile.dailyTargetKcal,
+  };
+}
+
+/**
+ * Target while editing from Settings: the kept/manual value, else a fresh estimate when body
+ * data is complete, else the saved target (never recalculated from missing data).
+ */
+export function editTarget(draft: OnboardingDraft, saved: number): number {
+  return clampTarget(draft.targetKcal ?? estimateTarget(draft) ?? saved);
 }

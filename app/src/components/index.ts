@@ -45,3 +45,9 @@ export { FlowHeader, LogFoodForm, type LogFoodFormProps } from './LogFoodForm';
 export { StateView, type StateViewProps } from './StateView';
 export { CalorieChart, type CalorieChartProps } from './CalorieChart';
 export { MacroDonut, type MacroDonutProps } from './MacroDonut';
+export {
+  SettingsRow,
+  SettingsSection,
+  type SettingsRowProps,
+  type SettingsSectionProps,
+} from './SettingsRow';

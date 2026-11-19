@@ -47,6 +47,7 @@ export const colors = {
   tabBarBorder: '#EDF1EE',   // top border of the tab bar
   stepInactive: '#DDE6E1',   // onboarding step bars not reached yet
   radioRing: '#B7C2BC',      // unselected radio ring
+  switchTrackOff: '#CBD3CE', // switch track when off (Settings)
 
   // Feedback
   danger: '#B42318',         // destructive actions only (delete), never for "over goal"
@@ -149,6 +150,8 @@ export const size = {
   progressBarWeekly: 7, // weekly goal card on Progress
   legendDot: 12,    // macro legend dot on Progress
   rowBadge: 40,     // icon circle on the compact weight card
+  listRow: 56,      // min height of a Settings list row
+  badge: 24,        // small pill badge in a list row ("În curând" in Settings)
 } as const;
 
 /** Scan screen geometry (Scan.html). */
@@ -237,6 +240,7 @@ export const type = {
   tabLabel: { fontSize: 12, lineHeight: 16, fontFamily: fontFamily.regular },
   tabLabelActive: { fontSize: 12, lineHeight: 16, fontFamily: fontFamily.bold },
   footnote: { fontSize: 12, lineHeight: 16, fontFamily: fontFamily.regular }, // small secondary text (per-100 g line)
+  badge: { fontSize: 14, lineHeight: 20, fontFamily: fontFamily.extrabold }, // pill badge in a list row
   caption: { fontSize: 12, lineHeight: 16, fontFamily: fontFamily.semibold },
   overline: { fontSize: 12, lineHeight: 16, fontFamily: fontFamily.bold, letterSpacing: 0.7, textTransform: 'uppercase' as const },
 } as const;

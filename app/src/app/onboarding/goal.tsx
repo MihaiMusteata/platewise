@@ -1,12 +1,13 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Equal, TrendingDown, TrendingUp, type LucideIcon } from 'lucide-react-native';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, ChoiceCard, HeroCard, OnboardingStep } from '@/components';
 import ro from '@/i18n/ro';
 import { formatNumber } from '@/lib/format';
-import { draftTarget } from '@/lib/onboarding';
+import { draftTarget, editTarget, estimateTarget } from '@/lib/onboarding';
 import { useOnboardingStore } from '@/stores/onboarding';
+import { useProfileStore } from '@/stores/profile';
 import { layout, space } from '@/theme';
 import type { Goal } from '@/types/models';
 
@@ -18,20 +19,35 @@ const GOALS: { value: Goal; title: string; subtitle: string; icon: LucideIcon }[
   { value: 'gain', title: t.gain, subtitle: t.gainHint, icon: TrendingUp },
 ];
 
+/**
+ * Onboarding step 2. With `?edit=1` (from Settings) it edits the saved goal: no step bars,
+ * "Salvează" updates the profile and goes back. The target is recalculated only when the
+ * profile has complete body data; otherwise the saved target is kept.
+ */
 export default function GoalScreen() {
+  const edit = useLocalSearchParams<{ edit?: string }>().edit === '1';
   const draft = useOnboardingStore();
-  const target = formatNumber(draftTarget(draft));
+  const saved = useProfileStore((s) => s.profile?.dailyTargetKcal);
+  const kcal = edit && saved != null ? editTarget(draft, saved) : draftTarget(draft);
+  const target = formatNumber(kcal);
+  const note = edit && estimateTarget(draft) == null ? ro.onboarding.edit.goalNoteManual : t.note;
+
+  const save = () => {
+    useProfileStore.getState().updateProfile({ goal: draft.goal, dailyTargetKcal: kcal });
+    router.back();
+  };
 
   return (
     <OnboardingStep
-      step={2}
+      step={edit ? undefined : 2}
       title={t.title}
       intro={t.intro}
-      primaryLabel={ro.common.continue}
-      onPrimary={() => router.push('/onboarding/target')}
-      primaryTestID="onb-continue"
-      secondaryLabel={ro.common.back}
+      primaryLabel={edit ? ro.onboarding.edit.save : ro.common.continue}
+      onPrimary={edit ? save : () => router.push('/onboarding/target')}
+      primaryTestID={edit ? 'onb-save' : 'onb-continue'}
+      secondaryLabel={edit ? ro.common.cancel : ro.common.back}
       onSecondary={() => router.back()}
+      secondaryTestID="onb-back"
     >
       <View style={styles.options} accessibilityRole="radiogroup">
         {GOALS.map((goal) => (
@@ -62,7 +78,7 @@ export default function GoalScreen() {
           </AppText>
         </View>
         <AppText variant="body" color="heroTextSecondary">
-          {t.note}
+          {note}
         </AppText>
       </HeroCard>
     </OnboardingStep>

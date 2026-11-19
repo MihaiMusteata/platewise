@@ -39,6 +39,19 @@ describe('onboarding store', () => {
     expect(useOnboardingStore.getState().targetKcal).toBe(2500);
   });
 
+  it('keeps a manual target when the current goal is selected again', () => {
+    const s = useOnboardingStore.getState();
+    s.setTarget(2500);
+    s.setGoal('maintain');
+    expect(useOnboardingStore.getState().targetKcal).toBe(2500);
+  });
+
+  it('loads a whole draft (edit mode)', () => {
+    const draft = { ...initialDraft, isAdult: true, age: '40', goal: 'lose' as const, targetKcal: 1900 };
+    useOnboardingStore.getState().load(draft);
+    expect(useOnboardingStore.getState()).toMatchObject(draft);
+  });
+
   it('resets to the initial draft', () => {
     const s = useOnboardingStore.getState();
     s.setField('height', '180');

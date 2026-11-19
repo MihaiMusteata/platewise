@@ -4,7 +4,9 @@ import {
   checkAge,
   checkHeight,
   checkWeight,
+  draftFromProfile,
   draftTarget,
+  editTarget,
   estimateTarget,
   validateAbout,
   type OnboardingDraft,
@@ -132,5 +134,33 @@ describe('buildProfile', () => {
     const profile = buildProfile({ ...complete, age: '40', height: '', weight: '', sex: null });
     expect(profile).toMatchObject({ age: 40, heightCm: 0, weightKg: 0, sex: 'female' });
     expect(profile.dailyTargetKcal).toBe(DEFAULT_TARGET);
+  });
+});
+
+describe('draftFromProfile', () => {
+  it('prefills text fields with Romanian decimals and keeps the saved target', () => {
+    const profile = buildProfile({ ...complete, targetKcal: 2300 });
+    expect(draftFromProfile(profile)).toEqual({ ...complete, targetKcal: 2300 });
+  });
+
+  it('turns body values saved as 0 (not provided) into empty fields', () => {
+    const profile = buildProfile({ ...complete, age: '', height: '', weight: '' });
+    expect(draftFromProfile(profile)).toMatchObject({ age: '', height: '', weight: '' });
+  });
+});
+
+describe('editTarget', () => {
+  it('keeps the manual value while it is set', () => {
+    expect(editTarget({ ...complete, targetKcal: 2350 }, 1800)).toBe(2350);
+  });
+
+  it('recalculates when body data is complete and the manual value was dropped', () => {
+    expect(editTarget({ ...complete, goal: 'lose' }, 1800)).toBe(
+      estimateTarget({ ...complete, goal: 'lose' }),
+    );
+  });
+
+  it('keeps the saved target when body data is missing', () => {
+    expect(editTarget({ ...complete, age: '', goal: 'gain' }, 1800)).toBe(1800);
   });
 });

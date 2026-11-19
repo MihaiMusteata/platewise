@@ -85,6 +85,12 @@ const ro = {
       careSheet:
         'Medicul de familie te poate îndruma către un nutriționist sau un psiholog. Poți reveni oricând la monitorizare, sau o poți pune pe pauză din Setări.',
       start: 'Începe monitorizarea',
+      editIntro: 'Ajustează ținta cu câte 50 kcal. O poți schimba oricând.',
+    },
+    edit: {
+      save: 'Salvează',
+      /** Goal edit when age, height or weight were skipped: the target is not recalculated. */
+      goalNoteManual: 'Ținta rămâne cea setată de tine, pentru că nu avem vârsta, înălțimea și greutatea. O poți ajusta din Setări.',
     },
   },
   home: {
@@ -312,6 +318,71 @@ const ro = {
     lunch: 'Prânz',
     dinner: 'Cină',
     snack: 'Gustare',
+  },
+  settings: {
+    title: 'Setări',
+    sections: {
+      goals: 'Obiective și unități',
+      tracking: 'Monitorizare',
+      data: 'Datele tale',
+      help: 'Ajutor și despre',
+    },
+    target: 'Ținta zilnică',
+    targetValue: (kcal: string) => `${kcal} kcal`,
+    goal: 'Obiectiv',
+    energyUnit: 'Unitate de energie',
+    weightUnit: 'Unitate de greutate',
+    weightTracking: 'Greutate și tendințe',
+    weightTrackingHint: 'Oprită implicit',
+    reminders: 'Mementouri pentru mese',
+    pause: 'Pune pe pauză',
+    pauseHint: 'Ascunde țintele și totalurile pentru o vreme',
+    export: 'Exportă ca CSV',
+    exportEmptyTitle: 'Jurnalul e gol',
+    exportEmptyBody: 'Când adaugi alimente în jurnal, le poți exporta de aici.',
+    exportErrorTitle: 'Exportul nu a mers',
+    exportErrorBody: 'Încearcă din nou peste puțin timp.',
+    backup: 'Backup și sincronizare',
+    deleteAll: 'Șterge toate datele mele',
+    deleteTitle: 'Ștergi toate datele?',
+    deleteBody:
+      'Jurnalul, alimentele tale și profilul vor fi șterse de pe acest telefon. Nu le putem recupera după aceea.',
+    deleteConfirm: 'Șterge tot',
+    support: 'Sprijin și linii de ajutor',
+    supportBody:
+      'Medicul de familie te poate îndruma către un nutriționist sau un psiholog. Pentru întrebări despre aplicație, ne poți scrie un e-mail.',
+    supportEmail: 'Scrie-ne',
+    privacy: 'Politica de confidențialitate',
+    restore: 'Restaurează achizițiile',
+    foodData: 'Date despre alimente',
+    foodDataHint:
+      'Datele nutriționale vin de la contribuitorii Open Food Facts. Pot fi incomplete sau greșite.',
+    soon: 'În curând',
+    version: 'Versiune',
+  },
+  privacy: {
+    title: 'Confidențialitate',
+    sections: [
+      {
+        title: 'Datele rămân pe telefon',
+        body: 'Profilul, ținta și jurnalul de mese sunt salvate doar pe acest telefon. Nu avem servere care să le primească.',
+      },
+      {
+        title: 'Open Food Facts',
+        body: 'Când scanezi un cod de bare sau cauți un aliment online, trimitem la Open Food Facts doar codul sau textul căutat. Nimic altceva despre tine.',
+      },
+      {
+        title: 'Fără cont, fără urmărire',
+        body: 'Nu îți cerem un cont și nu folosim reclame, analiză sau urmărire.',
+      },
+      {
+        title: 'Controlul e la tine',
+        body: 'Poți exporta jurnalul ca CSV sau poți șterge toate datele din Setări, oricând.',
+      },
+    ],
+  },
+  csv: {
+    header: ['Data', 'Masă', 'Aliment', 'Marcă', 'Grame', 'kcal', 'Proteine (g)', 'Carbohidrați (g)', 'Grăsimi (g)'],
   },
   macros: {
     protein: 'Proteine',

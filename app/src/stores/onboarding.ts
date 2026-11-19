@@ -13,6 +13,8 @@ interface OnboardingState extends OnboardingDraft {
   setGoal: (goal: Goal) => void;
   /** Manual target from the step 3 stepper. */
   setTarget: (kcal: number) => void;
+  /** Replaces the whole draft (edit mode from Settings). */
+  load: (draft: OnboardingDraft) => void;
   reset: () => void;
 }
 
@@ -37,7 +39,9 @@ export const useOnboardingStore = create<OnboardingState>()((set) => ({
   setField: (field, text) => set({ [field]: text, targetKcal: null }),
   setSex: (sex) => set({ sex, targetKcal: null }),
   setActivity: (activity) => set({ activity, targetKcal: null }),
-  setGoal: (goal) => set({ goal, targetKcal: null }),
+  // Re-selecting the current goal keeps a manual target (matters when editing from Settings).
+  setGoal: (goal) => set((s) => (s.goal === goal ? {} : { goal, targetKcal: null })),
   setTarget: (targetKcal) => set({ targetKcal }),
+  load: (draft) => set(draft),
   reset: () => set(initialDraft),
 }));

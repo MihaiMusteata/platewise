@@ -7,7 +7,8 @@ import { Screen } from './Screen';
 import { StepHeader } from './StepHeader';
 
 export interface OnboardingStepProps {
-  step: number;
+  /** Current step; omit to hide the step bars (editing a step from Settings). */
+  step?: number;
   total?: number;
   title: string;
   intro: string;
@@ -43,7 +44,7 @@ export function OnboardingStep({
 }: OnboardingStepProps) {
   return (
     <Screen scroll contentStyle={styles.content}>
-      <StepHeader step={step} total={total} />
+      {step != null && <StepHeader step={step} total={total} />}
       <AppText variant="h1" accessibilityRole="header">
         {title}
       </AppText>

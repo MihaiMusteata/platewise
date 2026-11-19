@@ -148,3 +148,13 @@ All pre-approved native deps installed together (expo-sqlite, zustand, expo-secu
 - Decisions: month labels on day 1, every 5th day and today; year bars = monthly average, labels "ian/feb/…"; paused → goal line and weekly card replaced by a calm note; weight tracking on → "Greutatea ta: X kg" from profile + "history later" note (needs product review); "Filtre" button omitted (no destination); empty data → grey ring + calm note.
 - Visual differences: donut centre text 20/28 vs 18; tooltip/current label weight 700 vs 800; tooltip can overlap a neighbouring tall bar.
 - Open issue: two `addEntry` calls running concurrently can collide on `withTransactionAsync` (seen when a temporary seed ran twice). Fixed after T5.1: `useLogStore` runs all writes through a serial queue (test: 5 concurrent adds).
+
+### T5.2 — Settings — done
+- `(tabs)/settings.tsx` per Settings.html with `SettingsSection`/`SettingsRow`. Target/goal rows open the onboarding screens in edit mode (`?edit=1`: draft prefilled from profile, no step bars, "Salvează"/"Renunță", `updateProfile` + back).
+- Export CSV: `services/exportCsv.ts` (allEntries → `buildLogCsv` → cache file `platewise-jurnal-YYYY-MM-DD.csv` via expo-file-system → `Sharing.shareAsync`); empty log → calm alert.
+- Delete all my data: destructive confirmation → `clearAll()` + profile reset + onboarding draft reset → `/onboarding/about`. Scan counter (Keychain) intentionally kept.
+- `app/privacy.tsx`: in-app privacy text (data stays on device; OFF only receives barcodes/search text; no account, no tracking). Support → mailto.
+- Tokens added (mirrored): colors.switchTrackOff; size.listRow 56, badge 24; type.badge.
+- Decisions: goal edit recalculates the target only when age/height/weight are all known (skip path saved 0s → target kept with a calm note); re-selecting the current goal no longer drops a manual target; Pause is a Switch (design shows a chevron); meal reminders disabled "În curând" (no notifications in demo); Backup și sincronizare and Restaurează achizițiile muted with "În curând" pill (post-demo); unit rows informational; "Sprijin și linii de ajutor" opens calm care guidance with "Scrie-ne" mailto; no app version row (not in design).
+- Open: hosted privacy policy URL still needed (R1).
+- Simulator: top three sections, weight toggle, target edit + back, CSV share sheet, privacy screen verified. Lower section (badges, delete row) verified by tests only (scroll unavailable). Native Switch 51×31 vs design 56×32.

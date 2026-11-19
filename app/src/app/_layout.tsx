@@ -39,6 +39,7 @@ export default function RootLayout() {
         <Stack.Screen name="add" options={{ presentation: 'modal' }} />
         {/* Each modal has its own stack, so its follow-up screens push inside the modal. */}
         <Stack.Screen name="scan" options={{ presentation: 'fullScreenModal' }} />
+        <Stack.Screen name="privacy" options={{ presentation: 'card' }} />
       </Stack>
     </GestureHandlerRootView>
   );
