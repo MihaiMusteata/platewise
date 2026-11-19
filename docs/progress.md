@@ -198,3 +198,9 @@ All pre-approved native deps installed together (expo-sqlite, zustand, expo-secu
 - Hidden dev section at the bottom of Settings, toggled by long-pressing the "Setări" title for 1,5 s: "Date demo" switch (seeds/clears a sample week via `services/demoData.ts`; only the demo entries are removed — ids stored in kv), "Resetează scanările lunii", link to /dev/components.
 - Native rebuild done (`expo prebuild --clean` + `run:ios`); the dev client URL scheme is now `exp+platewise://`. The physical iPhone's dev build must be rebuilt (`npx expo run:ios --device`) to pick up the new name, icon and scheme.
 - Simulator: fresh install → onboarding (skip path) → empty Home → demo data toggle → Progress shows the week. Home-screen icon and name verified.
+
+### Fix — web bundle could not resolve `wa-sqlite.wasm` (after demo)
+- Symptom: `Unable to resolve module ./wa-sqlite/wa-sqlite.wasm` from `expo-sqlite/web/worker.ts` whenever Metro bundled for web (pressing `w`, or the Expo MCP server).
+- Fix per expo-sqlite "Web setup" docs: new `app/metro.config.js` adds `wasm` to `resolver.assetExts` and sets COEP `credentialless` / COOP `same-origin` headers (needed for SharedArrayBuffer).
+- `app.json` web output changed from `server` to `single`: the app is iOS-only, and server rendering tried to start expo-sqlite's devtools in Node ("window is not defined").
+- Verified: web index + web bundle return 200, iOS bundle builds, no errors in the Metro log; no native rebuild needed.
