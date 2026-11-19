@@ -25,7 +25,7 @@ One task per agent session. Tick `[x]` when done and verified (`npm run typechec
 ## Phase 4 — Barcode scanning
 - [x] **T4.1 Scan screen** per `Scan.html` with `expo-camera` (EAN-13, EAN-8, UPC-A/E), torch, manual barcode entry. Camera permission text in `app.json`. Permission denied state per `CameraOff.html`.
 - [x] **T4.2 Lookup + results**: Product found (`ProductFound.html`), Not found (`ScanNotFound.html`), Offline (`Offline.html`). Cache found products locally.
-- [ ] **T4.3 Add product from label** per `AddProduct.html`, saved as `source: 'custom'`, then logged.
+- [x] **T4.3 Add product from label** per `AddProduct.html`, saved as `source: 'custom'`, then logged.
 - [x] **T4.4 Scan counter.** Count successful barcode lookups in the iOS Keychain via `expo-secure-store`, keyed by calendar month (local time). 10 successful lookups per month; "not found" and offline do not count. Show remaining scans on the scan screen. At the limit show a calm message (no paywall yet); manual search and logging stay available. *Done when:* counter logic is unit-tested (month rollover, not-found not counted, limit reached).
 
 ## Phase 5 — Progress & Settings

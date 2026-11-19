@@ -3,6 +3,9 @@ import type { Meal, Nutrients } from '@/types/models';
 
 export const MEALS: readonly Meal[] = ['breakfast', 'lunch', 'dinner', 'snack'];
 
+/** Type guard for a route param such as `?meal=lunch`. */
+export const isMeal = (value: unknown): value is Meal => MEALS.includes(value as Meal);
+
 /** Sums nutrients per meal; meals without entries are zero. */
 export function totalsByMeal(
   entries: { meal: Meal; nutrients: Nutrients }[],

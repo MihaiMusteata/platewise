@@ -28,7 +28,6 @@ const ro = {
     scan: 'Scanează codul de bare',
     productFound: 'Produs găsit',
     notFound: 'Nu avem încă acest produs',
-    newProduct: 'Copiază de pe etichetă',
     food: 'Adaugă în jurnal',
   },
   onboarding: {
@@ -249,6 +248,30 @@ const ro = {
     limit: {
       search: 'Caută manual',
     },
+  },
+  addProduct: {
+    header: 'Adaugă un produs',
+    title: 'Copiază de pe etichetă',
+    subtitle: 'Valori la 100\u00a0g',
+    subtitleWithCode: (barcode: string) => `Cod ${barcode} · valori la 100\u00a0g`,
+    name: 'Numele produsului',
+    brand: 'Marcă (opțional)',
+    serving: 'Porție (g)',
+    kcal: 'Calorii (kcal)',
+    protein: 'Proteine (g)',
+    carbs: 'Carbohidrați (g)',
+    fat: 'Grăsimi (g)',
+    servingName: 'porție',
+    save: 'Salvează și adaugă',
+    errors: {
+      name: 'Numele poate avea cel mult 80 de caractere.',
+      serving: 'Introdu o porție între 1 și 2.000 g.',
+      kcal: 'Introdu o valoare între 0 și 900 kcal.',
+      macro: 'Introdu o valoare între 0 și 100 g.',
+      macroSum: 'Proteinele, carbohidrații și grăsimile pot însuma cel mult 100 g la 100 g.',
+    },
+    kcalMismatch: (estimate: string) =>
+      `Caloriile par diferite de cele calculate din macronutrienți (aprox. ${estimate} kcal). Verifică eticheta; poți salva oricum.`,
   },
   meals: {
     breakfast: 'Mic dejun',

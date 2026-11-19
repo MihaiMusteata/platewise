@@ -134,3 +134,10 @@ All pre-approved native deps installed together (expo-sqlite, zustand, expo-secu
 - Decisions: "Caută în alimentele mele" opens search filtered to Alimentele mele; "Editează" and package size omitted on Product found (no destination/data); subtitle "brand · 1 porție = X g · Cod …".
 - Needs product review: limit-state copy and the scan counter pill (no design).
 - Simulator: scan screen counter verified (10 remaining) and Product found verified live with 5449000000996 (Coca-Cola, 145 kcal / 330 g). Not found, Offline and limit states verified by tests only (MCP automation hung during the subagent's run).
+
+### T4.3 — Add product from label — done
+- `scan/new-product.tsx` per AddProduct.html: name, brand | serving (g), kcal | protein, carbs | fat (decimal-pad, comma decimals). Reached from Not found (with barcode) and from search "Nu găsești? Creează un aliment" (with meal, no barcode).
+- `src/lib/productForm.ts`: validation (name 1–80, brand ≤ 80, kcal 0–900, macros 0–100 and sum ≤ 100, serving 1–2000), amber non-blocking hint when kcal differs from 4/4/9 × macros by > 20 % and > 30 kcal; `buildCustomFood` (randomUUID id, `source: 'custom'`).
+- Save: `upsertFood` → log one serving (or 100 g) to the meal param or current meal → `dismissTo('/')`. Custom foods with a barcode resolve on later scans without network or using a scan (test added).
+- Decisions: no serving-name field (design has none; serving is "porție"); barcode read-only in the subtitle; macros optional (empty = 0); "Trimite la Open Food Facts" checkbox omitted (no submit path/credentials); empty required fields show no message, button stays disabled.
+- Simulator: screen verified visually (via Alimentele mele → create). Metro's watchman subscription had dropped; restarted with `watchman watch-del-all` + `expo start --clear`.

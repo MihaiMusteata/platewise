@@ -59,6 +59,23 @@ describe('lookupBarcode', () => {
     expect(lookup).not.toHaveBeenCalled();
   });
 
+  it('finds a custom product added from the label without a network call', async () => {
+    const custom: Food = {
+      id: 'uuid-granola',
+      name: 'Granola cu ovăz și miere',
+      barcode: '4000000000000',
+      per100g: { kcal: 452, protein: 8.5, carbs: 63, fat: 17 },
+      servingName: 'porție',
+      servingGrams: 40,
+      source: 'custom',
+    };
+    await upsertFood(db, custom);
+    const { api, lookup } = apiReturning({ status: 'offline' });
+    const result = await lookupBarcode(db, api, '4000000000000', now);
+    expect(result).toMatchObject({ status: 'found', cached: true, food: custom });
+    expect(lookup).not.toHaveBeenCalled();
+  });
+
   it.each(['not_found', 'offline', 'error'] as const)('%s does not count', async (status) => {
     const { api } = apiReturning({ status });
     const result = await lookupBarcode(db, api, '5941234567890', now);

@@ -221,7 +221,7 @@ export default function AddFoodScreen() {
           variant="outline"
           icon={Plus}
           label={ro.addFood.create}
-          onPress={() => router.push('/scan/new-product')}
+          onPress={() => router.push({ pathname: '/scan/new-product', params: { meal } })}
         />
       </Screen>
 
